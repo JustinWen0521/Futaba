@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - @ftd.service.FtdConfigService.Instance.getAppSettingValue("ProductName", "")</title>
+    <link href="~/futaba_fox.png" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    
+    <link href="~/Content/alertifyjs/alertify.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/alertifyjs/themes/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/themes/kfcp/css")
+
+    @RenderSection("styles", false)
+
+</head>
+<body>
+    <!--middle center顯示資料區-->
+    <div style="display:none;">
+        <!--程式名稱-->
+        @RenderSection("function_name", required: false)
+    </div>
+    <div>
+        @RenderBody()
+        <div id="loading">
+            <img src="~/Images/loading.gif" />
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/modernizr")
+    @*@Scripts.Render("~/bundles/jquery")*@
+    @*@Scripts.Render("~/bundles/jqueryui")*@
+    @Scripts.Render("~/bundles/kfcp")
+    @Scripts.Render("~/bundles/jtable")
+    
+    <script type="text/javascript" src="~/Scripts/alertify.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/Function.js?@DateTime.Now.ToString("yyyyMMddHH")"></script>
+    <script type="text/javascript" src="~/Scripts/AppPlugins.js?@DateTime.Now.ToString("yyyyMMddHH")"></script>
+    <script src="~/Scripts/validate.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#loading").hide();
+
+            // Prevent the backspace key from navigating back.
+            $(document).unbind('keydown').bind('keydown', function (event) {
+                var doPrevent = false;
+                if (event.keyCode === 8) {
+                    var d = event.srcElement || event.target;
+                    if ((d.tagName.toUpperCase() === 'INPUT' &&
+                         (
+                             d.type.toUpperCase() === 'TEXT' ||
+                             d.type.toUpperCase() === 'PASSWORD' ||
+                             d.type.toUpperCase() === 'FILE' ||
+                             d.type.toUpperCase() === 'SEARCH' ||
+                             d.type.toUpperCase() === 'EMAIL' ||
+                             d.type.toUpperCase() === 'NUMBER' ||
+                             d.type.toUpperCase() === 'DATE')
+                         ) ||
+                         d.tagName.toUpperCase() === 'TEXTAREA') {
+                        doPrevent = d.readOnly || d.disabled;
+                    }
+                    else {
+                        doPrevent = true;
+                    }
+                }
+
+                if (doPrevent) {
+                    event.preventDefault();
+                }
+            });
+
+            //處理畫面元素
+            PrepareUI();
+
+            //註冊事件
+            registerEvents();
+        });
+    </script>
+    
+    <!-- Load JavaScript for Partial View -->
+    @RenderSection("partialview_scripts", required: false)
+    
+    <!-- Load JavaScript for View -->
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

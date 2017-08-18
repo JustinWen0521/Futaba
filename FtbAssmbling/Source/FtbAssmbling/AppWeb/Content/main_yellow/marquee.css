@@ -1,0 +1,33 @@
+@charset "utf-8";
+/* CSS Document */
+
+div#abgne_marquee {
+	font-size:13PX;
+	text-align:left;
+	position: relative;
+	overflow: hidden;	/* 超出範圍的部份要隱藏 */
+	padding-left:220px;
+	width:70%;
+	height:29px;
+	height:28px \9;
+
+		
+	}
+	div#abgne_marquee ul, div#abgne_marquee li {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	div#abgne_marquee ul {
+		position: absolute;
+	}
+	div#abgne_marquee ul li a {
+		display: block;
+		overflow: hidden;	/* 超出範圍的部份要隱藏 */
+		font-size:12px;
+		line-height: 29px;
+		line-height:28px \9;
+		text-decoration: none;
+		color: #333;
+	}
+	div#abgne_marquee ul li a:hover{ color:#d20808}

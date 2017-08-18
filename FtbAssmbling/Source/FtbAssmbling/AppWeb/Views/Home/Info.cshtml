@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.Title = "系統資訊";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <h2>系統資訊</h2>
+    <span>最後修改時間： @ftd.mvc.VersionInfo.LastModifyTime</span>
+}

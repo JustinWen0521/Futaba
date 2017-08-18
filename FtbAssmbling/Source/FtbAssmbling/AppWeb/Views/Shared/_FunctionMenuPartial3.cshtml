@@ -1,0 +1,108 @@
+﻿@*<ul>
+@if (ftd.web.AppUserSession.User != null && ftd.web.AppUserSession.User.UserFunctions != null)
+{
+    var menuNodes = ftd.web.AppUserSession.User.UserFunctions;
+    var parentNodes = menuNodes.Select(t => t.Parent["title"]).GroupBy(t => t).ToArray();
+
+    foreach (var parentNode in parentNodes)
+        var ChildNodes = menuNodes.Where(t => t.Parent["title"] == parentNode.Key);
+        <li>@parentNode.Key<ul>
+                @foreach (var node in ChildNodes)
+                {
+                    <li>@Html.ActionLink(string.Format("{0}-{1}", node["itemNo"], node["title"]), node["action"], node["controller"])</li>
+                }
+            </ul>
+        </li>
+    }
+}
+</ul>*@
+
+
+@*@if (ftd.web.AppUserSession.User != null && ftd.web.AppUserSession.User.UserFunctions != null)
+{
+    var menuNodes = ftd.web.AppUserSession.User.UserFunctions;
+    var parentNodes = menuNodes.Select(t => t.Parent["title"]).GroupBy(t => t).ToArray();
+    
+    foreach (var parentNode in parentNodes)
+    {
+        var ChildNodes = menuNodes.Where(t => t.Parent["title"] == parentNode.Key);
+        <h3>@parentNode.Key </h3>
+        
+        <div id="acdnmenu3">
+            <ul>
+                @foreach (var node in ChildNodes)
+                {
+                    <li>@Html.ActionLink(string.Format("{0}-{1}", node["itemNo"], node["title"]), node["action"], node["controller"])</li>
+                }
+            </ul>
+        </div>
+    }
+}*@
+
+
+
+@if (ftd.web.AppUserSession.User != null && ftd.web.AppUserSession.User.UserFunctions != null)
+{
+    var menuNodes = ftd.web.AppUserSession.User.UserFunctions;
+    //判斷是否有事情未作完，是的話強迫鎖定該功能選單!
+    //if (true)
+    //{
+    //    menuNodes = menuNodes.Where(t => t.Attributes["title"] == "土地管理").ToList();
+    //}
+
+    List<ftd.mvc.Extensions.FwbMenu> parentNodes = new List<ftd.mvc.Extensions.FwbMenu>();
+    foreach (var dr in menuNodes)
+    {
+        var title = dr.Parent["title"];
+        ftd.mvc.Extensions.FwbMenu m1 = new ftd.mvc.Extensions.FwbMenu();
+        m1.level = 1;
+        m1.title = title;
+        var par = parentNodes.Where(t => t.level == 1 & t.title == title).Count();
+        if (par == 0)
+        {
+            ftd.mvc.Extensions.FwbMenu m0 = new ftd.mvc.Extensions.FwbMenu();
+            if (dr.Parent.Parent != null)
+            {
+                m0.level = 0;
+                m0.title = dr.Parent.Parent["title"];
+                m0.parentTitle = "";
+                m1.parentTitle = dr.Parent.Parent["title"];
+            }
+            parentNodes.Add(m1);
+            if (dr.Parent.Parent != null)
+            {
+                parentNodes.Add(m0);
+            }
+        }
+    }
+    var level0 = parentNodes.Where(t => t.level == 0).Select(t => t.title).Distinct().AsEnumerable();
+
+
+    foreach (var row0 in level0)
+    {
+        var level1 = parentNodes.Where(t => t.level == 1 && t.parentTitle == row0).Select(t => t.title).Distinct().AsEnumerable();
+
+    <h3>@row0</h3>
+    <div style="padding-bottom: 0; padding-right: 0; padding-top: 0">
+        @foreach (var node in level1)
+        {
+            var ChildNodes = menuNodes.Where(t => t.Parent["title"] == node);
+            <div class="Accordion">
+                <h3>@node</h3>
+                <div style="padding: 0">
+                    <ul>
+                        @foreach (var node2 in ChildNodes)
+                        {
+                            <li>@Html.ActionLink(string.Format("{0}-{1}", node2["itemNo"], node2["title"]), node2["action"], node2["controller"])</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+
+    }
+}
+
+
+
