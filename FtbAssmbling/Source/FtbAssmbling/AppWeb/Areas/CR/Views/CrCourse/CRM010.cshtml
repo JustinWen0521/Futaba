@@ -1,0 +1,842 @@
+﻿@model ftd.query.model.CrRegistrationQryModel
+
+@{
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = @Html.functionName("CRM010", true);
+}
+
+@section function_name {
+    @Html.functionName("CRM010")
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="CQ_Result" name="CQ_Result" />
+    <input type="hidden" id="Q_CourseId" name="Q_CourseId" />
+    <input type="hidden" id="Q_ClassId" name="Q_ClassId" />
+
+    <div class="condition-container">
+        <div id="qryTitle">
+            <div id="QueryMode" class="query-mode" onclick="toggleQueryPanel()">查詢條件</div>
+            <div id="QueryLevel" class="query-level">
+                @*<input type="radio" name="Q_QueryLevel" id="Q_QueryLevel_1" value="0" /><label for="Q_QueryLevel_1">查詢增加單</label>
+                <input type="radio" name="Q_QueryLevel" id="Q_QueryLevel_2" value="1" checked="checked" /><label for="Q_QueryLevel_2">查詢基本資料</label>
+                <input type="radio" name="Q_QueryLevel" id="Q_QueryLevel_3" value="2" /><label for="Q_QueryLevel_3">查詢明細資料</label>*@
+            </div>
+            <div id="hint" style="display:inline-block; float:right; color:red; height:24px; overflow:hidden;">
+
+            </div>
+        </div>
+
+        <div class="clr"></div>
+
+        <div id="qryCondition">
+            <table>
+                <tr>
+                    <td>課程代號</td>
+                    <td>
+                        @Html.TextBoxFor(m => m.Q_CourseCode)
+                    </td>
+                    <td>課程名稱</td>
+                    <td>
+                        @Html.TextBoxFor(m => m.Q_CourseName)
+                    </td>
+                </tr>
+            </table>
+            @Html.toolBar("CRM010")
+        </div>
+    </div>
+}
+
+<div id="tabs">
+    <ul>
+        <li><a href="#tabs-1">課程</a></li>
+        <li><a href="#tabs-2">班別</a></li>
+        <li><a href="#tabs-3">報名資料</a></li>
+    </ul>
+    <div id="tabs-1">
+        <div id="ListGridContainer"></div>
+    </div>
+    <div id="tabs-2">
+        <div id="ListGridContainer_Class"></div>
+    </div>
+    <div id="tabs-3">
+        <div id="ListGridContainer_Registration"></div>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript" src="~/Scripts/Jtabcontrol.js"></script>
+    <script>
+
+        //收合或展開查詢條件
+        function toggleQueryPanel() {
+            $("#qryCondition").toggle('show');
+        }
+
+        //顯示目前資料提示
+        function showHint() {
+            var courseCode = "";
+            var courseName = "";
+            var classCode = "";
+
+            try {
+                if (selRowCourse) {
+                    courseCode = selRowCourse.CRC_Code;
+                    courseName = selRowCourse.CRC_Name;
+                }
+                if (courseCode == '' && selRowClass) {
+                    courseCode = selRowClass.CRCL_CourseCode_XX;
+                    courseName = selRowClass.CRCL_CourseName_XX;
+                }
+                if (classCode == '' && selRowClass) {
+                    classCode = selRowClass.CRCL_Code;
+                }
+            } catch (e) {
+                alert(e.message);
+            }
+
+            $("div#hint").empty().append("<span>課程代號：" + courseCode + " / 課程名稱：" + courseName + " / 班別：" + classCode + "</span>");
+        }
+
+        //記錄各頁籤選擇列id
+        function recordIds() {
+            //課程
+            if (selRowCourse) {
+                $("#Q_CourseId").val(selRowCourse.CRC_CourseId);
+            } else if (selRowClass) {
+                $("#Q_CourseId").val(selRowClass.CRCL_CourseId);
+            } else {
+                $("#Q_CourseId").val('');
+            }
+            //班別
+            if (selRowClass) {
+                $("#Q_ClassId").val(selRowClass.CRCL_ClassId);
+            } else {
+                $("#Q_ClassId").val('');
+            }
+        }
+
+        function doAction(act) {
+            switch (act) {
+                case "query":
+                    doQuery();
+                    break;
+                default:
+            }
+        }
+
+        function doQuery() {
+            FireEvent = false; //Tabs轉頁檢查事件不執行 類preventDefault
+            $("#qryCondition").hide();
+
+            //執行查詢-->重設變數(狀態歸零)
+            $("#Q_CourseId").val('');
+            $("#Q_ClassId").val('');
+            recordCountCourse = 0;
+            recordCountClass = 0;
+            recordCountRegistration = 0;
+            isAddNew = false;
+
+            queryLevel = "0"; //$('input:radio:checked[name="Q_QueryLevel"]').attr('value');
+            switch (queryLevel) {
+                case "0":
+                    switchpage(tabs, 0);
+                    doQuery_Course();
+                    break;
+            }
+            FireEvent = true;
+        }
+
+        //***************************************************************************
+        //查詢-Course
+        function doQuery_Course() {
+            try {
+                var jsonData = {};
+                jsonData = ToJsonObject();
+                jsonData["__RequestVerificationToken"] = $("input[name=\"__RequestVerificationToken\"]").val();
+
+                $('#ListGridContainer').jtable('load', jsonData);
+            }
+            catch (e) {
+                alert(e);
+            }
+        }
+        //資料表功能鍵-Course
+        function doTableAction_CRM010(cmd) {
+            //alert(cmd);
+            switch (cmd) {
+                case "create":
+                    ShowDialog(600, 900, true, "@Url.Action("CRM010Edit", "CrCourse")", "新增-課程", false);
+                    break;
+                case "report1": //學員名冊
+                    if (!selRowCourse) {
+                        ShowMessage("請選擇一筆資料");
+                        return;
+                    }
+                    doStudentsRpt(selRowCourse.CRC_CourseId);
+                    break;
+                case "report2": //簽到表
+                    if (!selRowCourse) {
+                        ShowMessage("請選擇一筆資料");
+                        return;
+                    }
+                    doCheckinTable(selRowCourse.CRC_CourseId, '');
+                    break;
+                case "report2": //時數申報表
+                    if (!selRowCourse) {
+                        ShowMessage("請選擇一筆資料");
+                        return;
+                    }
+                    doApplication(selRowCourse.CRC_CourseId);
+                    break;
+                default:
+                    return "";
+            }
+        }
+        //資料列功能鍵-Course
+        function getItemAction_CRM010(cmd, item) {
+            switch (cmd) {
+                case "update":
+                    var $btn = $('<button title="修改" class="jtable-command-button jtable-edit-command-button" url="@Url.Action("CRM010Edit", "CrCourse")?id=' + item.record.CRC_CourseId + '"><span>修改</span></button>');
+                    OpenDialog($btn, 600, 900, true);
+                    return $btn;
+                default:
+                    return "";
+            }
+        }
+
+        //學員名冊
+        function doStudentsRpt(courseId) {
+            var url = '@Url.Action("CRR010", "CrReport")?Q_CourseId=' + courseId;
+            window.open(url);
+        }
+
+        //簽到表
+        function doCheckinTable(courseId, classId) {
+            var url = '@Url.Action("CRR020", "CrReport")?Q_CourseId=' + courseId + '&Q_ClassId=' + classId;
+            window.open(url);
+        }
+
+        //時數申報表
+        function doApplication(courseId) {
+            var url = '@Url.Action("CRR030", "CrReport")?Q_CourseId=' + courseId;
+            window.open(url);
+        }
+        //***************************************************************************
+        //查詢-Class
+        function doQuery_Class() {
+            try {
+                var jsonData = {};
+                jsonData = ToJsonObject();
+                jsonData["__RequestVerificationToken"] = $("input[name=\"__RequestVerificationToken\"]").val();
+
+                $('#ListGridContainer_Class').jtable('load', jsonData);
+            }
+            catch (e) {
+                alert(e);
+            }
+        }
+        //資料表功能鍵-Class
+        function doTableAction_CRM011(cmd) {
+            switch (cmd) {
+                case "create":
+                    if (!selRowCourse || selRowCourse.CRC_CourseId == "") {
+                        ShowMessage("課程ID錯誤");
+                        return;
+                    }
+                    ShowDialog(600, 900, true, "@Url.Action("CRM011Edit", "CrCourse")?courseId=" + selRowCourse.CRC_CourseId, "新增-班別", false);
+                    break;
+                case "copy":
+                    if (!selRowClass) {
+                        ShowMessage("請選擇一筆資料");
+                        return;
+                    }
+                    ShowDialog(600, 900, true, "@Url.Action("CRM011Copy", "CrCourse")?classId=" + selRowClass.CRCL_ClassId, "新增-班別", false);
+                    break;
+                case "report1": //簽到表
+                    if (!selRowClass) {
+                        ShowMessage("請選擇一筆資料");
+                        return;
+                    }
+                    doCheckinTable(selRowClass.CRCL_CourseId, selRowClass.CRCL_ClassId);
+                    break;
+                default:
+                    return "";
+            }
+        }
+        //資料列功能鍵-Class
+        function getItemAction_CRM011(cmd, item) {
+            switch (cmd) {
+                case "update":
+                    var $btn = $('<button title="修改" class="jtable-command-button jtable-edit-command-button" url="@Url.Action("CRM011Edit", "CrCourse")?id=' + item.record.CRCL_ClassId + '"><span>修改</span></button>');
+                    OpenDialog($btn, 600, 900, true);
+                    return $btn;
+                default:
+                    return "";
+            }
+        }
+
+        //***************************************************************************
+        //查詢-Registration
+        function doQuery_Registration() {
+            try {
+                var jsonData = {};
+                jsonData = ToJsonObject();
+                jsonData["__RequestVerificationToken"] = $("input[name=\"__RequestVerificationToken\"]").val();
+
+                $('#ListGridContainer_Registration').jtable('load', jsonData);
+            }
+            catch (e) {
+                alert(e);
+            }
+        }
+        //資料表功能鍵-Registration
+        function doTableAction_CRM012(cmd) {
+            switch (cmd) {
+                case "create":
+                    if (!selRowClass || selRowClass.CRCL_ClassId == "") {
+                        ShowMessage("班別ID錯誤");
+                        return;
+                    }
+                    ShowDialog(600, 900, true, "@Url.Action("CRM012Edit", "CrCourse")?classId=" + selRowClass.CRCL_ClassId, "新增-報名", false);
+                    break;
+                default:
+                    return "";
+            }
+        }
+        //資料列功能鍵-Registration
+        function getItemAction_CRM012(cmd, item) {
+            switch (cmd) {
+                case "update":
+                    var $btn = $('<button title="修改" class="jtable-command-button jtable-edit-command-button" url="@Url.Action("CRM012Edit", "CrCourse")?id=' + item.record.CRR_RegistrationId + '"><span>修改</span></button>');
+                    OpenDialog($btn, 600, 900, true);
+                    return $btn;
+                default:
+                    return "";
+            }
+        }
+
+        //***************************************************************************
+        var queryLevel = 0;
+        var selRowCourse = null;
+        var selRowClass = null;
+        var selRowRegistration = null;
+
+        var recordCountCourse = 0;
+        var recordCountClass = 0;
+        var recordCountRegistration = 0;
+
+        var isAddNew = false; //新增課程後-->直接進入班別
+        var lastId = "";   //新增或修改的id--->重新查詢後選到該筆
+
+        function initGrid() {
+            //課程
+            $('#ListGridContainer').jtable({
+                title: '&nbsp;',
+                paging: true,
+                pageSize: 10,
+                pageSizes: [5, 10, 25, 50, 100, 250, 500],
+                sorting: true,
+                selecting: true,
+                multiselect: false,
+                selectingCheckboxes: false,
+                defaultSorting: 'CRC_StartDate DESC',
+                toolbar: {
+                    hoverAnimation: true,
+                    hoverAnimationDuration: 60,
+                    hoverAnimationEasing: undefined,
+                    @Html.jTableToolbar("CRM010")
+                },
+                actions: {
+                    listAction: '@Url.Action("List", "CrCourse")'
+                    @Html.jTableDeleteAction("CRM010", "Delete", "CrCourse")
+                },
+                fields: {
+                    @Html.jTableItemActions("CRM010")
+                    CRC_CourseId: {
+                        title: 'CourseId',
+                        width: '0.1%',
+                        key: true,
+                        list: false
+                    },
+                    CRC_Code: {
+                        title: '課程代號',
+                        width: '8%',
+                        list: true
+                    },
+                    CRC_Name: {
+                        title: '課程名稱',
+                        width: '20%',
+                        list: true
+                    },
+                    CRC_Description: {
+                        title: '說明',
+                        width: '20%',
+                        list: true
+                    },
+                    CRC_IsEnableName_XX: {
+                        title: '啟用',
+                        width: '6%',
+                        list: true
+                    },
+                    CRC_StartDate: {
+                        title: '開始日期',
+                        width: '8%',
+                        list: true
+                    },
+                    CRC_EndDate: {
+                        title: '結束日期',
+                        width: '8%',
+                        list: true
+                    },
+                    CRC_RegisterQty_XX: {
+                        title: '已報名人數',
+                        width: '8%',
+                        list: true
+                    }
+                },
+                formSubmitting: function (event, data) {
+                    //data.form("__RequestVerificationToken", $("input[name=\"__RequestVerificationToken\"]").val());
+                    //return true;
+                    return data.form.validationEngine('validate');
+                },
+                rowInserted: function (event, data) {
+                    //若已有人報名，則不允許使用者刪除
+                    if (data.record.CRC_RegisterQty_XX > 0)
+                        data.row.find('.jtable-delete-command-button').hide();
+                },
+                recordsLoaded: function (event, data) {
+                    recordCountCourse = data.serverResponse.Records.length;
+                    if (recordCountCourse <= 0)
+                        return;
+
+                    var selectedRows = $('#ListGridContainer').jtable('getRowByKey', lastId);
+                    if (selectedRows && selectedRows.length > 0) {
+                        var row = selectedRows[0];
+                        $('#ListGridContainer').jtable('selectRows', $(row));
+                    }
+                    if (isAddNew) {
+                        //Default select first row
+                        //var selectedRows = $('#ListGridContainer').jtable('getRowByKey', data.serverResponse.Records[0].UMA_AddProofId)[0];
+                        //$('#ListGridContainer').jtable('selectRows', $(selectedRows));
+
+                        //新增增加單後自動進入基本資料
+                        switchpage(tabs, 1);
+                        doQuery_Class()
+
+                        isAddNew = false;
+                        FireEvent = true;
+                    }
+                },
+                selectionChanged: function (e) {
+                    var $selectedRows = $('#ListGridContainer').jtable('selectedRows');
+                    if ($selectedRows.length > 0) {
+                        $selectedRows.each(function () {
+                            var record = $(this).data('record');
+                            selRowCourse = record;
+                            //$("#CRC_CourseId").val(record.CRC_CourseId);
+                        });
+                        if (queryLevel != 0)
+                            queryLevel = -1;
+                    } else {
+                        selRowCourse = null;
+                        //$("#CRC_CourseId").val('');
+                    };
+                    recordIds();
+                    showHint();
+                }
+            });
+
+            //班別
+            $('#ListGridContainer_Class').jtable({
+                title: '&nbsp;',
+                paging: true,
+                pageSize: 10,
+                pageSizes: [5, 10, 25, 50, 100, 250, 500],
+                sorting: true,
+                selecting: true,
+                multiselect: false,
+                selectingCheckboxes: false,
+                defaultSorting: 'CRCL_Code ASC',
+                toolbar: {
+                    hoverAnimation: true,
+                    hoverAnimationDuration: 60,
+                    hoverAnimationEasing: undefined,
+                    @Html.jTableToolbar("CRM011")
+                },
+                actions: {
+                    listAction: '@Url.Action("List", "CrClass")'
+                    @Html.jTableDeleteAction("CRM011", "Delete", "CrClass")
+                },
+                fields: {
+                    @Html.jTableItemActions("CRM011")
+                    CRCL_ClassId: {
+                        title: 'ClassId',
+                        width: '0.1%',
+                        key: true,
+                        list: false
+                    },
+                    CRCL_Code: {
+                        title: '班別代號',
+                        width: '8%',
+                        list: true
+                    },
+                    CRCL_ClassDate: {
+                        title: '上課日期',
+                        width: '8%',
+                        list: true
+                    },
+                    CRCL_ClassTime: {
+                        title: '上課時間',
+                        width: '8%',
+                        list: true
+                    },
+                    CRCL_Place: {
+                        title: '上課地點',
+                        width: '15%',
+                        list: true
+                    },
+                    CRCL_Address: {
+                        title: '地址',
+                        width: '15%',
+                        list: true
+                    },
+                    CRCL_LimitQty: {
+                        title: '人數限制',
+                        width: '8%',
+                        list: true
+                    },
+                    CRCL_RegisterQty_XX: {
+                        title: '已報名人數',
+                        width: '8%',
+                        list: true
+                    }
+                },
+                formSubmitting: function (event, data) {
+                    //data.form("__RequestVerificationToken", $("input[name=\"__RequestVerificationToken\"]").val());
+                    //return true;
+                    return data.form.validationEngine('validate');
+                },
+                rowInserted: function (event, data) {
+                    //若該資料已有人報名，則不允許使用者直接異動
+                    if (data.record.CRCL_RegisterQty_XX > 0)
+                        data.row.find('.jtable-delete-command-button').hide();
+                },
+                recordsLoaded: function (event, data) {
+                    recordCountClass = data.serverResponse.Records.length;
+                    if (recordCountClass <= 0)
+                        return;
+
+                    var selectedRows = $('#ListGridContainer_Class').jtable('getRowByKey', lastId);
+                    if (selectedRows && selectedRows.length > 0) {
+                        var row = selectedRows[0];
+                        $('#ListGridContainer_Class').jtable('selectRows', $(row));
+                    }
+                },
+                selectionChanged: function (e) {
+                    var $selectedRows = $('#ListGridContainer_Class').jtable('selectedRows');
+                    if ($selectedRows.length > 0) {
+                        $selectedRows.each(function () {
+                            var record = $(this).data('record');
+                            selRowClass = record;
+                            //$("#CRCL_ClassId").val(record.CRCL_ClassId);
+                        });
+                        if (queryLevel != 1)
+                            queryLevel = -1;
+                    } else {
+                        selRowClass = null;
+                        //$("#CRCL_ClassId").val('');
+                    };
+                    recordIds();
+                    showHint();
+                }
+            });
+
+            //報名資料
+            $('#ListGridContainer_Registration').jtable({
+                title: '&nbsp;',
+                paging: true,
+                pageSize: 10,
+                pageSizes: [5, 10, 25, 50, 100, 250, 500],
+                sorting: true,
+                selecting: true,
+                multiselect: false,
+                selectingCheckboxes: false,
+                defaultSorting: 'CRR_RegistrationId ASC',
+                toolbar: {
+                    hoverAnimation: true,
+                    hoverAnimationDuration: 60,
+                    hoverAnimationEasing: undefined,
+                    //items: [{
+                    //    icon: '../Scripts/jtable/themes/lightcolor/add.png',
+                    //    text: '新增',
+                    //    click: doAddNew
+                    //}]
+                    @Html.jTableToolbar("CRM012")
+                },
+                actions: {
+                    listAction: '@Url.Action("List", "CrRegistration")'
+                    //deleteAction: '@Url.Action("Delete", "CrRegistration")'
+                    @Html.jTableDeleteAction("CRM012", "Delete", "CrRegistration")
+                },
+                fields: {
+                    @Html.jTableItemActions("CRM012")
+                    CRR_RegistrationId: {
+                        title: 'RegistrationId',
+                        width: '0.1%',
+                        key: true,
+                        list: false
+                    },
+                    //CRR_CourseCode_XX: {
+                    //    title: '課程代號',
+                    //    width: '10%',
+                    //    list: true
+                    //},
+                    //CRR_CourseName_XX: {
+                    //    title: '課程名稱',
+                    //    width: '10%',
+                    //    list: true
+                    //},
+                    CRR_ClassCode_XX: {
+                        title: '班別代號',
+                        width: '10%',
+                        list: true
+                    },
+                    CRR_ClassDate_XX: {
+                        title: '上課日期',
+                        width: '10%',
+                        list: true
+                    },
+                    CRR_ClassTime_XX: {
+                        title: '上課時間',
+                        width: '10%',
+                        list: true
+                    },
+                    CRR_LimitQty_XX: {
+                        title: '人數限制',
+                        width: '10%',
+                        list: true
+                    },
+                    CRR_OrganName: {
+                        title: '單位名稱',
+                        width: '10%',
+                        list: true
+                    },
+                    CRR_Name: {
+                        title: '姓名',
+                        width: '10%',
+                        list: true
+                    },
+                    CRR_CitizenId: {
+                        title: '身分證',
+                        width: '10%',
+                        list: true
+                    },
+                    CRR_Tel: {
+                        title: '聯絡電話',
+                        width: '10%',
+                        list: true
+                    },
+                    CRR_Email: {
+                        title: 'Email',
+                        width: '10%',
+                        list: true
+                    },
+                    CRR_FoodKindName_XX: {
+                        title: '葷素食',
+                        width: '6%',
+                        list: true
+                    }
+                },
+                formSubmitting: function (event, data) {
+                    //data.form("__RequestVerificationToken", $("input[name=\"__RequestVerificationToken\"]").val());
+                    //return true;
+                    return data.form.validationEngine('validate');
+                },
+                recordsLoaded: function (event, data) {
+                    recordCountRegistration = data.serverResponse.Records.length;
+                    if (recordCountRegistration <= 0)
+                        return;
+                    //Default first
+                    //var selectedRows = $('#ListGridContainer_Registration').jtable('getRowByKey', data.serverResponse.Records[0].UMMD_MovableDetailId)[0];
+                    //$('#ListGridContainer_Registration').jtable('selectRows', $(selectedRows));
+                },
+                selectionChanged: function (e) {
+                    var $selectedRows = $('#ListGridContainer_Registration').jtable('selectedRows');
+                    if ($selectedRows.length > 0) {
+                        $selectedRows.each(function () {
+                            var record = $(this).data('record');
+                            selRowRegistration = record;
+                            //$("#CRR_RegistrationId").val(record.CRR_RegistrationId);
+                        });
+                        if (queryLevel != 2)
+                            queryLevel = -1;
+                    } else {
+                        selRowRegistration = null;
+                        //$("#CRR_RegistrationId").val('');
+                    };
+                    recordIds();
+                    showHint();
+                }
+            });
+        }
+
+        var tabs;
+        function initTab() {
+            tabs = $("#tabs").tabs();
+            //預設起始頁面--default 0
+            switchpage(tabs, 0);
+
+            //設定頁面切換權限 ex '1;0,2;0' ==> tab[0] 可以開tab[1] ;tab[1] 可以開tab[0]和 tab[2];tab[2] 可以開tab[0]
+            var Seq = '1;0,2;0,1';
+            changeSeq(Seq);
+            showMsg = "不允許切換到該頁籤!";
+            var TabListener = initTabs(tabs);
+
+            try {
+                TabListener.whatButtonFireEvent = function (ui) {
+                    switch (getSelectIndex(ui)) {
+                        case 0:
+                            //回到原查詢層級-->不重新查詢
+                            if (queryLevel == 0 && recordCountCourse > 0) {
+                                return true;
+                            }
+                            //使用者自行切換頁面
+                            //switch (currentpageIndex) {
+                            //    case 1:
+                            //        //if (isAddNew) {
+                            //        //    if (recordCountClass > 0)
+                            //        //        return true;
+
+                            //        //    ShowMessage("請新增班別資料");
+                            //        //    return false;
+                            //        //}
+                            //        //if (queryLevel == 1 && !selRowClass) {
+                            //        //    ShowMessage("請先選擇一筆資料");
+                            //        //    return false;
+                            //        //}
+                            //        if (selRowCourse)
+                            //            return true;
+                            //        break;
+                            //    case 2:
+                            //        //if (isAddNew)
+                            //        //    return true;
+
+                            //        //if (queryLevel == 2 && !selRowRegistration && !selRowClass) {
+                            //        //    ShowMessage("請先選擇一筆資料");
+                            //        //    return false;
+                            //        //}
+                            //        if (selRowCourse)
+                            //            return true;
+                            //        break;
+                            //    default:
+                            //        if (selRowCourse)
+                            //            return true;
+                            //}
+                            if (selRowCourse)
+                                return true;
+                            doQuery_Course();
+                            break;
+                        case 1:
+                            //回到原查詢層級-->不重新查詢
+                            if (queryLevel == 1 && recordCountClass > 0) {
+                                return true;
+                            }
+                            //使用者自行切換頁面
+                            switch (currentpageIndex) {
+                                case 0:
+                                    if (!selRowCourse) {
+                                        ShowMessage("請先選擇一筆資料");
+                                        return false;
+                                    }
+                                    break;
+                                case 2:
+                                    //if (!selRowRegistration && !selRowClass) {
+                                    //    ShowMessage("請先選擇一筆資料");
+                                    //    return false;
+                                    //}
+                                    if (selRowClass)
+                                        return true;
+                                    break;
+                                default:
+                                    if (selRowClass)
+                                        return true;
+                            }
+                            doQuery_Class();
+                            break;
+                        case 2:
+                            //回到原查詢層級-->不重新查詢
+                            if (queryLevel == 2 && recordCountRegistration > 0) {
+                                return true;
+                            }
+                            //使用者自行切換頁面
+                            switch (currentpageIndex) {
+                                //case 0:
+                                //    if (!selRowCourse) {
+                                //        ShowMessage("請先選擇一筆資料");
+                                //        return false;
+                                //    }
+                                //    break;
+                                case 1:
+                                    if (!selRowClass) {
+                                        ShowMessage("請先選擇一筆資料");
+                                        return false;
+                                    }
+                                    break;
+                                default:
+                                    if (selRowRegistration)
+                                        return true;
+                            }
+                            doQuery_Registration();
+                            break;
+                        default:
+                            break;
+                    }
+                    return true;
+                };
+            }
+            catch (ex) {
+                alert(ex);
+            }
+        }
+
+        $(document).ready(function () {
+            //初始化 Grid
+            initGrid();
+
+            //初始化 Tabs
+            initTab();
+
+            //Edit後回到列表的動作
+            DialogCloseListener.whatButtonFireEvent = function (obj) {
+                if (obj != "save")
+                    return;
+
+                switch (currentpageIndex) {
+                    case 0:
+                        FireEvent = false;
+                        doQuery_Course();
+                        FireEvent = true;
+                        break;
+                    case 1:
+                        FireEvent = false;
+                        doQuery_Class();
+                        FireEvent = true;
+                        break;
+                    case 2:
+                        FireEvent = false;
+                        doQuery_Registration();
+                        FireEvent = true;
+                        break;
+                    default:
+                        break;
+                }
+            };
+
+            doQuery_Course();
+        });
+    </script>
+}
+

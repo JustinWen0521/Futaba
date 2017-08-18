@@ -1,0 +1,308 @@
+﻿@model ftd.query.model.CrRegistrationQryModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutPub.cshtml";
+    ViewBag.Title = @Html.functionName("CRE010", true);
+}
+
+@section function_name {
+    教育訓練線上報名系統
+}
+
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            @*<hgroup class="title">
+                <h1>@ViewBag.Title.</h1>
+                <h2>@ViewBag.Message</h2>
+            </hgroup>*@
+            @*<p>
+                新版「市有財產管理資訊系統」教育訓練課程開始報名囉!!
+                請選擇擇您適合的上課時間報名。
+                因場地及名額有限，相同課程每人以報名一個班別為限。
+                <br />
+                本課程適用「公務人員終身學習」。
+            </p>*@
+        </div>
+    </section>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="CQ_Result" name="CQ_Result" value="" />
+    @Html.HiddenFor(m => m.Q_CourseEnable)
+}
+
+<div id="ListGridContainer"></div>
+
+@*<div style="display:none;">
+    <div id="setting">
+        <table>
+            <tr>
+                <td class="field-title">姓名</td>
+                <td class="field-title">
+                    <input type="text" id="Set_Name" name="Set_Name" title="姓名" />
+                </td>
+            </tr>
+            <tr>
+                <td class="field-title">身分證</td>
+                <td class="field-title">
+                    <input type="text" id="Set_CitizenId" name="Set_CitizenId" title="身分證" />
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>*@
+
+@section scripts {
+    <script>
+
+        function doAction(act) {
+            switch (act) {
+                case "query":
+                    doQuery();
+                    break;
+                default:
+            }
+        }
+
+        //查詢
+        function doQuery() {
+            try {
+                var jsonData = {};
+                jsonData = ToJsonObject();
+                jsonData["__RequestVerificationToken"] = $("input[name=\"__RequestVerificationToken\"]").val();
+
+                $('#ListGridContainer').jtable('load', jsonData);
+            }
+            catch (e) {
+                alert(e);
+            }
+        }
+
+        //查詢報名
+        function queryRegisteration() {
+            ShowDialog(600, 1000, true, "@Url.Action("UserList", "CrRegistration")", "報名資料", false);
+        }
+
+        //取消報名
+        //function cancelRegisteration() {
+        //    //增減設定值視窗
+        //    $("#setting").dialog({
+        //        title: '取消報名 ',
+        //        bgiframe: true,
+        //        width: 400,
+        //        height: 300,
+        //        modal: true,
+        //        draggable: true,
+        //        resizable: false,
+        //        overlay: { opacity: 0.7, background: "#FF8899" },
+        //        buttons: {
+        //            "確定": function () {
+        //                doCancel();
+        //            },
+        //            "取消": function () {
+        //                $(this).dialog('close');
+        //            }
+        //        }
+        //    });
+        //}
+        @*function doCancel() {
+            var Set_Name = $("#Set_Name").val();
+            var Set_CitizenId = $("#Set_CitizenId").val();
+
+            if (!Set_Name || Set_Name == "") {
+                ShowMessage("請輸入姓名");
+                return;
+            }
+            if (!Set_CitizenId || Set_CitizenId == "") {
+                ShowMessage("請輸入身分證");
+                return;
+            }
+
+            ConfirmMessage("確定要取消報名？", function () {
+                var setting = $("#setting").serializeAll();
+                //setting = setting + "&classId=" + lstId.toString();
+                setting = setting + "&__RequestVerificationToken=" + $("input[name=\"__RequestVerificationToken\"]").val();
+
+                var parent = window.parent;
+                showLoading();
+                $.ajax({
+                    url: '@Url.Action("CancelReg", "CrRegistration")',
+                    type: "POST",
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: setting,
+                    success: function (response) {
+                        hideLoading();
+                        Save(response);
+
+                        //因為使用AJAX，故儲存成功後需自行關閉視窗
+                        var result = response['Result'];
+                        if (result == "OK") {
+                            clearSetting();
+                            doQuery();
+                            $("#setting").dialog('close');
+                            ShowMessage("報名已取消");
+                        }
+                    }
+                });
+            });
+        }*@
+        //function clearSetting() {
+        //    $("div#setting input,select").each(function (obj) {
+        //        $(this).val('');
+        //    });
+        //}
+
+        //報名
+        function getItemCommands(item) {
+            var $btn = null;
+            if (item.record.CRCL_RegisterQty_XX >= item.record.CRCL_LimitQty) {
+                $btn = $('<span>已額滿</span>');
+            } else {
+                $btn = $('<button title="我要報名" url="@Url.Action("Edit", "CrRegistration")?id=&classId=' + item.record.CRCL_ClassId + '"><span>我要報名</span></button>');
+                OpenDialog($btn, 500, 900, true);
+            }
+            return $btn;
+        }
+
+        //地圖
+        function getMap(item) {
+            var $link = $('<a href="' + 'https://www.google.com.tw/maps/place/' + item.record.CRCL_Address + '" target="_blank">' + item.record.CRCL_Address + '</a>');
+            return $link;
+        }
+
+        var selRow = null;
+        function initGrid() {
+            $('#ListGridContainer').jtable({
+                title: '課程班別資訊',
+                paging: false,
+                pageSize: 10,
+                pageSizes: [5, 10, 25, 50, 100, 250, 500],
+                sorting: true,
+                selecting: true,
+                multiselect: false,
+                selectingCheckboxes: false,
+                defaultSorting: 'CRCL_ClassDate ASC,CRCL_ClassTime ASC',
+                toolbar: {
+                    hoverAnimation: true,
+                    hoverAnimationDuration: 60,
+                    hoverAnimationEasing: undefined,
+                    items: [
+                        {
+                            //icon: '/Scripts/jtable/themes/lightcolor/add.png',
+                            text: '重新整理',
+                            click: doQuery
+                        },
+                        {
+                            //icon: '/Scripts/jtable/themes/lightcolor/add.png',
+                            text: '查詢及取消報名',
+                            click: queryRegisteration
+                        }
+                    ]
+                },
+                actions: {
+                    listAction: '@Url.Action("AvalibleList", "CrClass")'
+                },
+                fields: {
+                    CRCL_ClassId: {
+                        title: 'ClassId',
+                        width: '0.1%',
+                        key: true,
+                        list: false
+                    },
+                    CRCL_CourseName_XX: {
+                        title: '課程',
+                        width: '15%',
+                        list: true
+                    },
+                    CRCL_Code: {
+                        title: '班別',
+                        width: '6%',
+                        list: true
+                    },
+                    CRCL_ClassDate: {
+                        title: '上課日期',
+                        width: '8%',
+                        list: true
+                    },
+                    CRCL_ClassTime: {
+                        title: '上課時間',
+                        width: '8%',
+                        list: true
+                    },
+                    CRCL_Place: {
+                        title: '上課地點',
+                        width: '15%',
+                        list: true
+                    },
+                    CRCL_Address: {
+                        title: '地址',
+                        width: '15%',
+                        list: true,
+                        display: getMap
+                    },
+                    CRCL_LimitQty: {
+                        title: '人數限制',
+                        width: '8%',
+                        list: true
+                    },
+                    CRCL_RegisterQty_XX: {
+                        title: '已報名人數',
+                        width: '10%',
+                        list: true
+                    },
+                    EditColumn: {
+                        title: '',
+                        width: '8%',
+                        key: false,
+                        list: true,
+                        create: false,
+                        edit: false,
+                        //listClass: 'jtable-command-column',
+                        display: getItemCommands,
+                        sorting: false
+                    }
+                },
+                formSubmitting: function (event, data) {
+                    //data.form("__RequestVerificationToken", $("input[name=\"__RequestVerificationToken\"]").val());
+                    //return true;
+                    return data.form.validationEngine('validate');
+                },
+                rowInserted: function (event, data) {
+                },
+                recordsLoaded: function (event, data) {
+                },
+                selectionChanged: function (e) {
+                    var $selectedRows = $('#ListGridContainer_Class').jtable('selectedRows');
+                    if ($selectedRows.length > 0) {
+                        $selectedRows.each(function () {
+                            var record = $(this).data('record');
+                        });
+                    } else {
+                    };
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            //初始化 Grid
+            initGrid();
+
+            doQuery();
+
+            //Edit後回到列表的動作
+            DialogCloseListener.whatButtonFireEvent = function (obj) {
+                //if (obj != "save")
+                //    return;
+
+                FireEvent = false;
+                doQuery();
+                FireEvent = true;
+            };
+        });
+    </script>
+}
+

@@ -1,0 +1,89 @@
+﻿@model ftd.data.ZZ_OrderRow
+
+@{
+    Layout = "~/Views/Shared/_LayoutEdit.cshtml";
+    string viewMode = ViewBag.ViewMode;
+    if (viewMode.isNullOrEmpty())
+    {
+        viewMode = "update";
+    }
+}
+
+@section scripts {
+
+    <script>
+        $(document).ready(function () {
+            var parent = window.parent;
+            parent.DialogCloseListener.CloseEvent = function () {
+                if (!CheckInput()) {
+                    return false;
+                }
+
+                var tfm = $("#formEdit").serializeAll();
+                $.ajax({
+                    url: '@Url.Action("ZZE010Edit", "ZzOrder")',
+                    type: "POST",
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: tfm,
+                    success: function (response) {
+                        Save(response);
+                        //因為使用AJAX，故儲存成功後需自行關閉視窗
+                        var result = response['Result'];
+                        if (result != "ERROR") {
+                            //觸發父視窗重新查詢
+                            parent.DialogCloseListener.whatButtonFireEvent("save");
+                            //關閉對話框
+                            CloseDialog();
+                        }
+                    }
+                });
+                return false;
+            };
+        });
+    </script>
+}
+
+<div id="frm">
+    @using (Ajax.BeginForm("ZZE010Edit", "ZzOrder", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "InitListGeneric", UpdateTargetId = "frm" }, new { id = "formEdit", name = "formEdit" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <div>
+            <input type="hidden" id="ViewMode" name="ViewMode"  value="@viewMode"/>
+            <input type="hidden" id="CQ_Result" name="CQ_Result" value="" />
+            @Html.HiddenFor(m => m.ZZO_OrderId)
+            @Html.HiddenFor(m => m.ZZO_CreatorName_XX)
+            @Html.HiddenFor(m => m.ZZO_CreateDate)
+            @Html.HiddenFor(m => m.ZZO_UpdaterId)
+            @Html.HiddenFor(m => m.ZZO_UpdaterName_XX)
+            @Html.HiddenFor(m => m.ZZO_UpdateDate)
+        </div>
+        <table>
+            <tr>
+                <td class="field-title">訂單號碼</td>
+                <td class="field-content">@Html.TextBoxFor(m => m.ZZO_OrderNo, new { title = "!訂單號碼", required = "required" })</td>
+                <td class="field-title">訂單日期</td>
+                <td class="field-content">@Html.TextBoxFor(m => m.ZZO_Date, new { title = "!訂單日期", required = "required", @class = "date" })</td>
+            </tr>
+            <tr>
+                <td class="field-title">訂單說明</td>
+                <td class="field-content" colspan="3">
+                    @Html.TextAreaFor(m => m.ZZO_Desc, 5, 50, new { title = "!訂單說明", required = "required" })
+                </td>
+            </tr>
+            <tr>
+                <td class="field-title">啟用</td>
+                <td class="field-content">
+                    @Html.dropDownListFor(m => m.ZZO_IsEnable, ftd.data.AppCodeTypeName.CTN_APP_YN, false, new { title = "!啟用", required = "required" })
+                </td>
+                <td class="field-title">訂單總金額</td>
+                <td class="field-content">
+                    @Html.TextBoxFor(m => m.ZZO_OrderAmount_XX, new { title = "!訂單總金額", Readonly = "readonly" })
+                </td>
+            </tr>
+        </table>
+    }
+</div>
+

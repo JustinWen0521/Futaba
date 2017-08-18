@@ -1,0 +1,423 @@
+﻿@*@model ftd.query.model.WtScheduleTaskQryModel*@
+
+@{
+    ViewBag.Title = @Html.functionName("WTP010", true);
+}
+
+@section function_name {
+    @Html.functionName("WTP010")
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="CQ_Result" name="CQ_Result" value="" />
+    <input type="hidden" id="WTST_ScheduleTaskId" name="WTST_ScheduleTaskId" value="" />
+
+    <div class="condition-container">
+        @*@Html.toolBar("WTP010")*@
+
+        <div id="toolbar" class="toolbar">
+            <input type="button" id="cmdRefresh" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-state-hover" value="重新整理" onclick="doAction('refresh');" />
+            <input type="button" id="cmdReload" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-state-hover" value="重新載入" onclick="doAction('reload');" />
+            @*<input type="button" id="cmdRun" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-state-hover" value="立即執行" onclick="doAction('runtask');" />*@
+        </div>
+    </div>
+}
+
+<div id="tabs">
+    <ul>
+        <li><a href="#tabs-1">排程服務</a></li>
+        <li><a href="#tabs-2">排程時間</a></li>
+    </ul>
+    <div id="tabs-1">
+        <div id="ListGridContainer"></div>
+    </div>
+    <div id="tabs-2">
+        <div id="ListGridContainerDetail"></div>
+    </div>
+</div>
+
+
+@section scripts {
+    <script type="text/javascript" src="~/Scripts/Jtabcontrol.js"></script>
+    <script>
+        function doAction(act) {
+            switch (act) {
+                case "refresh":
+                    doQuery();
+                    break;
+                case "reload":
+                    doReload();
+                    break;
+                case "runtask":
+                    doRunTask();
+                    break;
+                default:
+            }
+        }
+
+        //重新載入
+        function doReload() {
+            ConfirmMessage("確定要重新載入排程嗎？", function () {
+                showLoading();
+                $.ajax({
+                    url: '@Url.Action("Reload", "WtScheduleTask")',
+                    type: "POST",
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    //data: "",
+                    success: function (response) {
+                        var msg = "";
+                        if (!response)
+                            msg = "重新載入排程失敗!";
+                        var result = response['Result'];
+                        var message = response['Message'];
+                        if (result == "OK") {
+                            msg = "重新載入排程完成";
+                        } else {
+                            msg = message;
+                        }
+                        //alert(msg);
+                        ShowMessage(msg);
+                    }
+                });
+            });
+        }
+
+        //立即執行
+        function doRunTask() {
+            var taskId = $("#WTST_ScheduleTaskId").val();
+            if (!taskId || taskId == "") {
+                //alert("尚未選擇排程服務!");
+                ShowMessage("尚未選擇排程服務!");
+                return;
+            }
+
+            $.ajax({
+                url: '@Url.Action("RunTask", "WtScheduleTask")',
+                type: "POST",
+                //contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: { TaskId: taskId },
+                success: function (response) {
+                    var msg = "";
+                    if (response == null)
+                        msg = "執行排程失敗!";
+                    var result = response['Result'];
+                    var message = response['Message'];
+                    if (result == "OK") {
+                        msg = "已啟動執行中";
+                    } else {
+                        msg = message;
+                    }
+                    //alert(msg);
+                    ShowMessage(msg);
+                }
+            });
+        }
+
+        //查詢-排程服務
+        function doQuery() {
+            try {
+                var jsonData = {};
+                jsonData = ToJsonObject();
+                jsonData["__RequestVerificationToken"] = $("input[name=\"__RequestVerificationToken\"]").val();
+
+                $('#ListGridContainer').jtable('load', jsonData);
+            }
+            catch (e) {
+                alert(e);
+            }
+        }
+        //新增-排程服務
+        function doAddNew() {
+            ShowDialog(500, 900, true, "@Url.Action("WTP010Edit", "WebTask")", "新增", false);
+        }
+        //修改-排程服務
+        function getItemCommands(item) {
+            var $btn = $('<button title="修改" class="jtable-command-button jtable-edit-command-button" url="@Url.Action("WTP010Edit", "WebTask")?id=' + item.record.WTST_ScheduleTaskId + '"><span>修改</span></button>');
+            OpenDialog($btn, 500, 900, true);
+            return $btn;
+        }
+
+        //查詢-排程時間
+        function doQueryDetail(TaskId) {
+            try {
+                $('#ListGridContainerDetail').jtable('load', {
+                    Q_ScheduleTaskId: TaskId,
+                    __RequestVerificationToken: $("input[name=\"__RequestVerificationToken\"]").val()
+                });
+            }
+            catch (e) {
+                alert(e);
+            }
+        }
+        //新增-排程時間
+        function doAddNewDetail() {
+            ShowDialog(500, 800, true, "@Url.Action("WTP011Create", "WebTask")?taskId=" + $("#WTST_ScheduleTaskId").val(), "新增", false);
+        }
+        //修改-排程時間
+        function getItemCommandsDetail(item) {
+            var $btn = $('<button title="修改" class="jtable-command-button jtable-edit-command-button" url="@Url.Action("WTP011Edit", "WebTask")?id=' + item.record.WTSD_ScheduleDateId + '"><span>修改</span></button>');
+            OpenDialog($btn, 500, 800, true);
+            return $btn;
+        }
+
+        var selRow = "";
+        function initGrid() {
+            $('#ListGridContainer').jtable({
+                title: '&nbsp;',
+                paging: true,
+                pageSize: 10,
+                pageSizes: [5, 10, 25, 50, 100, 250, 500],
+                sorting: true,
+                selecting: true,
+                multiselect: false,
+                selectingCheckboxes: false,
+                defaultSorting: 'WTST_ScheduleTaskId ASC',
+                toolbar: {
+                    hoverAnimation: true,
+                    hoverAnimationDuration: 60,
+                    hoverAnimationEasing: undefined,
+                    items: [
+                        {
+                            icon: '../Scripts/jtable/themes/lightcolor/add.png',
+                            text: '新增',
+                            click: doAddNew
+                        },
+                        {
+                            //icon: '../Scripts/jtable/themes/lightcolor/add.png',
+                            text: '立即執行',
+                            click: doRunTask
+                        }
+                    ]
+                },
+                actions: {
+                    listAction: '@Url.Action("List", "WtScheduleTask")',
+                    deleteAction: '@Url.Action("Delete", "WtScheduleTask")'
+                },
+                fields: {
+                    EditColumn: {
+                        title: '',
+                        width: '0.1%',
+                        key: false,
+                        list: true,
+                        create: false,
+                        edit: false,
+                        listClass: 'jtable-command-column',
+                        display: getItemCommands,
+                        sorting: false
+                    },
+                    WTST_ScheduleTaskId: {
+                        title: 'WTST_ScheduleTaskId',
+                        width: '0.1%',
+                        key: true,
+                        list: false
+                    },
+                    WTST_TaskName: {
+                        title: '排程名稱',
+                        width: '20%',
+                        list: true
+                    },
+                    WTST_IsEnableName_XX: {
+                        title: '啟用',
+                        width: '6%',
+                        list: true
+                    },
+                    WTST_ExecuteBeginDate: {
+                        title: '起始時間',
+                        width: '15%',
+                        list: true,
+                        type: 'datetime',
+                        displayFormat: 'yyyy/mm/dd HH:MM:ss'
+                    },
+                    WTST_ExecuteEndDate: {
+                        title: '結束時間',
+                        width: '15%',
+                        list: true,
+                        type: 'datetime',
+                        displayFormat: 'yyyy/mm/dd HH:MM:ss'
+                    },
+                    WTST_ExecuteSeconds_XX: {
+                        title: '執行時間',
+                        width: '8%',
+                        list: true
+                    },
+                    WTST_ExecuteStateName_XX: {
+                        title: '執行結果',
+                        width: '8%',
+                        list: true
+                    }
+                },
+                formSubmitting: function (event, data) {
+                    //data.form("__RequestVerificationToken", $("input[name=\"__RequestVerificationToken\"]").val());
+                    //return true;
+                    return data.form.validationEngine('validate');
+                },
+                selectionChanged: function (e) {
+                    var $selectedRows = $('#ListGridContainer').jtable('selectedRows');
+                    if ($selectedRows.length > 0) {
+                        $selectedRows.each(function () {
+                            var record = $(this).data('record');
+                            selRow = record;
+                            $("#WTST_ScheduleTaskId").val(record.WTST_ScheduleTaskId);
+                        });
+                    } else {
+                        selRow = null;
+                        $("#WTST_ScheduleTaskId").val('');
+                    };
+                }
+            });
+
+            $('#ListGridContainerDetail').jtable({
+                title: '&nbsp;',
+                paging: true,
+                pageSize: 10,
+                pageSizes: [5, 10, 25, 50, 100, 250, 500],
+                sorting: true,
+                selecting: true,
+                multiselect: false,
+                selectingCheckboxes: false,
+                defaultSorting: 'WTSD_ScheduleDateId ASC',
+                toolbar: {
+                    hoverAnimation: true,
+                    hoverAnimationDuration: 60,
+                    hoverAnimationEasing: undefined,
+                    items: [{
+                        icon: '../Scripts/jtable/themes/lightcolor/add.png',
+                        text: '新增',
+                        click: doAddNewDetail
+                    }]
+                },
+                actions: {
+                    listAction: '@Url.Action("List", "WtScheduleDate")',
+                    deleteAction: '@Url.Action("Delete", "WtScheduleDate")'
+                },
+                fields: {
+                    EditColumn: {
+                        title: '',
+                        width: '0.1%',
+                        key: false,
+                        list: true,
+                        create: false,
+                        edit: false,
+                        listClass: 'jtable-command-column',
+                        display: getItemCommandsDetail,
+                        sorting: false
+                    },
+                    WTSD_ScheduleDateId: {
+                        title: '主鍵',
+                        width: '8%',
+                        key: true,
+                        list: true
+                    },
+                    WTSD_IsEnableName_XX: {
+                        title: '啟用',
+                        width: '8%',
+                        list: true
+                    },
+                    WTSD_Description: {
+                        title: '排程日期',
+                        width: '30%',
+                        list: true
+                    }
+                },
+                formSubmitting: function (event, data) {
+                    //data.form("__RequestVerificationToken", $("input[name=\"__RequestVerificationToken\"]").val());
+                    //return true;
+                    return data.form.validationEngine('validate');
+                },
+                selectionChanged: function (e) {
+                    var $selectedRows = $('#ListGridContainerDetail').jtable('selectedRows');
+                    if ($selectedRows.length > 0) {
+                        $selectedRows.each(function () {
+                            //var record = $(this).data('record');
+                            //selRow = record;
+                            //$("#WTSD_ScheduleDateId").val(record.WTSD_ScheduleDateId);
+                        });
+                    } else {
+                        //selRow = null;
+                        //$("#WTSD_ScheduleDateId").val('');
+                    };
+                }
+            });
+        }
+
+        var tabs;
+        function initTab() {
+            tabs = $("#tabs").tabs();
+            //預設起始頁面--default 0
+            switchpage(tabs, 0);
+
+            //設定頁面切換權限 ex '1;0,2;0' ==> tab[0] 可以開tab[1] ;tab[1] 可以開tab[0]和 tab[2];tab[2] 可以開tab[0]
+            var Seq = '1;0';
+            changeSeq(Seq);
+            showMsg = "不允許切換到該頁籤!";
+            var TabListener = initTabs(tabs);
+
+            try {
+                TabListener.whatButtonFireEvent = function (ui) {
+                    switch (getSelectIndex(ui)) {
+                        case 0:
+                            //$("#Q1").show();
+                            doQuery();
+                            break;
+                        case 1:
+                            if ($("#WTST_ScheduleTaskId").val() == "") {
+                                //alert("尚未選擇排程服務!");
+                                ShowMessage("尚未選擇排程服務!");
+                                return;
+                            }
+                            //$("#Q1").hide();
+                            doQueryDetail($("#WTST_ScheduleTaskId").val());
+                            break;
+                        default:
+                            break;
+                    }
+                    selRow = "";
+                    return true;
+                };
+            }
+            catch (ex) {
+                alert(ex);
+            }
+        }
+
+        $(document).ready(function () {
+            //初始化 Grid
+            initGrid();
+
+            //初始化 Tabs
+            initTab();
+
+            doQuery();;
+
+            //Edit後回到列表的動作
+            DialogCloseListener.whatButtonFireEvent = function (obj) {
+                if (obj != "save")
+                    return;
+
+                switch (currentpageIndex) {
+                    case 0:
+                        FireEvent = false;
+                        doQuery();
+                        FireEvent = true;
+                        break;
+                    case 1:
+                        if ($("#WTST_ScheduleTaskId").val() == "") {
+                            //alert("尚未選擇排程服務!");
+                            ShowMessage("尚未選擇排程服務!");
+                            return;
+                        }
+                        //$("#Q1").hide();
+                        doQueryDetail($("#WTST_ScheduleTaskId").val());
+                        break;
+                    default:
+                        break;
+                }
+            };
+        });
+    </script>
+}
+

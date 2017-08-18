@@ -1,0 +1,114 @@
+﻿@model ftd.data.WT_ScheduleDateRow
+
+@{
+    Layout = "~/Views/Shared/_LayoutEdit.cshtml";
+    string viewMode = ViewBag.ViewMode;
+    if (viewMode.isNullOrEmpty())
+    {
+        viewMode = "update";
+    }
+}
+
+@section scripts {
+    <script>
+        $("#WTSD_PeriodType").change(function () {
+            //取得回傳的資料(JSON String)
+            var periodType = $("#WTSD_PeriodType").val();
+
+            switch (periodType) {
+                case "A":  //每天
+                    $("#WTSD_EveryDayHour").val("0");
+                    $("#every_hour").show();
+                    break;
+                case "B":  //每小時
+                    $("#every_hour").hide();
+                    break;
+                default:
+                    $("#every_hour").show();
+                    break;
+            }
+        });
+
+        $(document).ready(function () {
+            var parent = window.parent;
+            parent.DialogCloseListener.CloseEvent = function () {
+                if (!CheckInput()) {
+                    return false;
+                }
+
+                var tfm = $("#formEdit").serialize();
+                $.ajax({
+                    url: '@Url.Action("Edit", "WtScheduleDate")',
+                    type: "POST",
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: tfm,
+                    success: function (response) {
+                        Save(response);
+                        //因為使用AJAX，故儲存成功後需自行關閉視窗
+                        var result = response['Result'];
+                        if (result != "ERROR") {
+                            //觸發父視窗重新查詢
+                            parent.DialogCloseListener.whatButtonFireEvent("save");
+                            //關閉對話框
+                            CloseDialog();
+                        }
+                    }
+                });
+                return false;
+            };
+        });
+    </script>
+}
+
+<div id="frm">
+    @using (Ajax.BeginForm("Edit", "WtScheduleDate", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "InitListGeneric", UpdateTargetId = "frm" }, new { id = "formEdit", name = "formEdit" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <div>
+            <input type="hidden" id="ViewMode" name="ViewMode"  value="@viewMode"/>
+            <input type="hidden" id="CQ_Result" name="CQ_Result" value="" />
+            @Html.HiddenFor(m => m.WTSD_ScheduleDateId)
+            @Html.HiddenFor(m => m.WTSD_ScheduleTaskId)
+            @Html.HiddenFor(m => m.WTSD_Parameters)
+        </div>
+        <table>
+            <tr>
+                <td class="field-title">啟用</td>
+                <td class="field-content">
+                    @Html.dropDownListFor(m => m.WTSD_IsEnable, ftd.data.AppCodeTypeName.CTN_WTST_IsEnable, false, new { title = "!啟用" })
+                </td>
+            </tr>
+            <tr>
+                <td class="field-title">週期類型</td>
+                <td class="field-content">
+                    @Html.dropDownListFor(m => m.WTSD_PeriodType, ftd.data.AppCodeTypeName.CTN_WTSD_PeriodType, false, new { title = "!週期類型" })
+                </td>
+            </tr>
+            <tr>
+                <td class="field-title">時間設定</td>
+                <td class="field-content">
+                    <span id="every_hour">
+                    @Html.TextBoxFor(m => m.WTSD_EveryDayHour, new { title = "!小時", style = "width:60px;", required = "required" })
+                    時
+                    </span>
+                    <span id="every_minute">
+                    @Html.TextBoxFor(m => m.WTSD_EveryDayMiniute, new { title = "!分", style = "width:60px;", required = "required" })
+                    分
+                    </span>
+                </td>
+            </tr>
+             <tr>
+                <td class="field-title"></td>
+                <td class="field-content">
+                    超過
+                    @Html.TextBoxFor(m => m.WTSD_MoreMinute, new { title = "!週期類型", style = "width:60px;", required = "required" })
+                    分鐘仍視為到期
+                </td>
+            </tr>
+       </table>
+    }
+</div>
+

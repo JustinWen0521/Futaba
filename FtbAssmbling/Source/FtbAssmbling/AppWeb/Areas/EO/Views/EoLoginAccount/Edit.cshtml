@@ -1,0 +1,131 @@
+﻿@model ftd.data.EO_LoginAccountRow
+
+@{
+    ViewBag.Title = "編輯";
+}
+
+<h2>編輯</h2>
+
+@if (Model == null)
+{
+    <h3>資料不存在！</h3>
+    <br />
+    <p>
+        @Html.ActionLink("返回", "Index")
+    </p>
+}
+else
+{
+    using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+            <legend>登入帳號</legend>
+
+            <table>
+                <tr>
+                    <td>
+                        <div class="editor-label">
+                            登入者Email
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.EOLA_FailureCount)
+                            @Html.ValidationMessageFor(model => model.EOLA_FailureCount)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="editor-label">
+                            登入者Email
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.EOLA_FailureDate)
+                            @Html.ValidationMessageFor(model => model.EOLA_FailureDate)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="editor-label">
+                            登入者Email
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.EOLA_LastLoginDate)
+                            @Html.ValidationMessageFor(model => model.EOLA_LastLoginDate)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="editor-label">
+                            登入帳號
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.EOLA_LoginAccount)
+                            @Html.ValidationMessageFor(model => model.EOLA_LoginAccount)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="editor-label">
+                            EOLA_LoginPassword
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.EOLA_LoginPassword)
+                            @Html.ValidationMessageFor(model => model.EOLA_LoginPassword)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="editor-label">
+                            登入者Email
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.EOLA_UserEmail_XX)
+                            @Html.ValidationMessageFor(model => model.EOLA_UserEmail_XX)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="editor-label">
+                            登入者姓名
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.EOLA_UserName_XX)
+                            @Html.ValidationMessageFor(model => model.EOLA_UserName_XX)
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <p>
+                <input type="submit" value="儲存" />
+                |
+                @Html.ActionLink("返回", "Index")
+            </p>
+        </fieldset>
+    }
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,228 @@
+﻿@model ftd.query.model.EoPermissionQryModel
+
+@{
+    ViewBag.Title = @Html.functionName("EOM060", true);
+}
+
+@section function_name {
+    @Html.functionName("EOM060")
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="CQ_Result" name="CQ_Result" value="" />
+
+    <div class="condition-container">
+        <div id="qryTitle">
+            <div id="QueryMode" class="query-mode" onclick="toggleQueryPanel()">查詢條件</div>
+            <div id="QueryLevel" class="query-level">
+            </div>
+            <div id="hint" style="display:inline-block; float:right; color:red; height:24px; overflow:hidden;">
+            </div>
+        </div>
+        <div class="clr"></div>
+        <div id="qryCondition">
+            <table>
+                <tr>
+                    <td class="field-title">權限代號</td>
+                    <td class="field-content">
+                        @Html.TextBoxFor(m => m.Q_PermissionCode, new { title = "!權限代號" })
+                    </td>
+                    <td class="field-title">權限名稱</td>
+                    <td class="field-content">
+                        @Html.TextBoxFor(m => m.Q_PermissionName, new { title = "!權限名稱" })
+                    </td>
+                </tr>
+                <tr>
+                    <td class="field-title">允許每個人</td>
+                    <td class="field-content">
+                        @Html.dropDownListFor(m => m.Q_IsEveryOneAllow, ftd.data.AppCodeTypeName.CTN_APP_YN, true, new { title = "!允許每個人" })
+                    </td>
+                    <td class="field-title">指定物件</td>
+                    <td class="field-content">
+                        @Html.dropDownListFor(m => m.Q_IsObjectNeed, ftd.data.AppCodeTypeName.CTN_APP_YN, true, new { title = "!指定物件" })
+                    </td>
+                </tr>
+            </table>
+            @Html.toolBar("EOM060")
+        </div>
+    </div>
+    <div class="clr"></div>
+}
+
+<div id="ListGridContainer"></div>
+
+
+@section scripts {
+    <script>
+
+        //收合或展開查詢條件
+        function toggleQueryPanel() {
+            $("#qryCondition").toggle('show');
+        }
+
+        //註冊事件
+        function registerViewEvents() {
+        }
+
+        //*************************************************************
+        //表單功能鍵
+        function doAction(act) {
+            switch (act) {
+                case "query":
+                    doQuery();
+                    break;
+                case "export":
+                    doExport();
+                    break;
+                default:
+            }
+        }
+
+        //查詢
+        function doQuery() {
+            try {
+                var jsonData = {};
+                jsonData = ToJsonObject();
+                jsonData["__RequestVerificationToken"] = $("input[name=\"__RequestVerificationToken\"]").val();
+
+                $('#ListGridContainer').jtable('load', jsonData);
+            }
+            catch (e) {
+                alert(e);
+            }
+        }
+
+        //匯出 Excel
+        function doExport() {
+            //alert("Do Export Excel");
+        }
+
+        //資料表功能鍵
+        function doTableAction_EOM060(cmd) {
+            switch (cmd) {
+                case "create":
+                    ShowDialog(600, 900, true, "@Url.Action("EOM060Edit", "EntOrg")", "新增", false);
+                    break;
+                default:
+                    return;
+            }
+        }
+
+        //資料列功能鍵
+        function getItemAction_EOM060(cmd, item) {
+            switch (cmd) {
+                case "update":
+                    var $btn = $('<button title="修改" class="jtable-command-button jtable-edit-command-button" url="@Url.Action("EOM060Edit", "EntOrg")?id=' + item.record.EOP_PermissionId + '"><span>修改</span></button>');
+                    OpenDialog($btn, 600, 900, true);
+                    return $btn;
+                default:
+                    return "";
+            }
+        }
+
+        var selRow = null;
+        function initGrid() {
+            $('#ListGridContainer').jtable({
+                title: '&nbsp;',
+                paging: true,
+                pageSize: 10,
+                pageSizes: [5, 10, 25, 50, 100, 250, 500],
+                sorting: true,
+                selecting: true,
+                multiselect: false,
+                selectingCheckboxes: false,
+                defaultSorting: 'EOP_PermissionId ASC',
+                toolbar: {
+                    hoverAnimation: true,
+                    hoverAnimationDuration: 60,
+                    hoverAnimationEasing: undefined,
+                    @Html.jTableToolbar("EOM060")
+                },
+                actions: {
+                    listAction: '@Url.Action("List", "EoPermission")'
+                    @Html.jTableDeleteAction("EOM060", "Delete", "EoPermission")
+                },
+                fields: {
+                    @Html.jTableItemActions("EOM060")
+                    EOP_PermissionId: {
+                        title: '權限ID',
+                        width: '0.1%',
+                        key: true,
+                        list: false
+                    },
+                    EOP_PermissionCode: {
+                        title: '權限代號',
+                        width: '10%',
+                        list: true
+                    },
+                    EOP_PermissionName: {
+                        title: '權限名稱',
+                        width: '15%',
+                        list: true
+                    },
+                    EOP_Description: {
+                        title: '權限說明',
+                        width: '20%',
+                        list: true
+                    },
+                    EOP_IsEveryOneAllowName_XX: {
+                        title: '允許每個人',
+                        width: '6%',
+                        list: true
+                    },
+                    EOP_IsObjectNeedName_XX: {
+                        title: '指定物件',
+                        width: '6%',
+                        list: true
+                    }
+                },
+                formSubmitting: function (event, data) {
+                    //data.form("__RequestVerificationToken", $("input[name=\"__RequestVerificationToken\"]").val());
+                    //return true;
+                    return data.form.validationEngine('validate');
+                },
+                selectionChanged: function (e) {
+                    var $selectedRows = $('#ListGridContainer').jtable('selectedRows');
+                    if ($selectedRows.length > 0) {
+                        $selectedRows.each(function () {
+                            //var record = $(this).data('record');
+                            //selRow = record;
+                            //$("#EOP_PermissionId").val(record.EOP_PermissionId);
+                        });
+                    } else {
+                        //selRow = null;
+                        //$("#EOP_PermissionId").val('');
+                    };
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            //註冊事件
+            registerViewEvents();
+
+            //將查詢條件區塊隱藏
+            $("#qryCondition").hide();
+
+            //初始化 Grid
+            initGrid();
+
+            //Edit後回到列表的動作
+            DialogCloseListener.whatButtonFireEvent = function (obj) {
+                if (obj != "save")
+                    return;
+
+                doQuery();
+            };
+
+            doQuery();
+
+            if ('@Model.ClientMessage'.length > 0) {
+                ShowMessage('@Model.ClientMessage');
+            }
+        });
+    </script>
+}
+
