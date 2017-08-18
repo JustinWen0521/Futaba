@@ -1,0 +1,247 @@
+﻿@*@model ftd.query.model.AlAssmblingQryModel*@
+
+@{
+    Layout = "~/Views/Shared/_LayoutCodeQuery.cshtml";
+    ViewBag.Title = @Html.functionName("程式代號", true);
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="condition-container">
+        <table>
+        </table>
+        <div id="toolbar" class="toolbar">
+            <input type="button" id="cmdQuery" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-state-hover" value="查詢" onclick="doAction('query');" />
+        </div>
+    </div>
+}
+
+<div id="ListGridContainer"></div>
+
+
+@section scripts {
+    <script>
+
+        function doAction(act) {
+            switch (act) {
+                case "query":
+                    doQuery();
+                    break;
+                default:
+            }
+        }
+
+        //查詢
+        function doQuery() {
+            try {
+                var jsonData = {};
+                jsonData = ToJsonObject();
+                jsonData["__RequestVerificationToken"] = $("input[name=\"__RequestVerificationToken\"]").val();
+
+                $('#ListGridContainer').jtable('load', jsonData);
+            }
+            catch (e) {
+                alert(e);
+            }
+        }
+
+        function initGrid() {
+            $('#ListGridContainer').jtable({
+                title: '&nbsp;',
+                paging: true,
+                pageSize: 10,
+                pageSizes: [5, 10, 25, 50, 100, 250, 500],
+                sorting: true,
+                selecting: true,
+                multiselect: false,
+                selectingCheckboxes: false,
+                defaultSorting: 'ALA_AssmblingId ASC',
+                actions: {
+                    listAction: '@Url.Action("List", "AlAssmbling")',
+                },
+                fields: {
+                    ALA_AssmblingId: {
+                        title: '後工程組立ID',
+                        width: '0.1%',
+                        key: true,
+                        list: false,
+                        create: false,
+                        edit: false
+                    },
+                    ALA_MCID: {
+                        title: '機臺編碼',
+                        width: '10%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    ALA_SEQRow: {
+                        title: '列位置',
+                        width: '10%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    ALA_SEQCol: {
+                        title: '行位置',
+                        width: '10%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    ALA_MCCode: {
+                        title: '工程代碼',
+                        width: '10%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    ALA_MCName: {
+                        title: '工程描述',
+                        width: '10%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    ALA_CreatorId: {
+                        title: '建立者ID',
+                        width: '10%',
+                        key: false,
+                        list: false,
+                        create: false,
+                        edit: false
+                    },
+                    ALA_CreatorName_XX: {
+                        title: '建立者姓名',
+                        width: '10%',
+                        key: false,
+                        list: false,
+                        create: false,
+                        edit: false
+                    },
+                    ALA_CreateDate: {
+                        title: '建立日期',
+                        width: '10%',
+                        key: false,
+                        list: false,
+                        create: false,
+                        edit: false
+                    },
+                    ALA_UpdaterId: {
+                        title: '異動者ID',
+                        width: '10%',
+                        key: false,
+                        list: false,
+                        create: false,
+                        edit: false
+                    },
+                    ALA_UpdaterName_XX: {
+                        title: '異動者姓名',
+                        width: '10%',
+                        key: false,
+                        list: false,
+                        create: false,
+                        edit: false
+                    },
+                    ALA_UpdateDate: {
+                        title: '異動日期',
+                        width: '10%',
+                        key: false,
+                        list: false,
+                        create: false,
+                        edit: false
+                    }
+                },
+                selectionChanged: function (e) {
+                    var $selectedRows = $('#ListGridContainer').jtable('selectedRows');
+                    if ($selectedRows.length > 0) {
+                        $selectedRows.each(function () {
+                            //取得選擇的資料列
+                            var record = $(this).data('record');
+                            //自定回傳物件
+                            var returnObj = {
+                                RequestKey: '@ViewBag.RequestKey',
+                                Row: record
+                            };
+                            //將物件轉字串
+                            var jsonStr = JSON.stringify(returnObj);
+                            //取得父視窗
+                            var parent = window.parent;
+                            //取得父視窗回傳值欄位
+                            var ctl = parent.$('#CQ_Result');
+                            if (ctl) {
+                                //設定回傳值
+                                ctl.val(jsonStr);
+                                //觸發父視窗更新畫面
+                                ctl.change();
+                            }
+                            //關閉CodeQuery視窗
+                            CloseDialog();
+                        });
+                    };
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            //初始化 Grid
+            initGrid();
+
+            //載入資料
+            doQuery();
+        });
+
+
+        //**********************************************
+        //請在呼叫端的視窗中增加隱藏欄位以便接收回傳值，如下：
+        //<input type="hidden" id="CQ_Result" name="CQ_Result" data-cqresult="default" value="" />
+
+        //如需自訂實作查詢，請將下列Script複製到呼叫端的視窗中，如：EOM010Edit.cshtml
+        @*//CodeQuery-AL_Assmbling
+        function CQ_AlAssmblingOpen() {
+            CodeQuery(500, 800, true, "@Url.Action("CodeQuery", "AlAssmbling")" + "?RequestKey=AlAssmbling", "查詢");
+        }
+
+        function CQ_AlAssmblingFinish(item) {
+            // TODO: 回傳值要更新的欄位
+            $('#ID').val(item.ALA_AssmblingId);
+            $('#Code').val(item.AL_AssmblingCode);
+            $('#Name').val(item.AL_AssmblingName);
+        }
+
+        $("#CQ_Result").change(function () {
+            //取得回傳的資料(JSON String)
+            var jsonString = $("#CQ_Result").val();
+            //alert(jsonString);
+
+            //解析回傳的資料(JSON String --> JSON Object)
+            var returnObj = JSON.parse(jsonString, function (key, value) {
+                var type;
+                if (value && typeof value === 'object') {
+                    type = value.type;
+                    if (typeof type === 'string' && typeof window[type] === 'function') {
+                        return new (window[type])(value);
+                    }
+                }
+                return value;
+            });
+            var item = returnObj.Row;
+            switch (returnObj.RequestKey) {
+                case 'AlAssmbling':
+                    CQ_AlAssmblingFinish(item);
+                    break;
+                default:
+                    break;
+            }
+        });*@
+
+    </script>
+}
+
