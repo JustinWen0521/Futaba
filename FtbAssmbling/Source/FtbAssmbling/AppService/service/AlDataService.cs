@@ -135,17 +135,25 @@ namespace ftd.service
         public AL_AssmblingDataTable AlAssmblingDetail_getList(AlAssmblingDetailQryModel qm)
         {
 
+            //var dt = NsDmHelper.AL_AssmblingDetail
+            //    .selectAll(t => t.AllExt)
+            //    .query();
 
+            //return dt;
 
+            return null;
+        }
 
-            var dt = NsDmHelper.AL_AssmblingDetail
+        public AL_AssmblingDataTable AL_Assmbling_getAllList(string colId)
+        {
+            var dt = NsDmHelper.AL_Assmbling
                 .selectAll(t => t.AllExt)
+                .where(t => t.ALA_SEQCol == colId.toConstOpt1())
                 .query();
 
             return dt;
         }
 
-       
         #endregion
 
     }
