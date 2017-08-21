@@ -289,6 +289,11 @@
             *組立機臺主檔LogID {DTN_NID}：【】
             </summary>
         </member>
+        <member name="F:ftd.data.AppDataName.ALAL_AssmblingId">
+            <summary>
+            *後工程組立ID {DTN_NID}：【】
+            </summary>
+        </member>
         <member name="F:ftd.data.AppDataName.ALAL_MCID">
             <summary>
             *機臺編碼 {DTN_NVARCHAR10}：【】
@@ -2938,7 +2943,7 @@
             前端顯示訊息
             </summary>
         </member>
-        <member name="T:ftd.query.model.AlAssmblingQryModel">
+        <member name="T:ftd.query.model.AlAssmblingDetailQryModel">
             <summary>
             AL_Assmbling
             </summary>
@@ -3016,6 +3021,11 @@
         <member name="T:ftd.query.model.ZzOrderQryModel">
             <summary>
             ZZ_Order
+            </summary>
+        </member>
+        <member name="T:ftd.query.model.AlAssmblingQryModel">
+            <summary>
+            AL_Assmbling
             </summary>
         </member>
         <member name="T:ftd.data.AL_Assmbling">
@@ -3313,6 +3323,11 @@
             *組立機臺主檔LogID {DTN_NID}：【】
             </summary> 
         </member>
+        <member name="P:ftd.data.AL_AssmblingLog.ALAL_AssmblingId">
+            <summary>
+            *後工程組立ID {DTN_NID}：【】
+            </summary> 
+        </member>
         <member name="P:ftd.data.AL_AssmblingLog.ALAL_CreateDate">
             <summary>
             *建立日期 {DTN_DATETIME_19}：【】
@@ -3383,6 +3398,11 @@
             *組立機臺主檔LogID {DTN_NID}：【】
             </summary> 
         </member>
+        <member name="F:ftd.data.AL_AssmblingLogDataTable.ALAL_AssmblingIdColumn">
+            <summary>
+            *後工程組立ID {DTN_NID}：【】
+            </summary> 
+        </member>
         <member name="F:ftd.data.AL_AssmblingLogDataTable.ALAL_CreateDateColumn">
             <summary>
             *建立日期 {DTN_DATETIME_19}：【】
@@ -3451,6 +3471,11 @@
         <member name="P:ftd.data.AL_AssmblingLogRow.ALAL_AssmblingLogId">
             <summary>
             *組立機臺主檔LogID {DTN_NID}：【】  
+            </summary>
+        </member>
+        <member name="P:ftd.data.AL_AssmblingLogRow.ALAL_AssmblingId">
+            <summary>
+            *後工程組立ID {DTN_NID}：【】  
             </summary>
         </member>
         <member name="P:ftd.data.AL_AssmblingLogRow.ALAL_CreateDate">

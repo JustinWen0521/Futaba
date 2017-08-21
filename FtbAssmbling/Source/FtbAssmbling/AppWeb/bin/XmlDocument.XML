@@ -419,6 +419,12 @@
             AC 市議員備詢管理系統
             </summary>
         </member>
+        <member name="M:ftd.mvc.Controllers.AssmblingController.Get">
+            <summary>
+            預設選取多筆資料
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:ftd.mvc.Extensions.Help.Cal2DateDifference_YM(System.DateTime,System.DateTime)">
             <summary>
             計算兩個日期時間差

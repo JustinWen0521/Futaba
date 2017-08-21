@@ -240,6 +240,14 @@ namespace ftd.data
         [FdmCodeGen(Title = "組立機臺主檔LogID", IsRequired = true, IsUnique = false, IsSearch = false, IsSearchRange = false, IsListVisible = false, IsCreateVisible = false, IsEditVisible = false)]
         public const string ALAL_AssmblingLogId = "ALAL_AssmblingLogId";
 
+
+        /// <summary>
+        /// *後工程組立ID {DTN_NID}：【】
+        /// </summary>
+        [FdmStyleType(DTN_NID)]
+        [FdmCodeGen(Title = "後工程組立ID", IsRequired = false, IsUnique = false, IsSearch = false, IsSearchRange = false, IsListVisible = false, IsCreateVisible = false, IsEditVisible = false)]
+        public const string ALAL_AssmblingId = "ALAL_AssmblingId";
+
         /// <summary>
         /// *機臺編碼 {DTN_NVARCHAR10}：【】
         /// </summary>

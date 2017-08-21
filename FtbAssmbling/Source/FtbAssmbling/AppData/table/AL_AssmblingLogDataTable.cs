@@ -44,6 +44,11 @@ namespace ftd.data
         public DataColumn ALAL_AssmblingLogIdColumn;
 
         /// <summary>
+        /// *後工程組立ID {DTN_NID}：【】
+        /// </summary> 
+        public DataColumn ALAL_AssmblingIdColumn;
+
+        /// <summary>
         /// *建立日期 {DTN_DATETIME_19}：【】
         /// </summary> 
         public DataColumn ALAL_CreateDateColumn;
@@ -117,6 +122,7 @@ namespace ftd.data
         protected override void initColumns()
         {
             ALAL_AssmblingLogIdColumn = Columns["ALAL_AssmblingLogId"];
+            ALAL_AssmblingIdColumn = Columns["ALAL_AssmblingId"];
             ALAL_CreateDateColumn = Columns["ALAL_CreateDate"];
             ALAL_CreatorIdColumn = Columns["ALAL_CreatorId"];
             ALAL_CreatorName_XXColumn = Columns["ALAL_CreatorName_XX"];
@@ -137,6 +143,9 @@ namespace ftd.data
             ALAL_AssmblingLogIdColumn = new DataColumn("ALAL_AssmblingLogId", typeof(String), null, MappingType.Attribute);
             Columns.Add(ALAL_AssmblingLogIdColumn);
             ALAL_AssmblingLogIdColumn.AllowDBNull = false;
+
+            ALAL_AssmblingIdColumn = new DataColumn("ALAL_AssmblingId", typeof(String), null, MappingType.Attribute);
+            Columns.Add(ALAL_AssmblingIdColumn);
 
             ALAL_CreateDateColumn = new DataColumn("ALAL_CreateDate", typeof(DateTime), null, MappingType.Attribute);
             Columns.Add(ALAL_CreateDateColumn);
@@ -211,6 +220,16 @@ namespace ftd.data
         {
             get { return getAttrGetString(this[theTable.ALAL_AssmblingLogIdColumn]); }
             set { this[theTable.ALAL_AssmblingLogIdColumn] = getAttrSetString(value); }
+        }
+
+        ///<summary>
+        ///*後工程組立ID {DTN_NID}：【】  
+        ///</summary>
+        [DebuggerNonUserCodeAttribute()]
+        public string ALAL_AssmblingId
+        {
+            get { return getAttrGetString(this[theTable.ALAL_AssmblingIdColumn]); }
+            set { this[theTable.ALAL_AssmblingIdColumn] = getAttrSetString(value); }
         }
 
         ///<summary>

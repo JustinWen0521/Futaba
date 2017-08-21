@@ -17,6 +17,10 @@ namespace ftd.data
         /// </summary> 
         NsColumn ALAL_AssmblingLogId { get; }
         /// <summary>
+        /// *後工程組立ID {DTN_NID}：【】
+        /// </summary> 
+        NsColumn ALAL_AssmblingId { get; }
+        /// <summary>
         /// *建立日期 {DTN_DATETIME_19}：【】
         /// </summary> 
         NsColumn ALAL_CreateDate { get; }
@@ -70,6 +74,10 @@ namespace ftd.data
             public NsColumn ALAL_AssmblingLogId
             {
                   get { return this["ALAL_AssmblingLogId"]; }
+            }
+            public NsColumn ALAL_AssmblingId
+            {
+                  get { return this["ALAL_AssmblingId"]; }
             }
             public NsColumn ALAL_CreateDate
             {
