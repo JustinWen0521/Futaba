@@ -7,7 +7,7 @@ import {Http} from '@angular/http';
 export class DatasService {
 
 //抓取產線所有的資料
-private allLineInfoUri= '/Assmbling/Assmbling/GetAllLineInfo';
+private allLineInfoUri= '/Assmbling/GetAllLineInfo';
 
   constructor(private http:Http) { }
 
