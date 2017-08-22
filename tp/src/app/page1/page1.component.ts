@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { DatasService } from '../datas.service';
 @Component({
   selector: 'app-page1',
   templateUrl: './page1.component.html',
@@ -9,10 +9,17 @@ export class Page1Component implements OnInit {
 
    day:string ='日';
    night:string ='夜';
+   todos: any[] = [];
 
-  constructor() { }
+   constructor(private dataSvc: DatasService){
+   }
 
-  ngOnInit() {
+   ngOnInit() {
+    this.dataSvc.getAllDatas()
+    .subscribe(data =>{
+       this.todos=data;
+
+    });
   }
 
 }
