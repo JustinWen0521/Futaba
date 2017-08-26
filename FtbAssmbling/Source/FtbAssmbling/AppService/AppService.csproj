@@ -192,6 +192,7 @@
     <Compile Include="service\AppFileService.cs" />
     <Compile Include="service\CrReportService.cs" />
     <Compile Include="service\ZzDataService.cs" />
+    <Compile Include="service\HryDataService.cs" />
     <Compile Include="utility\FtpService.cs" />
     <Compile Include="utility\HashEncrypt.cs" />
     <Compile Include="Web References\com.every8d.tw1\Reference.cs">

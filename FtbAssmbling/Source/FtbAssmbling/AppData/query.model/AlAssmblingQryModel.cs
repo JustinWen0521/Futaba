@@ -14,11 +14,13 @@ namespace ftd.query.model
         {
         }
 
-       
+
+        public string Q_MCCode { get; set; }
+        public string Q_Date { set; get; }
+
         public string Q_MCID { get; set; }
         public int? Q_SEQRow { get; set; }
         public int? Q_SEQCol { get; set; }
-        public string Q_MCCode { get; set; }
         public string Q_MCName { get; set; }
         public string Q_CreatorId { get; set; }
         public string Q_CreatorName_XX { get; set; }

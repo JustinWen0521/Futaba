@@ -14,6 +14,7 @@ using ftd.mvc.Controllers;
 using ftd.nsql;
 using ftd.mvc.ViewEngine;
 
+
 namespace ftd.mvc
 {
     // 注意: 如需啟用 IIS6 或 IIS7 傳統模式的說明，
@@ -60,6 +61,8 @@ namespace ftd.mvc
             //ViewEngines.Engines.Add(new FwbRazorViewEngine());
 
             AreaRegistration.RegisterAllAreas();
+
+        
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

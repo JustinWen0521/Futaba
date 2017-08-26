@@ -13,6 +13,7 @@ namespace ftd.mvc.Configs
             //設定API僅能回覆Json格式
             GlobalConfiguration.Configuration.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
 
+
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",

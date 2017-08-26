@@ -20,6 +20,8 @@ using System.Xml.Serialization;
 using NPOI.HSSF.UserModel;
 using NPOI.HSSF.Util;
 using System.Text;
+using ftd.query.model;
+//using Newtonsoft.Json;
 
 namespace FtdDemo
 {
@@ -44,75 +46,106 @@ namespace FtdDemo
             };
             #endregion
 
-            //var dt = NsDmHelper.AS_Tmp1
-            //    .selectAll(t => t.AllExt)
-            //    .query();
-            //var row = dt.FirstOrDefault();
-
-
-            var dt = NsDmHelper.AL_AssmblingLog
-                .selectAll(t => t.AllPhysical)
-                .query();
-
-            Console.ReadLine();
+            Program pgm = new Program();
+            pgm.GetAssemblingDetailByDate("FPC", "20170201");
 
 
         }
 
-        private static void createOrderDetail()
+        public String GetAssemblingDetailByDate(string code, string date)
         {
-            var dt = new ZZ_OrderDetailDataTable();
-            var row = dt.newTypedRow();
-            row.ns_AssignNewId();
-            row.ZZOD_OrderId = "ZZO_6PB805JA8";
-            row.ZZOD_Qty = 2;
-            row.ZZOD_UnitPrice = 199;
-            dt.addTypedRow(row);
-            dt.ns_update();
-            dt.AcceptChanges();
+            AlAssmblingDetailQryModel qm = new AlAssmblingDetailQryModel();
+            qm.Q_MCCode = code;
+            qm.Q_Date = date;
+            var dt = AlDataService.Instance.AlAssmblingDetail_getDayList(qm);
 
-            var dt2 = NsDmHelper.ZZ_OrderDetail
-                .selectAll(t => t.AllExt)
-                .query();
+
+            Dictionary<string, String[,]> data = new Dictionary<string, String[,]>();
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                string codeIdxPast = null;
+                String[] arrTimeWork = null;
+                var arrLine = HryDataService.Instance.getArrayForAssemblingDetail(ref arrTimeWork);
+                Int32 sumMorning = 0, sumNighting = 0;
+                for (var i = 0; i < dt.Rows.Count; i++)
+                {
+                    var row = dt.Rows[i];
+                    string codeIdx = Convert.ToString(row[AppDataName.ALA_MCCode]);
+                    var hh = Convert.ToDateTime(row[AppDataName.ALAD_DATE]).Hour.ToString();
+                    hh = (hh.Length == 1) ? String.Concat("0", hh) : hh;
+                    int index = 0;
+
+                    #region 第一筆
+                    if (codeIdxPast.isNullOrEmpty())
+                    {
+                        index = Array.IndexOf(arrTimeWork, hh);
+                        if (index > 0)
+                        {
+                            arrLine[index, 2] = Convert.ToString(row[AppDataName.ALAD_ITEM]);
+                            arrLine[index, 3] = Convert.ToString(row[AppDataName.ALAD_QTY]);
+                            if (Convert.ToInt32(hh) >= 7 && Convert.ToInt32(hh) <= 18)
+                            {
+                                sumMorning += Convert.ToInt32(arrLine[index, 3]);
+                            }
+                            if ((Convert.ToInt32(hh) >= 19 && Convert.ToInt32(hh) <= 23) || (Convert.ToInt32(hh) >= 0 && Convert.ToInt32(hh) <= 6))
+                            {
+                                sumNighting += Convert.ToInt32(arrLine[index, 3]);
+                            }
+                        }
+                        codeIdxPast = codeIdx;
+                        continue;
+                    }
+                    #endregion
+
+                    #region 下一條LINE
+                    if (!codeIdxPast.equalIgnoreCase(codeIdx))
+                    {
+                        index = Array.IndexOf(arrTimeWork, "Morning小計");
+                        arrLine[index, 3] = Convert.ToString(sumMorning);
+                        index = Array.IndexOf(arrTimeWork, "Morning小計");
+                        arrLine[index, 3] = Convert.ToString(sumNighting);
+                        index = Array.IndexOf(arrTimeWork, "Day合計");
+                        arrLine[index, 3] = Convert.ToString(sumMorning + sumNighting);
+                        data.Add(codeIdxPast, arrLine);
+                        sumMorning = 0;
+                        sumNighting = 0;
+                        codeIdxPast = codeIdx;
+                        arrLine = HryDataService.Instance.getArrayForAssemblingDetail(ref arrTimeWork);
+                    }
+                    #endregion
+
+                    #region 下一筆
+                    index = Array.IndexOf(arrTimeWork, hh);
+                    if (index > 0)
+                    {
+                        arrLine[index, 2] = Convert.ToString(row[AppDataName.ALAD_ITEM]);
+                        arrLine[index, 3] = Convert.ToString(row[AppDataName.ALAD_QTY]);
+                        if (Convert.ToInt32(hh) >= 7 && Convert.ToInt32(hh) <= 18)
+                        {
+                            sumMorning += Convert.ToInt32(arrLine[index, 3]);
+                        }
+                        if ((Convert.ToInt32(hh) >= 19 && Convert.ToInt32(hh) <= 23) || (Convert.ToInt32(hh) >= 0 && Convert.ToInt32(hh) <= 6))
+                        {
+                            sumNighting += Convert.ToInt32(arrLine[index, 3]);
+                        }
+                    }
+                    #endregion
+
+                }
+                data.Add(codeIdxPast, arrLine);
+
+            }
+
+
+
+
+            return null;
+
+            //return "value";
         }
 
-        private static void queryOrder()
-        {
-            var orderNoFrom = "20161001001";
-            var orderNoTo = "";
-            var isEnable = "Y";
 
-            var dt = NsDmHelper.ZZ_Order
-                .selectAll(t => t.AllExt)
-                //.selectAll(new[]{
-                //    AppDataName.ZZO_IsEnableName_XX,
-                //    AppDataName.ZZO_UpdaterName_XX
-                //})
-                .where(t =>
-                    t.ZZO_OrderNo >= orderNoFrom.toConstOpt1()
-                    & t.ZZO_OrderNo < orderNoTo.toConstOpt1()
-                    & t.ZZO_IsEnable == isEnable.toConstReq1()
-                )
-                .query();
 
-            //新增
-            var row = dt.newTypedRow();
-            row.ns_AssignNewId();
-            row.ZZO_OrderNo = string.Format("{0:yyyyMMdd}001", DateTime.Today);
-            //row.ZZO_OrderNo = DateTime.Today.ToString("yyyyMMdd") + "001";
-            row.ZZO_Desc = "這是一張訂單";
-            row.ZZO_IsEnable = "Y";
-            dt.addTypedRow(row);
-            dt.ns_update();
-            dt.AcceptChanges();
-            
-            //修改
-            var row2 = dt.FirstRow;
-            row2.ZZO_Desc = "測試修改";
-            dt.ns_update();
 
-            //row2.Delete();
-            //dt.ns_update();
-        }
     }
 }

@@ -15,7 +15,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ftd.mvc.Areas.AL.Controllers.AssmblingDetailController.Get(System.Int32)">
+        <member name="M:ftd.mvc.Areas.AL.Controllers.AssmblingDetailController.GetAssemblingDetailByDate(System.String,System.String)">
             <summary>
             取得此項目的資料
             </summary>

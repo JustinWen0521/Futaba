@@ -14,6 +14,8 @@ namespace ftd.mvc.Areas.AL
 
         public override void RegisterArea(AreaRegistrationContext context)
         {
+
+
             context.MapRoute(
                 "AL_default",
                 "AL/{controller}/{action}/{id}",

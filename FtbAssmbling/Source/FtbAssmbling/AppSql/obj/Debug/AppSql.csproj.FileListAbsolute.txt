@@ -53,6 +53,7 @@ D:\VS_Working\FtbAssmbling\Source\FtbAssmbling\AppSql\bin\Debug\AppService.XmlSe
 D:\VS_Working\FtbAssmbling\Source\FtbAssmbling\AppSql\obj\Debug\AppSql.csprojResolveAssemblyReference.cache
 D:\VS_Working\FtbAssmbling\Source\FtbAssmbling\AppSql\obj\Debug\AppSql.exe
 D:\VS_Working\FtbAssmbling\Source\FtbAssmbling\AppSql\obj\Debug\AppSql.pdb
+D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppSql\obj\Debug\AppSql.csprojResolveAssemblyReference.cache
 D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppSql\bin\Debug\FtdConfig.cfg
 D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppSql\bin\Debug\AppSql.exe.config
 D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppSql\bin\Debug\AppSql.exe
@@ -75,6 +76,5 @@ D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppSql\bin\Debug\AppService
 D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppSql\bin\Debug\ftd.xml
 D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppSql\bin\Debug\EPPlus.xml
 D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppSql\bin\Debug\AppService.XmlSerializers.dll
-D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppSql\obj\Debug\AppSql.csprojResolveAssemblyReference.cache
 D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppSql\obj\Debug\AppSql.exe
 D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppSql\obj\Debug\AppSql.pdb
