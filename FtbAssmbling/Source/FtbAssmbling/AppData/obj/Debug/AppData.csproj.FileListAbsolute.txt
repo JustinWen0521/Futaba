@@ -34,6 +34,7 @@ D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppData\bin\Debug\EPPlus.dl
 D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppData\bin\Debug\ICSharpCode.SharpZipLib.dll
 D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppData\bin\Debug\ftd.xml
 D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppData\bin\Debug\EPPlus.xml
+D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppData\obj\Debug\AppData.csprojResolveAssemblyReference.cache
 D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppData\obj\Debug\RdlCompile.cache
 D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppData\obj\Debug\RdlCompile.compiled
 D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppData\obj\Debug\AppData.dll

@@ -10,6 +10,7 @@ using ftd.service;
 using Newtonsoft.Json;
 using ftd.query.model;
 using ftd.data;
+using ftd.mvc.Areas.AL.Models;
 
 namespace ftd.mvc.Areas.AL.Controllers
 {
@@ -41,10 +42,11 @@ namespace ftd.mvc.Areas.AL.Controllers
             var dt = AlDataService.Instance.AlAssmblingDetail_getDayList(qm);
 
 
-            Dictionary<string, String[,]> data = new Dictionary<string, String[,]>();
+            List<PrdClass> data = new List<PrdClass>();
+            PrdClass dataList = null;
             if (dt != null && dt.Rows.Count > 0)
             {
-                string codeIdxPast = null;
+                string codeIdxPast = null, codexPast= null;
                 String[] arrTimeWork = null;
                 var arrLine = HryDataService.Instance.getArrayForAssemblingDetail(ref arrTimeWork);
                 Int32 sumMorning = 0, sumNighting = 0,index = 0;;
@@ -52,7 +54,8 @@ namespace ftd.mvc.Areas.AL.Controllers
                 for (var i = 0; i < dt.Rows.Count; i++)
                 {
                     var row = dt.Rows[i];
-                    string codeIdx = Convert.ToString(row[AppDataName.ALA_MCCode]);
+                    string codeIdx = Convert.ToString(row[AppDataName.ALA_MCID]);
+                    string codex = Convert.ToString(row[AppDataName.ALA_MCCode]);
                     var hh = Convert.ToDateTime(row[AppDataName.ALAD_DATE]).Hour.ToString();
                     hh = (hh.Length == 1) ? String.Concat("0", hh) : hh;
                     index = -1;
@@ -75,6 +78,7 @@ namespace ftd.mvc.Areas.AL.Controllers
                             }
                         }
                         codeIdxPast = codeIdx;
+                        codexPast = codex;
                         continue;
                     }
                     #endregion
@@ -88,10 +92,12 @@ namespace ftd.mvc.Areas.AL.Controllers
                         arrLine[index, 3] = Convert.ToString(sumNighting);
                         index = Array.IndexOf(arrTimeWork, "Day合計");
                         arrLine[index, 3] = Convert.ToString(sumMorning + sumNighting);
-                        data.Add(codeIdxPast, arrLine);
+                        dataList = new PrdClass(codexPast, arrLine);
+                        data.Add(dataList);
                         sumMorning = 0;
                         sumNighting = 0;
                         codeIdxPast = codeIdx;
+                        codexPast = codex;
                         arrLine = HryDataService.Instance.getArrayForAssemblingDetail(ref arrTimeWork);
                     }
                     #endregion
@@ -121,7 +127,8 @@ namespace ftd.mvc.Areas.AL.Controllers
                 arrLine[index, 3] = Convert.ToString(sumNighting);
                 index = Array.IndexOf(arrTimeWork, "Day合計");
                 arrLine[index, 3] = Convert.ToString(sumMorning + sumNighting);
-                data.Add(codeIdxPast, arrLine);
+                dataList = new PrdClass(codexPast, arrLine);
+                data.Add( dataList);
 
             }
             return JsonConvert.SerializeObject(data);

@@ -64,12 +64,12 @@ namespace AppServiceGen
 
         static CWebSite getWebSite(string site_name)
         {
-            if (site_name == "ndemo")
+            if (site_name == "FtbAssmbling")
             {
                 var site = new CWebSite();
-                site.DeployUrl = "http://ndemo.tw-futaba.com.tw/FtbMVC/webservice/FdpDeployService.asmx";
+                site.DeployUrl = "http://192.168.160.16/FtbAssmbling/webservice/FdpDeployService.asmx";
                 site.Package_RootName = "Web";
-                site.Package_PrefixFileName = "ndemo_";
+                site.Package_PrefixFileName = "FtbAssmbling_";
                 return site;
             }
 
@@ -137,9 +137,9 @@ namespace AppServiceGen
             add_menu_data_gen(menu.RootNode, '2');
             add_menu_package(menu.RootNode, '3', "local");
 
-            add_menu_package(menu.RootNode, '4', "ndemo");
+            add_menu_package(menu.RootNode, '4', "FtbAssmbling");
 
-            add_menu_upload(menu.RootNode, 'a', "ndemo");
+            add_menu_upload(menu.RootNode, 'a', "FtbAssmbling");
 
             add_menu_webwin_gen(menu.RootNode, 'w');
             add_menu_mvc_gen(menu.RootNode, 'v');

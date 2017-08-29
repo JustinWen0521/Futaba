@@ -60,6 +60,7 @@ D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppGenerator\bin\Debug\NPOI
 D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppGenerator\bin\Debug\NPOI.OOXML.xml
 D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppGenerator\bin\Debug\NPOI.OpenXml4Net.xml
 D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppGenerator\bin\Debug\EPPlus.xml
+D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppGenerator\obj\Debug\AppGenerator.csprojResolveAssemblyReference.cache
 D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppGenerator\obj\Debug\ftd.Form1.resources
 D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppGenerator\obj\Debug\ftd.Properties.Resources.resources
 D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppGenerator\obj\Debug\AppGenerator.csproj.GenerateResource.Cache

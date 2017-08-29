@@ -229,6 +229,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\AL\ALAreaRegistration.cs" />
     <Compile Include="Areas\AL\Controllers\AssmblingDetailController.cs" />
+    <Compile Include="Areas\AL\Models\PrdClass.cs" />
     <Compile Include="Areas\CR\Controllers\CrClassController.cs" />
     <Compile Include="Areas\CR\Controllers\CrCourseController.cs" />
     <Compile Include="Areas\CR\Controllers\CrRegistrationController.cs" />
@@ -2026,7 +2027,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\AL\Models\" />
     <Folder Include="Areas\AL\Views\Shared\" />
     <Folder Include="Areas\CR\Models\" />
     <Folder Include="Areas\CR\Views\Shared\" />
