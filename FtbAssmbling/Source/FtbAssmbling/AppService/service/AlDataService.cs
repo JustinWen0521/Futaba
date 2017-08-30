@@ -11,9 +11,6 @@ using ftd.query.model;
 
 namespace ftd.service
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class AlDataService : FtdServiceBase
     {
         public static readonly AlDataService Instance;
@@ -75,11 +72,20 @@ namespace ftd.service
             return true;
         }
 
+        /// <summary>
+        /// 取得該線別的所有機台資訊
+        /// </summary>
+        /// <param name="colId">線別ID(0~6線)</param>
+        /// <returns>AL_AssmblingDataTable</returns>
         public AL_AssmblingDataTable AL_Assmbling_getAllList(string colId)
         {
+            if (colId == null || colId.equalIgnoreCase(string.Empty))
+                return null;
+
+            int ColID = Convert.ToInt32(colId);
             var dt = NsDmHelper.AL_Assmbling
                 .selectAll(t => t.AllExt)
-                .where(t => t.ALA_SEQCol == colId.toConstOpt1())
+                .where(t => t.ALA_SEQCol == ColID.toConstOpt1())
                 .query();
 
             return dt;
@@ -140,8 +146,6 @@ namespace ftd.service
         }
         #endregion
 
-
-
         #region [AL_AssmblingDetail]
         public DataTable AlAssmblingDetail_getDayList(AlAssmblingDetailQryModel qm)
         {
@@ -165,10 +169,37 @@ namespace ftd.service
 
             var dt = qry.queryData();
             return dt;
-
-
         }
         #endregion
 
+        #region [AL_AssmblingDetail_ByMCID]
+        /// <summary>
+        /// 用MCID取得該天的生產資料
+        /// </summary>
+        /// <param name="qm">包含機台ID和日期</param>
+        /// <returns> DataTable </returns>
+        public DataTable AlAssmblingDetail_getDayTotalByMCID(AlAssmblingDetailQryModel qm)
+        {
+            DateTime dteTmp = DateTime.Today;
+            DateTime dteDateS = DateTime.MinValue;
+            DateTime dteDateE = DateTime.Today;
+            HryDataService.Instance.getOneDayForAssemblingDetail(qm.Q_Date, ref dteDateS, ref dteDateE);
+
+            var qry = new NsDbQuery();
+            qry.setSelect(s =>
+            {
+                var t1 = s.from<AL_Assmbling>();
+                var t2 = s.leftJoin<AL_AssmblingDetail>().on(t => t.ALAD_MCID == t1.ALA_MCID);
+                s.select(t1.ALA_MCID, t1.ALA_MCCode, t1.ALA_MCName, t2.ALAD_DATE, t2.ALAD_ITEM, t2.ALAD_QTY);
+                s.Where = t1.ALA_MCID == qm.Q_MCID.toConstOpt1()
+                          & t2.ALAD_DATE >= dteDateS
+                          & t2.ALAD_DATE <= dteDateE;
+                s.groupBy(t1.ALA_MCID, t1.ALA_MCCode, t1.ALA_MCName, t2.ALAD_DATE, t2.ALAD_ITEM, t2.ALAD_QTY);
+                s.orderBy(new[] { t1.ALA_MCID.Asc, t2.ALAD_DATE.Asc });
+            });
+            var dt = qry.queryData();
+            return dt;
+        }
+        #endregion
     }
 }

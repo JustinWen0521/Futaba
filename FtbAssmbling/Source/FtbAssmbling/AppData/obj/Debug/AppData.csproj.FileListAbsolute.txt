@@ -39,3 +39,16 @@ D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppData\obj\Debug\RdlCompil
 D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppData\obj\Debug\RdlCompile.compiled
 D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppData\obj\Debug\AppData.dll
 D:\VS_GitHub\Futaba\FtbAssmbling\Source\FtbAssmbling\AppData\obj\Debug\AppData.pdb
+D:\githubproject\FtbAssmbling\Source\FtbAssmbling\AppData\bin\Debug\AppData.xml
+D:\githubproject\FtbAssmbling\Source\FtbAssmbling\AppData\bin\Debug\AppData.dll
+D:\githubproject\FtbAssmbling\Source\FtbAssmbling\AppData\bin\Debug\AppData.pdb
+D:\githubproject\FtbAssmbling\Source\FtbAssmbling\AppData\bin\Debug\ftd.dll
+D:\githubproject\FtbAssmbling\Source\FtbAssmbling\AppData\bin\Debug\Oracle.ManagedDataAccess.dll
+D:\githubproject\FtbAssmbling\Source\FtbAssmbling\AppData\bin\Debug\EPPlus.dll
+D:\githubproject\FtbAssmbling\Source\FtbAssmbling\AppData\bin\Debug\ICSharpCode.SharpZipLib.dll
+D:\githubproject\FtbAssmbling\Source\FtbAssmbling\AppData\bin\Debug\ftd.xml
+D:\githubproject\FtbAssmbling\Source\FtbAssmbling\AppData\bin\Debug\EPPlus.xml
+D:\githubproject\FtbAssmbling\Source\FtbAssmbling\AppData\obj\Debug\RdlCompile.cache
+D:\githubproject\FtbAssmbling\Source\FtbAssmbling\AppData\obj\Debug\RdlCompile.compiled
+D:\githubproject\FtbAssmbling\Source\FtbAssmbling\AppData\obj\Debug\AppData.dll
+D:\githubproject\FtbAssmbling\Source\FtbAssmbling\AppData\obj\Debug\AppData.pdb

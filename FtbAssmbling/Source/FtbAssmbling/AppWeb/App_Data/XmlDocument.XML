@@ -419,11 +419,71 @@
             AC 市議員備詢管理系統
             </summary>
         </member>
+        <member name="F:ftd.mvc.Controllers.AssmblingController.AllLineCount">
+            <summary>
+            目前所有線別數量
+            </summary>
+        </member>
+        <member name="F:ftd.mvc.Controllers.AssmblingController.SortName">
+            <summary>
+            欄位排序
+            </summary>
+        </member>
+        <member name="F:ftd.mvc.Controllers.AssmblingController.SEVEN">
+            <summary>
+            早上7點
+            </summary>
+        </member>
+        <member name="F:ftd.mvc.Controllers.AssmblingController.NINETEEN">
+            <summary>
+            晚上7點
+            </summary>
+        </member>
         <member name="M:ftd.mvc.Controllers.AssmblingController.Get">
             <summary>
             預設選取多筆資料
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:ftd.mvc.Controllers.AssmblingController.GetMachineTotalValue(System.Data.DataTable,ftd.mvc.Controllers.AssmblingController.eDayType)">
+            <summary>
+            計算日,夜班總合
+            </summary>
+            <param name="dt">機台當天所有的資料</param>
+            <param name="DayType">取日班 or 夜班</param>
+            <returns>總合</returns>
+        </member>
+        <member name="M:ftd.mvc.Controllers.AssmblingController.GetProductName(System.Data.DataTable)">
+            <summary>
+            取得產品名稱
+            </summary>
+            <param name="dt">生產資料</param>
+            <returns>產品名稱</returns>
+        </member>
+        <member name="M:ftd.mvc.Controllers.AssmblingController.getMachineListClassData(System.Int32)">
+            <summary>
+            取得該線別所有機台資料
+            </summary>
+            <param name="Id">線別ID(0~6)</param>
+            <returns>線別機台所有資料</returns>
+        </member>
+        <member name="M:ftd.mvc.Controllers.AssmblingController.GetAllLineInfo">
+            <summary>
+            取得目前所有機台資料(目前AllLineCount = 7)
+            </summary>
+            <returns>Jsonstring</returns>
+        </member>
+        <member name="M:ftd.mvc.Controllers.AssmblingController.GetLineInfo(System.Int32)">
+            <summary>
+            取得某一機台資料
+            </summary>
+            <param name="Id">線別(0~6)</param>
+            <returns>Jsonstring</returns>
+        </member>
+        <member name="T:ftd.mvc.Controllers.AssmblingController.eDayType">
+            <summary>
+            取得早班小計或晚班小計
+            </summary>
         </member>
         <member name="M:ftd.mvc.Extensions.Help.Cal2DateDifference_YM(System.DateTime,System.DateTime)">
             <summary>

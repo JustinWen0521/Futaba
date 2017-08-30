@@ -53,8 +53,7 @@ namespace ftd.service
                 getDateFromString(strDate , ref dteTmp);
                 dteDateS = dteTmp.AddDays(-1).AddHours(19);
                 dteDateE = dteTmp.AddHours(18);
-            }
-            
+            }            
         }
 
 
