@@ -9,16 +9,18 @@ export class Page1Component implements OnInit {
 
    day:string ='日';
    night:string ='夜';
-   todos: any;
+   //Line: string;
+   //Product: string;
+    datas:Object;
+
 
    constructor(private dataSvc: DatasService){
    }
 
    ngOnInit() {
     this.dataSvc.getAllDatas()
-    .subscribe(data =>{
-
-
+    .subscribe( data=>{
+       this.datas=data;
     });
   }
 
