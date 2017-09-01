@@ -6,11 +6,12 @@ import {Http} from '@angular/http';
 @Injectable()
 export class DatasService {
 
-//抓取產線所有的資料
+//WebAPI的uri
 private allLineInfoUri= '/Assmbling/GetAllLineInfo';
 
   constructor(private http:Http) { }
 
+   //抓取產線所有的資料
   getAllDatas(): Observable<any[]>{
 
     return this.http.get(this.allLineInfoUri)

@@ -21,8 +21,14 @@
 			</div><p>
 			<div class="row">
           <div class="col-md-1">
+            <div *ngFor="let row of datas">
+                <h4 class="text-center" >
+                    <pre>{{row}}</pre>
+                  </h4>
+
+            </div>
               <h4 class="text-center">
-                <pre>{{lines}}</pre>
+
               </h4>
             <div class="panel panel-warning">
               <div class="panel-heading">
