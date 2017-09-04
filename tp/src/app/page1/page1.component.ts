@@ -11,7 +11,7 @@ export class Page1Component implements OnInit {
    night:string ='夜';
    //Line: string;
    //Product: string;
-    datas:Object;
+    datas:any;
 
 
    constructor(private dataSvc: DatasService){
