@@ -1,42 +1,42 @@
 <div class="container-fluid">
-	<div class="row">
-		<div class="col-md-12">
-			<h4 class="text-center">
-				Page1
-			</h4>
-			<div class="btn-group">
+    <div class="row">
+      <div class="col-md-12">
+        <h4 class="text-center">
+          Page1
+        </h4>
+        <div class="btn-group">
 
-				<button class="btn btn-default" type="button">
-					<h4 class="glyphicon glyphicon-align-left"></h4> FPC
-				</button>
-				<button class="btn btn-default" type="button">
-					<h4 class="glyphicon glyphicon-align-center"></h4> TAC
-				</button>
-				<button class="btn btn-default" type="button">
-					<h4 class="glyphicon glyphicon-align-right"></h4> 偏光板
-				</button>
-				<button class="btn btn-default" type="button">
-					<h4 class="glyphicon glyphicon-align-justify"></h4> AG/AFP
-				</button>
-			</div><p>
-			<div class="row" >
-              <div class="col-md-1" *ngFor="let row of datas; let k=index">
-                <h5>{{row['Product']}}</h5>
-                <div class="panel panel-info" *ngFor="let machine of row.MachineList">
-                      <div class="panel-heading">
-                        <h4 class="panel-title">
-                           {{machine.MachineName}}
-                        </h4>
+          <button class="btn btn-default" type="button">
+            <h4 class="glyphicon glyphicon-align-left"></h4> FPC
+          </button>
+          <button class="btn btn-default" type="button">
+            <h4 class="glyphicon glyphicon-align-center"></h4> TAC
+          </button>
+          <button class="btn btn-default" type="button">
+            <h4 class="glyphicon glyphicon-align-right"></h4> 偏光板
+          </button>
+          <button class="btn btn-default" type="button">
+            <h4 class="glyphicon glyphicon-align-justify"></h4> AG/AFP
+          </button>
+        </div><p>
+        <div class="row" >
+                <div class="col-md-1" *ngFor="let row of datas; let k=index">
+                  <h5>{{row['Product']}}</h5>
+                  <div class="panel panel-info" *ngFor="let machine of row.MachineList">
+                        <div class="panel-heading">
+                          <h4 class="panel-title">
+                             {{machine.MachineName}}
+                          </h4>
+                        </div>
+                        <div class="panel-body">
+                          夜:{{machine.MachineNight}}
+                        </div>
+                        <div class="panel-footer">
+                          日:{{machine.MachineDay}}
+                        </div>
                       </div>
-                      <div class="panel-body">
-                        夜:{{machine.MachineNight}}
-                      </div>
-                      <div class="panel-footer">
-                        日:{{machine.MachineDay}}
-                      </div>
-                    </div>
-              </div>
+                </div>
+          </div>
         </div>
-			</div>
-		</div>
-	</div>
+      </div>
+    </div>
