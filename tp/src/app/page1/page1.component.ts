@@ -7,13 +7,12 @@ import { DatasService } from '../datas.service';
 })
 export class Page1Component implements OnInit {
 
-   day:string ='日';
-   night:string ='夜';
-   //Line: string;
-   //Product: string;
     datas:any;
-
-
+    
+     futaba = {  
+      name: "Futaba",  
+      picture: "/assets/icons/futaba.jpg"  
+     };  
    constructor(private dataSvc: DatasService){
    }
 
@@ -22,6 +21,9 @@ export class Page1Component implements OnInit {
     .subscribe( data=>{
        this.datas=data;
     });
+
+    
+
   }
 
 }
