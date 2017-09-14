@@ -1,0 +1,19 @@
+﻿@if (ftd.web.AppUserSession.User != null && ftd.web.AppUserSession.User.UserFunctions != null)
+{
+    var menuNodes = ftd.web.AppUserSession.User.UserFunctions;
+    var parentNodes = menuNodes.Select(t => t.Parent["title"]).GroupBy(t => t).ToArray();
+
+    foreach (var parentNode in parentNodes)
+    {
+    <h3>
+        @parentNode.Key
+    </h3>
+        var ChildNodes = menuNodes.Where(t => t.Parent["title"] == parentNode.Key);
+    <div style="padding: 5px 5px 5px 10px;">
+        @foreach (var node in ChildNodes)
+        {
+            @Html.ActionLink(string.Format("{0}-{1}", node["itemNo"], node["title"]), node["action"], node["controller"])<br />
+        }
+    </div>
+    }
+}

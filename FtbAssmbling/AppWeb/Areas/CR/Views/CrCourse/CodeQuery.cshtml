@@ -1,0 +1,263 @@
+﻿@*@model ftd.query.model.CrCourseQryModel*@
+
+@{
+    Layout = "~/Views/Shared/_LayoutCodeQuery.cshtml";
+    ViewBag.Title = @Html.functionName("程式代號", true);
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="condition-container">
+        <table>
+        </table>
+        <div id="toolbar" class="toolbar">
+            <input type="button" id="cmdQuery" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-state-hover" value="查詢" onclick="doAction('query');" />
+        </div>
+    </div>
+}
+
+<div id="ListGridContainer"></div>
+
+
+@section scripts {
+    <script>
+
+        function doAction(act) {
+            switch (act) {
+                case "query":
+                    doQuery();
+                    break;
+                default:
+            }
+        }
+
+        //查詢
+        function doQuery() {
+            try {
+                var jsonData = {};
+                jsonData = ToJsonObject();
+                jsonData["__RequestVerificationToken"] = $("input[name=\"__RequestVerificationToken\"]").val();
+
+                $('#ListGridContainer').jtable('load', jsonData);
+            }
+            catch (e) {
+                alert(e);
+            }
+        }
+
+        function initGrid() {
+            $('#ListGridContainer').jtable({
+                title: '&nbsp;',
+                paging: true,
+                pageSize: 10,
+                pageSizes: [5, 10, 25, 50, 100, 250, 500],
+                sorting: true,
+                selecting: true,
+                multiselect: false,
+                selectingCheckboxes: false,
+                defaultSorting: 'CRC_CourseId ASC',
+                actions: {
+                    listAction: '@Url.Action("List", "CrCourse")',
+                },
+                fields: {
+                    CRC_CourseId: {
+                        title: 'CRC_CourseId',
+                        width: '0.1%',
+                        key: true,
+                        list: false,
+                        create: false,
+                        edit: false
+                    },
+                    CRC_Code: {
+                        title: 'CRC_Code',
+                        width: '10%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    CRC_Name: {
+                        title: 'CRC_Name',
+                        width: '10%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    CRC_Description: {
+                        title: 'CRC_Description',
+                        width: '10%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    CRC_IsEnable: {
+                        title: 'CRC_IsEnable',
+                        width: '10%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    CRC_IsEnableName_XX: {
+                        title: 'CRC_IsEnableName_XX',
+                        width: '10%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    CRC_StartDate: {
+                        title: 'CRC_StartDate',
+                        width: '10%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    CRC_EndDate: {
+                        title: 'CRC_EndDate',
+                        width: '10%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    CRC_CreatorId: {
+                        title: '建立者ID',
+                        width: '10%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    CRC_CreatorName_XX: {
+                        title: '建立者姓名',
+                        width: '10%',
+                        key: false,
+                        list: false,
+                        create: false,
+                        edit: false
+                    },
+                    CRC_CreateDate: {
+                        title: '建立日期',
+                        width: '10%',
+                        key: false,
+                        list: false,
+                        create: false,
+                        edit: false
+                    },
+                    CRC_UpdaterId: {
+                        title: '異動者ID',
+                        width: '10%',
+                        key: false,
+                        list: false,
+                        create: false,
+                        edit: false
+                    },
+                    CRC_UpdaterName_XX: {
+                        title: '異動者姓名',
+                        width: '10%',
+                        key: false,
+                        list: false,
+                        create: false,
+                        edit: false
+                    },
+                    CRC_UpdateDate: {
+                        title: '異動日期',
+                        width: '10%',
+                        key: false,
+                        list: false,
+                        create: false,
+                        edit: false
+                    }
+                },
+                selectionChanged: function (e) {
+                    var $selectedRows = $('#ListGridContainer').jtable('selectedRows');
+                    if ($selectedRows.length > 0) {
+                        $selectedRows.each(function () {
+                            //取得選擇的資料列
+                            var record = $(this).data('record');
+                            //自定回傳物件
+                            var returnObj = {
+                                RequestKey: '@ViewBag.RequestKey',
+                                Row: record
+                            };
+                            //將物件轉字串
+                            var jsonStr = JSON.stringify(returnObj);
+                            //取得父視窗
+                            var parent = window.parent;
+                            //取得父視窗回傳值欄位
+                            var ctl = parent.$('#CQ_Result');
+                            if (ctl) {
+                                //設定回傳值
+                                ctl.val(jsonStr);
+                                //觸發父視窗更新畫面
+                                ctl.change();
+                            }
+                            //關閉CodeQuery視窗
+                            CloseDialog();
+                        });
+                    };
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            //初始化 Grid
+            initGrid();
+
+            //載入資料
+            doQuery();
+        });
+
+
+        //**********************************************
+        //請在呼叫端的視窗中增加隱藏欄位以便接收回傳值，如下：
+        //<input type="hidden" id="CQ_Result" name="CQ_Result" data-cqresult="default" value="" />
+
+        //如需自訂實作查詢，請將下列Script複製到呼叫端的視窗中，如：EOM010Edit.cshtml
+        @*//CodeQuery-CR_Course
+        function CQ_CrCourseOpen() {
+            CodeQuery(500, 800, true, "@Url.Action("CodeQuery", "CrCourse")" + "?RequestKey=CrCourse", "查詢");
+        }
+
+        function CQ_CrCourseFinish(item) {
+            // TODO: 回傳值要更新的欄位
+            $('#ID').val(item.CRC_CourseId);
+            $('#Code').val(item.CR_CourseCode);
+            $('#Name').val(item.CR_CourseName);
+        }
+
+        $("#CQ_Result").change(function () {
+            //取得回傳的資料(JSON String)
+            var jsonString = $("#CQ_Result").val();
+            //alert(jsonString);
+
+            //解析回傳的資料(JSON String --> JSON Object)
+            var returnObj = JSON.parse(jsonString, function (key, value) {
+                var type;
+                if (value && typeof value === 'object') {
+                    type = value.type;
+                    if (typeof type === 'string' && typeof window[type] === 'function') {
+                        return new (window[type])(value);
+                    }
+                }
+                return value;
+            });
+            var item = returnObj.Row;
+            switch (returnObj.RequestKey) {
+                case 'CrCourse':
+                    CQ_CrCourseFinish(item);
+                    break;
+                default:
+                    break;
+            }
+        });*@
+
+    </script>
+}
+

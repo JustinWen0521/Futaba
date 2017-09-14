@@ -1,0 +1,279 @@
+﻿@model ftd.query.model.CrRegistrationQryModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutEdit.cshtml";
+    ViewBag.Title = @Html.functionName("CRM010", true);
+}
+
+@section function_name {
+    @Html.functionName("CRM010")
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="CQ_Result" name="CQ_Result" />
+    <input type="hidden" id="Q_CourseId" name="Q_CourseId" />
+    <input type="hidden" id="Q_ClassId" name="Q_ClassId" />
+
+    <div class="condition-container">
+        <div id="qryCondition">
+            <table>
+                <tr>
+                    <td>使用者帳號</td>
+                    <td>
+                        @Html.TextBoxFor(m => m.Q_CreatorCode_XX, new { title = "!使用者帳號", required = "required" })
+                    </td>
+                    <td>姓名</td>
+                    <td>
+                        @Html.TextBoxFor(m => m.Q_Name, new { title = "!姓名", required = "required" })
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <span style="color:red;">
+                            請輸入報名時的使用者帳號及學員姓名，再按[查詢]鍵。(二項資料需相符才能查詢，報名時間若已結束則不允許修改)
+                        </span>
+                    </td>
+                </tr>
+            </table>
+            <input type="button" id="btnRefresh" value="查詢" onclick="doQuery();" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-state-hover"/>
+        </div>
+    </div>
+}
+
+<div id="ListGridContainer"></div>
+
+@section scripts {
+    <script>
+
+        function doQuery() {
+            if (!CheckInput()) {
+                return;
+            }
+            
+            try {
+                var jsonData = {};
+                jsonData = ToJsonObject();
+                jsonData["__RequestVerificationToken"] = $("input[name=\"__RequestVerificationToken\"]").val();
+
+                $('#ListGridContainer').jtable('load', jsonData);
+            }
+            catch (e) {
+                alert(e);
+            }
+        }
+
+        //修改
+        function getItemCommands1(item) {
+            var $btn = $('<button title="修改" class="jtable-command-button jtable-edit-command-button" url="@Url.Action("Edit")?id=' + item.record.CRR_RegistrationId + '"><span>修改</span></button>');
+            OpenDialog($btn, 450, 1000, true);
+            return $btn;
+        }
+
+        //取消報名
+        function getItemCommands(item) {
+            var $btn = $('<button title="取消報名" onClick="doCancel(' + "'" + item.record.CRR_RegistrationId + "'" + ');"><span>取消報名</span></button>');
+            return $btn;
+        }
+
+        function doCancel(regId) {
+            ConfirmMessage("確定要取消報名嗎？", function () {
+                var parent = window.parent;
+                showLoading();
+                $.ajax({
+                    url: '@Url.Action("Delete", "CrRegistration")',
+                    type: "POST",
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: {
+                        CRR_RegistrationId: regId,
+                        __RequestVerificationToken: $("input[name=\"__RequestVerificationToken\"]").val()
+                    },
+                    success: function (response) {
+                        hideLoading();
+                        //Save(response);
+
+                        //因為使用AJAX，故儲存成功後需自行關閉視窗
+                        var result = response['Result'];
+                        var msg = response['Message'];
+                        if (result == "OK") {
+                            doQuery();
+                            //觸發父視窗重新查詢
+                            parent.DialogCloseListener.whatButtonFireEvent("save");
+                            ShowMessage("報名已取消");
+                        } else {
+                            ShowMessage(msg);
+                        }
+                    }
+                });
+            });
+        }
+
+        //***************************************************************************
+        var queryLevel = 0;
+        var selRow = null;
+
+        var recordCount = 0;
+
+        var isAddNew = false; //新增課程後-->直接進入班別
+        var lastId = "";   //新增或修改的id--->動新查詢後選到該筆
+
+        function initGrid() {
+            //報名資料
+            $('#ListGridContainer').jtable({
+                title: '&nbsp;',
+                paging: true,
+                pageSize: 10,
+                pageSizes: [5, 10, 25, 50, 100, 250, 500],
+                sorting: true,
+                selecting: true,
+                multiselect: false,
+                selectingCheckboxes: false,
+                defaultSorting: 'CRR_RegistrationId ASC',
+                //toolbar: {
+                //    hoverAnimation: true,
+                //    hoverAnimationDuration: 60,
+                //    hoverAnimationEasing: undefined,
+                //    //items: [{
+                //    //    icon: '../Scripts/jtable/themes/lightcolor/add.png',
+                //    //    text: '新增',
+                //    //    click: doAddNew
+                //    //}]
+                //},
+                actions: {
+                    listAction: '@Url.Action("UserList", "CrRegistration")'
+                },
+                fields: {
+                    //EditColumn1: {
+                    //    title: '',
+                    //    width: '0.1%',
+                    //    key: false,
+                    //    list: true,
+                    //    create: false,
+                    //    edit: false,
+                    //    listClass: 'jtable-command-column',
+                    //    display: getItemCommands1,
+                    //    sorting: false
+                    //},
+                    CRR_RegistrationId: {
+                        title: 'RegistrationId',
+                        width: '0.1%',
+                        key: true,
+                        list: false
+                    },
+                    //CRR_CourseCode_XX: {
+                    //    title: '課程代號',
+                    //    width: '10%',
+                    //    list: true
+                    //},
+                    CRR_CourseName_XX: {
+                        title: '課程名稱',
+                        width: '15%',
+                        list: true
+                    },
+                    CRR_ClassCode_XX: {
+                        title: '班別',
+                        width: '6%',
+                        list: true
+                    },
+                    CRR_ClassDate_XX: {
+                        title: '上課日期',
+                        width: '8%',
+                        list: true
+                    },
+                    CRR_ClassTime_XX: {
+                        title: '上課時間',
+                        width: '10%',
+                        list: true
+                    },
+                    //CRR_LimitQty_XX: {
+                    //    title: '人數限制',
+                    //    width: '10%',
+                    //    list: true
+                    //},
+                    CRR_OrganName: {
+                        title: '單位名稱',
+                        width: '10%',
+                        list: true
+                    },
+                    CRR_Name: {
+                        title: '姓名',
+                        width: '8%',
+                        list: true
+                    },
+                    //CRR_CitizenId: {
+                    //    title: '身分證',
+                    //    width: '10%',
+                    //    list: true
+                    //},
+                    //CRR_Tel: {
+                    //    title: '聯絡電話',
+                    //    width: '10%',
+                    //    list: true
+                    //},
+                    //CRR_Email: {
+                    //    title: 'Email',
+                    //    width: '10%',
+                    //    list: true
+                    //},
+                    //CRR_FoodKindName_XX: {
+                    //    title: '葷素食',
+                    //    width: '6%',
+                    //    list: true
+                    //},
+                    EditColumn: {
+                        title: '',
+                        width: '8%',
+                        key: false,
+                        list: true,
+                        create: false,
+                        edit: false,
+                        //listClass: 'jtable-command-column',
+                        display: getItemCommands,
+                        sorting: false
+                    }
+                },
+                formSubmitting: function (event, data) {
+                    //data.form("__RequestVerificationToken", $("input[name=\"__RequestVerificationToken\"]").val());
+                    //return true;
+                    return data.form.validationEngine('validate');
+                },
+                recordsLoaded: function (event, data) {
+                    recordCount = data.serverResponse.Records.length;
+                    if (recordCount <= 0)
+                        return;
+                },
+                selectionChanged: function (e) {
+                    var $selectedRows = $('#ListGridContainer_Registration').jtable('selectedRows');
+                    if ($selectedRows.length > 0) {
+                        $selectedRows.each(function () {
+                            var record = $(this).data('record');
+                            selRow = record;
+                        });
+                    } else {
+                        selRow = null;
+                    };
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            DialogButtonDisabled("儲存");
+
+            //初始化 Grid
+            initGrid();
+
+            //Edit後回到列表的動作
+            DialogCloseListener.whatButtonFireEvent = function (obj) {
+                if (obj != "save")
+                    return;
+
+                FireEvent = false;
+                doQuery();
+                FireEvent = true;
+            };
+        });
+    </script>
+}
+

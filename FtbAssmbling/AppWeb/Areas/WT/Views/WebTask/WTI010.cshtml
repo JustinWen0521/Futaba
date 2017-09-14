@@ -1,0 +1,184 @@
+﻿@*@model ftd.query.model.EoUserEventLogQryModel*@
+
+@{
+    ViewBag.Title = @Html.functionName("WTI010", true);
+}
+
+@section function_name {
+    @Html.functionName("WTI010")
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="CQ_Result" name="CQ_Result" value="" />
+
+    <div class="condition-container">
+        <table>
+            <tr>
+                <td class="field-title">事件日期</td>
+                <td class="field-content" colspan="3">
+                    <input type="date" id="Q_EventDateFrom" name="Q_EventDateFrom" />
+                    ~
+                    <input type="date" id="Q_EventDateTo" name="Q_EventDateTo" />
+                </td>
+            </tr>
+            <tr>
+                <td class="field-title">事件類型</td>
+                <td class="field-content">
+                    <input type="text" id="Q_UserEventName_XX" name="Q_UserEventName_XX" data-cqgroup="CQ_UserEvent" data-cqfield="EOUE_KindName" />
+                    @Html.codeQuery("CQ_UserEvent", "CodeQuery", "EoUserEvent", 800, 600, null, true, new { area = "EO" }, false)
+                </td>
+                <td class="field-title">人員名稱</td>
+                <td class="field-content">
+                    <input type="text" id="Q_UserName_XX" name="Q_UserName_XX" data-cqgroup="CQ_User" data-cqfield="EOE_EmployeeName" />
+                    @Html.codeQuery("CQ_User", "CodeQuery", "EoEmployee", 800, 600, null, true, new { area = "EO" }, false)
+                </td>
+            </tr>
+        </table>
+        @Html.toolBar("WTI010")
+    </div>
+}
+
+<div id="ListGridContainer"></div>
+
+
+@section scripts {
+    <script>
+
+        function doAction(act) {
+            switch (act) {
+                case "query":
+                    doQuery();
+                    break;
+                case "report":
+                    break;
+                default:
+            }
+        }
+
+        //查詢
+        function doQuery() {
+            try {
+                var dateFrom = $("#Q_EventDateFrom").val();
+                var dateTo = $("#Q_EventDateTo").val();
+                if (!dateFrom || !dateTo) {
+                    alert("請輸入日期");
+                    return;
+                }
+                var jsonData = {};
+                jsonData = ToJsonObject();
+                jsonData["__RequestVerificationToken"] = $("input[name=\"__RequestVerificationToken\"]").val();
+
+                $('#ListGridContainer').jtable('load', jsonData);
+            }
+            catch (e) {
+                alert(e);
+            }
+        }
+
+        //匯出 Excel
+        function doExportExcel() {
+            //alert("Do Export Excel");
+        }
+
+        var selRow = "";
+        function initGrid() {
+            $('#ListGridContainer').jtable({
+                title: '&nbsp;',
+                paging: true,
+                pageSize: 10,
+                pageSizes: [5, 10, 25, 50, 100, 250, 500],
+                sorting: true,
+                selecting: true,
+                multiselect: false,
+                selectingCheckboxes: false,
+                defaultSorting: 'EOUEL_EventDate ASC',
+                actions: {
+                    listAction: '@Url.Action("List", "EoUserEventLog", new { area = "EO" })',
+                },
+                fields: {
+                    EOUEL_UserEventLogId: {
+                        title: '事件檔紀錄ID',
+                        width: '0.1%',
+                        key: true,
+                        list: false,
+                        create: false,
+                        edit: false
+                    },
+                    EOUEL_EventDate: {
+                        title: '日期',
+                        width: '10%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true,
+                        type: 'datetime',
+                        displayFormat: 'yyyy/mm/dd HH:MM:ss'
+                    },
+                    EOUEL_UserEventName_XX: {
+                        title: '事件',
+                        width: '10%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    EOUEL_UserName_XX: {
+                        title: '使用者',
+                        width: '10%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    EOUEL_ObjectName_XX: {
+                        title: '物件',
+                        width: '10%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    EOUEL_SourceIP: {
+                        title: '來源IP',
+                        width: '10%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    }
+                },
+                formSubmitting: function (event, data) {
+                    //data.form("__RequestVerificationToken", $("input[name=\"__RequestVerificationToken\"]").val());
+                    //return true;
+                    return data.form.validationEngine('validate');
+                },
+                selectionChanged: function (e) {
+                    var $selectedRows = $('#ListGridContainer').jtable('selectedRows');
+                    if ($selectedRows.length > 0) {
+                        $selectedRows.each(function () {
+                            //var record = $(this).data('record');
+                            //selRow = record;
+                            //$("#EOUEL_UserEventLogId").val(selRow.EOUEL_UserEventLogId);
+                        });
+                    };
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            //初始化 Grid
+            initGrid();
+
+            //Edit後回到列表的動作
+            DialogCloseListener.whatButtonFireEvent = function (obj) {
+                doQuery();
+            };
+
+            $("#Q_EventDateFrom").val(getToday('yyyy-mm-dd'));
+            $("#Q_EventDateTo").val(getToday('yyyy-mm-dd'));
+        });
+    </script>
+}
+

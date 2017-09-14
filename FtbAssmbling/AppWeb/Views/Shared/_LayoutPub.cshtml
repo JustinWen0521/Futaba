@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title - @ftd.service.FtdConfigService.Instance.getAppSettingValue("ProductName", "")</title>
+        <link href="~/futaba_fox.png" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+
+        <link href="~/Content/alertifyjs/alertify.min.css" rel="stylesheet" type="text/css" />
+        <link href="~/Content/alertifyjs/themes/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+        @Styles.Render("~/Content/csspub")
+        @Styles.Render("~/Content/themes/kfcp/css")
+
+        @Scripts.Render("~/bundles/modernizr")
+    </head>
+    <body>
+        <header>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    @*<img src="/images/logo.png" />*@
+                    <a href="/Home/Index">
+                        <img src="~/images/logo.png" alt="Logo" style="float: left;">
+                    </a>
+                    <span class="site-title">
+                        @RenderSection("function_name", required: false)
+                    </span>
+                </div>
+                <div class="float-right">
+                </div>
+            </div>
+        </header>
+        <div id="body">
+            @RenderSection("featured", required: false)
+            <section class="content-wrapper main-content clear-fix">
+                @RenderBody()
+            </section>
+        </div>
+        <footer>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p>&copy; @DateTime.Now.Year - 教育訓練線上報名系統</p>
+                </div>
+            </div>
+        </footer>
+
+        @*@Scripts.Render("~/bundles/jquery")*@
+        @Scripts.Render("~/bundles/kfcp")
+        @Scripts.Render("~/bundles/jtable")
+        <script type="text/javascript" src="~/Scripts/alertify.min.js"></script>
+        <script type="text/javascript" src="~/Scripts/Function.js?@DateTime.Now.ToString("yyyyMMddHH")"></script>
+
+        @RenderSection("scripts", required: false)
+    </body>
+</html>

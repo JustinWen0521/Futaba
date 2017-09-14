@@ -1,0 +1,366 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Menu>
+  <item title="人事薪資系統" image="~/images/funmenu/folder.gif">
+    <item title="基本資料維護" image="~/images/funmenu/folder.gif">
+      <item itemNo="EMM010" win_class = "ftd.win.view.EMM010L" win_param="ListMode=N" title="職別代碼維護" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EMR010" win_class = "ftd.win.view.EMR010L" win_param="ListMode=N" title="職別代碼表列印" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EMM020" win_class = "ftd.win.view.EMM020L" win_param="ListMode=N" title="員工資料維護" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EMR020" win_class = "ftd.win.view.EMR020L" win_param="ListMode=N" title="員工資料卡列印" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EMR030" win_class = "ftd.win.view.EMR030L" win_param="ListMode=N" title="員工資料總表列印" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EMR040" win_class = "ftd.win.view.EMR040L" win_param="ListMode=N" title="員工薪資標準總表列印" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EMR200" win_class = "ftd.win.view.EMR200L" win_param="ListMode=N" title="可休日數查詢列印" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EMM030" win_class = "ftd.win.view.EMM030L" win_param="ListMode=N" title="假別資料維護" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EMM040" win_class = "ftd.win.view.EMM040L" win_param="ListMode=N" title="班別主檔維護" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EMM060" win_class = "ftd.win.view.EMM060L" win_param="ListMode=N" title="值班主檔維護" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EMM050" win_class = "ftd.win.view.EMM050L" win_param="ListMode=N" title="行事曆資料維護" image="~/images/funmenu/master.gif"/>
+    </item>
+    
+    <item title="日常作業" image="~/images/funmenu/folder.gif">
+      <item itemNo="EME010" win_class = "ftd.win.view.EME010L" win_param="ListMode=N" title="缺勤資料維護" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EME020" win_class = "ftd.win.view.EME020L" win_param="ListMode=N" title="獎懲資料維護" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EME030" win_class = "ftd.win.view.EME030L" win_param="ListMode=N" title="員工異動維護" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EME160" win_class = "ftd.win.view.EME160L" win_param="ListMode=N" title="員工差勤維護" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EMI010" win_class = "ftd.win.view.EMI010L" win_param="ListMode=N" title="差勤累計查詢" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EMM070" win_class = "ftd.win.view.EMM070L" win_param="ListMode=N" title="值班資料維護" image="~/images/funmenu/master.gif"/>
+      <!--<item itemNo="EMP020" win_class = "ftd.win.view.EMP020L" win_param="ListMode=N" title="值班自動排班處理" image="~/images/funmenu/master.gif"/>-->
+    </item>
+    
+    <item title="月次作業" image="~/images/funmenu/folder.gif">
+      <item itemNo="EME040" win_class = "ftd.win.view.EME040L" win_param="ListMode=N" title="差旅費資料建立" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EME050" win_class = "ftd.win.view.EME050L" win_param="ListMode=N" title="輪值人員建立" image="~/images/funmenu/master.gif"/>
+      <!--<item itemNo="EME060" win_class = "ftd.win.view.EME060L" win_param="ListMode=N" title="公休及加班日建立" image="~/images/funmenu/master.gif"/>-->
+      <item itemNo="EME065" win_class = "ftd.win.view.EME065L" win_param="ListMode=N" title="加班人員建立" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EME070" win_class = "ftd.win.view.EME070L" win_param="ListMode=N" title="不固定給付資料建立" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EME080" win_class = "ftd.win.view.EME080L" win_param="ListMode=N" title="不固定扣款資料建立" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EMP010" win_class = "ftd.win.view.EMP010L" win_param="ListMode=N" title="薪資計算" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EME150" win_class = "ftd.win.view.EME150L" win_param="ListMode=N" title="薪資資料維護" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EME180" win_class = "ftd.win.view.EME180L" win_param="ListMode=N" title="早餐費請領" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EME190" win_class = "ftd.win.view.EME190L" win_param="ListMode=N" title="例假日請領" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EME200" win_class = "ftd.win.view.EME200L" win_param="ListMode=N" title="值勤費請領" image="~/images/funmenu/master.gif"/>
+
+      <item title="薪資計算－相關報表列印" image="~/images/funmenu/folder.gif">
+        <item itemNo="EMR050" win_class = "ftd.win.view.EMR050L" win_param="ListMode=N" title="薪資給付總表列印" image="~/images/funmenu/master.gif"/>
+        <item itemNo="EMR060" win_class = "ftd.win.view.EMR060L" win_param="ListMode=N" title="勞保保費支給表列印" image="~/images/funmenu/master.gif"/>
+        <item itemNo="EMR070" win_class = "ftd.win.view.EMR070L" win_param="ListMode=N" title="健保保費支給表列印" image="~/images/funmenu/master.gif"/>
+        <item itemNo="EMR080" win_class = "ftd.win.view.EMR080L" win_param="ListMode=N" title="所得稅扣繳表列印" image="~/images/funmenu/master.gif"/>
+        <item itemNo="EMR090" win_class = "ftd.win.view.EMR090L" win_param="ListMode=N" title="不固定給付項目表列印" image="~/images/funmenu/master.gif"/>
+        <item itemNo="EMR100" win_class = "ftd.win.view.EMR100L" win_param="ListMode=N" title="個人薪資單列印" image="~/images/funmenu/master.gif"/>
+        <item itemNo="EMR110" win_class = "ftd.win.view.EMR110L" win_param="ListMode=N" title="銀行轉帳單列印" image="~/images/funmenu/master.gif"/>
+        <item itemNo="EMR120" win_class = "ftd.win.view.EMR120L" win_param="ListMode=N" title="不固定扣款資料列印" image="~/images/funmenu/master.gif"/>
+        <item itemNo="EMR125" win_class = "ftd.win.view.EMR125L" win_param="ListMode=N" title="代扣勞健保費證明單列印" image="~/images/funmenu/master.gif"/>        
+      </item>
+    </item>
+    
+    <item title="年度考核作業" image="~/images/funmenu/folder.gif">
+      <item itemNo="EMR130" win_class = "ftd.win.view.EMR130L" win_param="ListMode=N" title="個人考核參考表列印" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EME090" win_class = "ftd.win.view.EME090L" win_param="ListMode=N" title="考核結果建立" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EMR140" win_class = "ftd.win.view.EMR140L" win_param="ListMode=N" title="考核結果清冊列印" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EMR150" win_class = "ftd.win.view.EMR150L" win_param="ListMode=N" title="個人考核通知單列印" image="~/images/funmenu/master.gif"/>
+    </item>
+    
+    <item title="年度獎金作業" image="~/images/funmenu/folder.gif">
+      <item itemNo="EMR160" win_class = "ftd.win.view.EMR160L" win_param="ListMode=N" title="不休假獎金給付表列印" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EME100" win_class = "ftd.win.view.EME100L" win_param="ListMode=N" title="考績獎金資料建立" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EMR170" win_class = "ftd.win.view.EMR170L" win_param="ListMode=N" title="考績獎金給付表列印" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EME110" win_class = "ftd.win.view.EME110L" win_param="ListMode=N" title="績效獎金資料建立" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EMR180" win_class = "ftd.win.view.EMR180L" win_param="ListMode=N" title="績效獎金給付表列印" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EME120" win_class = "ftd.win.view.EME120L" win_param="ListMode=N" title="年終工作獎金資料建立" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EMR190" win_class = "ftd.win.view.EMR190L" win_param="ListMode=N" title="年終工作獎金給付表" image="~/images/funmenu/master.gif"/>
+    </item>
+    
+    <item title="其他作業" image="~/images/funmenu/folder.gif">
+      <item itemNo="EME130" win_class = "ftd.win.view.EME130L" win_param="ListMode=N" title="扣繳稅額建立" image="~/images/funmenu/master.gif"/>
+      <item itemNo="EME140" win_class = "ftd.win.view.EME140L" win_param="ListMode=N" title="保險給付比率資料建立" image="~/images/funmenu/master.gif"/>
+    </item>
+  </item>
+
+  <item title="出納系統" image="~/images/funmenu/folder2.gif">
+    <item title="薪資發放作業" image="~/images/funmenu/folder.gif">
+      <item itemNo="CAR020" win_class = "ftd.win.view.CAR020L" win_param="ListMode=N" title="個人薪資明細列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="CAR030" win_class = "ftd.win.view.CAR030L" win_param="ListMode=N" title="薪資給付總表列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="CAR040" win_class = "ftd.win.view.CAR040L" win_param="ListMode=N" title="銀行轉帳單列印" image="~/images/funmenu/master.gif" />
+    </item>
+
+    <item title="收支管理" image="~/images/funmenu/folder.gif">
+      <item itemNo="CAE010" win_class = "ftd.win.view.CAE010L" win_param="ListMode=N" title="管理費收入登錄" image="~/images/funmenu/master.gif" />
+      <item itemNo="CAE020" win_class = "ftd.win.view.CAE020L" win_param="ListMode=N" title="他項收入登錄" image="~/images/funmenu/master.gif" />
+      <item itemNo="CAE030" win_class = "ftd.win.view.CAE030L" win_param="ListMode=N" title="支出登錄" image="~/images/funmenu/master.gif" />
+      <item itemNo="CAE040" win_class = "ftd.win.view.CAE040L" win_param="ListMode=N" title="銀行存取款登錄" image="~/images/funmenu/master.gif" />
+      <item itemNo="CAE050" win_class = "ftd.win.view.CAE050L" win_param="ListMode=N" title="現金結存登錄" image="~/images/funmenu/master.gif" />
+      <item itemNo="CAR050" win_class = "ftd.win.view.CAR050L" win_param="ListMode=N" title="收入傳票列印" image="~/images/funmenu/master.gif" />
+    </item>
+
+    <item title="出納表單" image="~/images/funmenu/folder.gif">
+      <item itemNo="CAR060" win_class = "ftd.win.view.CAR060L" win_param="ListMode=N" title="管理費收入記錄表列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="CAR070" win_class = "ftd.win.view.CAR070L" win_param="ListMode=N" title="其他收入記錄表列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="CAR080" win_class = "ftd.win.view.CAR080L" win_param="ListMode=N" title="現金備查簿列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="CAR090" win_class = "ftd.win.view.CAR090L" win_param="ListMode=N" title="銀行存款明細表列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="CAR100" win_class = "ftd.win.view.CAR100L" win_param="ListMode=N" title="現金結存表(二聯)列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="CAR110" win_class = "ftd.win.view.CAR110L" win_param="ListMode=N" title="現金結存月報表(二聯)列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="CAR120" win_class = "ftd.win.view.CAR120L" win_param="ListMode=N" title="管理費收入月報列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="CAR130" win_class = "ftd.win.view.CAR130L" win_param="ListMode=N" title="管理費收入週統計表列印" image="~/images/funmenu/master.gif" />
+    </item>
+
+    <item title="收支記錄查詢" image="~/images/funmenu/folder.gif">
+      <item itemNo="CAI010" win_class = "ftd.win.view.CAI010L" win_param="ListMode=N" title="現金收支記錄查詢" image="~/images/funmenu/master.gif" />
+      <item itemNo="CAI020" win_class = "ftd.win.view.CAI020L" win_param="ListMode=N" title="管理費收入記錄查詢" image="~/images/funmenu/master.gif" />
+      <item itemNo="CAI030" win_class = "ftd.win.view.CAI030L" win_param="ListMode=N" title="銀行存取款記錄查詢" image="~/images/funmenu/master.gif" />
+      <item itemNo="CAI040" win_class = "ftd.win.view.CAI040L" win_param="ListMode=N" title="銀行結存金額查詢" image="~/images/funmenu/master.gif" />
+      <item itemNo="CAI050" win_class = "ftd.win.view.CAI050L" win_param="ListMode=N" title="未登錄管理費查詢" image="~/images/funmenu/master.gif" />
+    </item>
+
+    <item title="扣繳作業" image="~/images/funmenu/folder.gif">
+      <item itemNo="CAE060" win_class = "ftd.win.view.CAE060L" win_param="ListMode=N" title="扣繳金額輸入" image="~/images/funmenu/master.gif" />
+      <item itemNo="CAR140" win_class = "ftd.win.view.CAR140L" win_param="ListMode=N" title="扣繳月報列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="CAR150" win_class = "ftd.win.view.CAR150L" win_param="ListMode=N" title="扣繳總表列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="CAI060" win_class = "ftd.win.view.CAI060L" win_param="ListMode=N" title="扣繳資料查詢" image="~/images/funmenu/master.gif" />
+      <item itemNo="CAR160" win_class = "ftd.win.view.CAR160L" win_param="ListMode=N" title="扣繳年報列印" image="~/images/funmenu/master.gif" />
+    </item>
+
+    <item title="銀行資料建立" image="~/images/funmenu/folder.gif">
+      <item itemNo="CAM010" win_class = "ftd.win.view.CAM010L" win_param="ListMode=N" title="銀行帳戶資料建立" image="~/images/funmenu/master.gif" />
+      <item itemNo="CAR010" win_class = "ftd.win.view.CAR010L" win_param="ListMode=N" title="銀行帳戶資料列印" image="~/images/funmenu/master.gif" />
+    </item>
+  </item>
+
+  <item title="採購系統" image="~/images/funmenu/folder.gif">
+    <item title="基本資料維護" image="~/images/funmenu/folder.gif">
+      <item itemNo="PUM010" win_class="ftd.win.view.PUM010L" win_param="ListMode=N" image="~/images/funmenu/master.gif" title="請購單位維護" />
+      <item itemNo="PUM030" win_class="ftd.win.view.PUM030L" win_param="ListMode=N" image="~/images/funmenu/master.gif" title="供應商維護" />
+      <item itemNo="PUE010" win_class="ftd.win.view.PUE010L" win_param="ListMode=N" image="~/images/funmenu/master.gif" title="請購單資料維護" />
+      <item itemNo="PUE020" win_class="ftd.win.view.PUE020L" win_param="ListMode=N" image="~/images/funmenu/master.gif" title="採購單資料維護" />
+      <item itemNo="PUE030" win_class="ftd.win.view.PUE030L" win_param="ListMode=N" image="~/images/funmenu/master.gif" title="採購驗收維護" />
+    </item>
+    <item title="採購記錄查詢" image="~/images/funmenu/folder.gif">
+      <item itemNo="PUI010" win_class="ftd.win.view.PUI010L" win_param="ListMode=N" image="~/images/funmenu/master.gif" title="採購單資料查詢"/>
+      <item itemNo="PUI030" win_class="ftd.win.view.PUI030L" win_param="ListMode=N" image="~/images/funmenu/master.gif" title="採購年度統計查詢"/>
+    </item>
+    <item title="表單" image="~/images/funmenu/folder.gif">
+      <item itemNo="PUR010" win_class="ftd.win.view.PUR010L" win_param="ListMode=N" image="~/images/funmenu/master.gif" title="採購單列印"/>
+      <item itemNo="PUR020" win_class="ftd.win.view.PUR020L" win_param="ListMode=N" image="~/images/funmenu/master.gif" title="驗收單列印"/>
+    </item>
+  </item>
+
+  <item title="主計系統" image="~/images/funmenu/folder2.gif">
+    <item title="基本資料管理" image="~/images/funmenu/folder.gif">
+      <item itemNo="GLM010" win_class = "ftd.win.view.GLM010L" win_param="ListMode=N" title="會計科目建立" image="~/images/funmenu/master.gif" />
+      <item itemNo="GLM020" win_class = "ftd.win.view.GLM020L" win_param="ListMode=N" title="摘要主檔建立" image="~/images/funmenu/master.gif" />
+      <item itemNo="GLR010" win_class = "ftd.win.view.GLR010L" win_param="ListMode=N" title="會計科目代碼表列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="GLR020" win_class = "ftd.win.view.GLR020L" win_param="ListMode=N" title="摘要代碼列印" image="~/images/funmenu/master.gif" />      
+    </item>
+    <item title="日常作業" image="~/images/funmenu/folder.gif">
+      <item itemNo="GLE010" win_class = "ftd.win.view.GLE010L" win_param="ListMode=N" title="傳票登錄作業" image="~/images/funmenu/master.gif" />
+      <item itemNo="GLP010" win_class = "ftd.win.view.GLP010L" win_param="ListMode=N" title="傳票借貸方驗算" image="~/images/funmenu/master.gif" />
+      <item itemNo="GLP020" win_class = "ftd.win.view.GLP020L" win_param="ListMode=N" title="傳票過帳作業" image="~/images/funmenu/master.gif" />
+      <item itemNo="GLR030" win_class = "ftd.win.view.GLR030L" win_param="ListMode=N" title="每日日計表列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="GLR040" win_class = "ftd.win.view.GLR040L" win_param="ListMode=N" title="日記帳列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="GLR050" win_class = "ftd.win.view.GLR050L" win_param="ListMode=N" title="總分類明細帳列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="GLR060" win_class = "ftd.win.view.GLR060L" win_param="ListMode=N" title="傳票列印" image="~/images/funmenu/master.gif" />
+    </item>
+    <item title="月次作業" image="~/images/funmenu/folder.gif">
+      <item itemNo="GLP030" win_class = "ftd.win.view.GLP030L" win_param="ListMode=N" title="月份結算作業" image="~/images/funmenu/master.gif" />
+      <item itemNo="GLR070" win_class = "ftd.win.view.GLR070L" win_param="ListMode=N" title="總分類帳餘額表列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="GLR080" win_class = "ftd.win.view.GLR080L" win_param="ListMode=N" title="餘絀計算表列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="GLR090" win_class = "ftd.win.view.GLR090L" win_param="ListMode=N" title="收支明細表列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="GLR100" win_class = "ftd.win.view.GLR100L" win_param="ListMode=N" title="資本支出表列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="GLR190" win_class = "ftd.win.view.GLR190L" win_param="ListMode=N" title="損益表列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="GLP050" win_class = "ftd.win.view.GLP050L" win_param="ListMode=N" title="反過帳作業" image="~/images/funmenu/master.gif" />
+    </item> 
+    <item title="查詢作業" image="~/images/funmenu/folder.gif">
+      <item itemNo="GLI010" win_class = "ftd.win.view.GLI010L" win_param="ListMode=N" title="歷史傳票查詢" image="~/images/funmenu/master.gif" />
+      <item itemNo="GLI020" win_class = "ftd.win.view.GLI020L" win_param="ListMode=N" title="科目明細查詢" image="~/images/funmenu/master.gif" />
+      <item itemNo="GLI030" win_class = "ftd.win.view.GLI030L" win_param="ListMode=N" title="科目餘額查詢" image="~/images/funmenu/master.gif" />
+      <item itemNo="GLR200" win_class = "ftd.win.view.GLR200L" win_param="ListMode=N" title="預算實支查詢" image="~/images/funmenu/master.gif" />
+    </item>   
+    <item title="年度結算" image="~/images/funmenu/folder.gif">
+      <item itemNo="GLP040" win_class = "ftd.win.view.GLP040L" win_param="ListMode=N" title="調帳傳票過帳作業" image="~/images/funmenu/master.gif" />
+      <item itemNo="GLE030" win_class = "ftd.win.view.GLE030L" win_param="ListMode=N" title="虛帳戶結算作業" image="~/images/funmenu/master.gif" />
+      <item itemNo="GLR110" win_class = "ftd.win.view.GLR110L" win_param="ListMode=N" title="結帳前總分類餘額列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="GLR120" win_class = "ftd.win.view.GLR120L" win_param="ListMode=N" title="結帳後總分類餘額列印" image="~/images/funmenu/master.gif" />
+    </item>
+    <item title="決算報表" image="~/images/funmenu/folder.gif">
+      <item itemNo="GLR140" win_class = "ftd.win.view.GLR140L" win_param="ListMode=N" title="資產負債表列印" image="~/images/funmenu/master.gif" />
+    </item>
+    <item title="預算作業" image="~/images/funmenu/folder.gif">
+      <item itemNo="GLE020" win_class = "ftd.win.view.GLE020L" win_param="ListMode=N" title="預算資料建立" image="~/images/funmenu/master.gif" />
+      <item itemNo="GLR150" win_class = "ftd.win.view.GLR150L" win_param="ListMode=N" title="預算總表列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="GLR160" win_class = "ftd.win.view.GLR160L" win_param="ListMode=N" title="預算月份分配表列印" image="~/images/funmenu/master.gif" />
+    </item>
+    <item title="其他作業" image="~/images/funmenu/folder.gif">
+      <item itemNo="GLR170" win_class = "ftd.win.view.GLR170L" win_param="ListMode=N" title="資產負債表(市場)列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="GLR180" win_class = "ftd.win.view.GLR180L" win_param="ListMode=N" title="預算執行增淢原因分析表列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="GLE040" win_class = "ftd.win.view.GLE040L" win_param="ListMode=N" title="會計年度期初輸入" image="~/images/funmenu/master.gif" />
+    </item>
+  </item>
+  
+  <item title="公文管理" image="~/images/funmenu/folder2.gif">
+    <item title="基本資料維護" image="~/images/funmenu/folder.gif">
+      <item itemNo="ODM010" win_class="ftd.win.view.ODM010L" win_param="ListMode=N" title="機構維護" image="~/images/funmenu/master.gif" />
+      <item itemNo="ODE010" win_class="ftd.win.view.ODE010L" win_param="ListMode=N" title="收文作業" image="~/images/funmenu/master.gif" />
+      <item itemNo="ODE020" win_class="ftd.win.view.ODE020L" win_param="ListMode=N" title="發文作業" image="~/images/funmenu/master.gif" />
+    </item>
+    <item title="公文記錄查詢" image="~/images/funmenu/folder.gif">
+      <item itemNo="ODI010" win_class="ftd.win.view.ODI010L" win_param="ListMode=N" title="公文查詢" image="~/images/funmenu/master.gif" />
+    </item>
+    <item title="表單" image="~/images/funmenu/folder.gif">
+      <item itemNo="ODR010" win_class = "ftd.win.view.ODR010L" win_param="ListMode=N" title="總表列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="ODR020" win_class = "ftd.win.view.ODR020L" win_param="ListMode=N" title="公文列印" image="~/images/funmenu/master.gif" />
+    </item>
+  </item>
+
+  <item title="固定資產系統" image="~/images/funmenu/folder2.gif">
+    <item title="基本資料維護" image="~/images/funmenu/folder.gif">
+      <item itemNo="FAM010" win_class = "ftd.win.view.FAM010L" win_param="ListMode=N" title="固定資產類別維護" image="~/images/funmenu/master.gif" />
+      <!--<item itemNo="FAM020" win_class = "ftd.win.view.FAM020L" win_param="ListMode=N" title="財產分類項目維護" image="~/images/funmenu/master.gif" />-->
+      <item itemNo="FAE010" win_class = "ftd.win.view.FAE010L" win_param="ListMode=N" title="固定資產維護" image="~/images/funmenu/master.gif" />
+      <item itemNo="FAE020" win_class = "ftd.win.view.FAE020L" win_param="ListMode=N" title="固定資產異動" image="~/images/funmenu/master.gif" />
+      <item itemNo="FAP010" win_class = "ftd.win.view.FAP010L" win_param="ListMode=N" title="固定資產過帳" image="~/images/funmenu/master.gif" />
+      <item itemNo="FAP020" win_class = "ftd.win.view.FAP020L" win_param="ListMode=N" title="固定資產反過帳" image="~/images/funmenu/master.gif" />
+    </item>
+    <item title="財產記錄查詢" image="~/images/funmenu/folder.gif">
+      <item itemNo="FAI010" win_class = "ftd.win.view.FAI010L" win_param="ListMode=N" title="固定資產查詢" image="~/images/funmenu/master.gif" />
+      <item itemNo="FAI020" win_class = "ftd.win.view.FAI020L" win_param="ListMode=N" title="財物保管統計查詢" image="~/images/funmenu/master.gif" />
+    </item>
+    <item title="表單" image="~/images/funmenu/folder.gif">
+      <item itemNo="FAR010" win_class = "ftd.win.view.FAR010L" win_param="ListMode=N" title="資產明細表列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="FAR020" win_class = "ftd.win.view.FAR020L" win_param="ListMode=N" title="財產盤點總表列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="FAR030" win_class = "ftd.win.view.FAR030L" win_param="ListMode=N" title="固定資產預定到期報表" image="~/images/funmenu/master.gif" />
+      <item itemNo="FAR040" win_class = "ftd.win.view.FAR040L" win_param="ListMode=N" title="財產標籤" image="~/images/funmenu/master.gif" />
+    </item>
+  </item>
+
+  <item title="交易管理系統" image="~/images/funmenu/folder2.gif">
+    <item title="交易作業" image="~/images/funmenu/folder.gif">
+      <!--<item title="磅秤作業" image="~/images/funmenu/folder.gif">
+        <item itemNo="SAE070" win_class = "ftd.win.view.SAE070L" win_param="ListMode=N" title="地磅秤重作業" image="~/images/funmenu/master.gif" />
+        <item itemNo="SAR020" win_class = "ftd.win.view.SAR020L" win_param="ListMode=N" title="地磅未除重查詢列印" image="~/images/funmenu/master.gif" />
+        --><!--<item itemNo="SAE080" win_class = "ftd.win.view.SAE080L" win_param="ListMode=N" title="台秤秤重作業" image="~/images/funmenu/master.gif" />--><!--
+        <item itemNo="SAP070" win_class = "ftd.win.view.SAP070L" win_param="ListMode=N" title="交易結算作業" image="~/images/funmenu/master.gif" />
+        <item itemNo="SAR030" win_class = "ftd.win.view.SAR030L" win_param="ListMode=N" title="業務員結算資料列印" image="~/images/funmenu/master.gif" />
+        <item itemNo="SAR040" win_class = "ftd.win.view.SAR040L" win_param="ListMode=N" title="業務員對帳單資料列印" image="~/images/funmenu/master.gif" />
+        <item itemNo="SAP071" win_class = "ftd.win.view.SAP071L" win_param="ListMode=N" title="每日結算作業" image="~/images/funmenu/master.gif" />
+        <item itemNo="SAR050" win_class = "ftd.win.view.SAR050L" win_param="ListMode=N" title="每日結算查詢列印" image="~/images/funmenu/master.gif" />
+      </item>-->
+      <item itemNo="SAR070" win_class = "ftd.win.view.SAR070L" win_param="ListMode=N" title="暫停交易承銷人名單" image="~/images/funmenu/master.gif" />
+      <!--<item title="拍賣作業" image="~/images/funmenu/folder.gif">-->
+        <item itemNo="SAE240" win_class = "ftd.win.view.SAE240L" win_param="ListMode=N" title="競價器收發" image="~/images/funmenu/master.gif" />
+        <!--<item itemNo="SAE110" win_class = "ftd.win.view.SAE110L" win_param="ListMode=N" title="承銷人報到" image="~/images/funmenu/master.gif" />-->
+        <item itemNo="SAE120" win_class = "ftd.win.view.SAE120L" win_param="ListMode=N" title="拍賣理貨作業" image="~/images/funmenu/master.gif" />
+        <!--<item itemNo="SAR080" win_class = "ftd.win.view.SAR080L" win_param="ListMode=N" title="報廢產品查詢列印" image="~/images/funmenu/master.gif" />-->
+        <!--<item itemNo="SAP030" win_class = "ftd.win.view.SAP030L" win_param="ListMode=N" title="拍賣資料匯入" image="~/images/funmenu/master.gif" />-->
+      <!--</item>-->
+      <!--<item itemNo="SAE170" win_class = "ftd.win.view.SAE170L" win_param="ListMode=N" title="交易資料登錄" image="~/images/funmenu/master.gif" />-->
+      <item itemNo="SAE171" win_class = "ftd.win.view.SAE171L" win_param="ListMode=N1,P_DataSource=C" title="本場傳票登錄" image="~/images/funmenu/master.gif" />
+      <item itemNo="SAE172" win_class = "ftd.win.view.SAE171L" win_param="ListMode=N2,P_DataSource=C" title="共同運銷傳票登錄" image="~/images/funmenu/master.gif" />
+      <item itemNo="SAE174" win_class = "ftd.win.view.SAE171L" win_param="ListMode=C3,P_DataSource=C" title="拍賣傳票查詢" image="~/images/funmenu/master.gif" />
+      <item itemNo="SAE173" win_class = "ftd.win.view.SAE173L" win_param="ListMode=N" title="管理費收據登錄" image="~/images/funmenu/master.gif" />
+      <!--<item itemNo="SAR230" win_class = "ftd.win.view.SAR230L" win_param="ListMode=N" title="交易資料日報表" image="~/images/funmenu/master.gif" />-->
+      <item itemNo="SAR130" win_class = "ftd.win.view.SAR130L" win_param="ListMode=N" title="管理費查詢列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="SAR101" win_class = "ftd.win.view.SAR101L" win_param="ListMode=N" title="議價交易日報表" image="~/images/funmenu/master.gif" />
+      <item itemNo="SAR140" win_class = "ftd.win.view.SAR140L" win_param="ListMode=N" title="供應人交易資料查詢列印" image="~/images/funmenu/master.gif" />
+      <item itemNo="SAR150" win_class = "ftd.win.view.SAR150L" win_param="ListMode=N" title="承銷人交易資料查詢列印" image="~/images/funmenu/master.gif" />
+      <!--<item itemNo="SAR160" win_class = "ftd.win.view.SAR160L" win_param="ListMode=N" title="承銷人貨款結餘查詢" image="~/images/funmenu/master.gif" />-->
+      <!--<item itemNo="SAR170" win_class = "ftd.win.view.SAR170L" win_param="ListMode=N" title="每日交易記錄查詢" image="~/images/funmenu/master.gif" />-->
+      <item itemNo="SAR060" win_class = "ftd.win.view.SAR060L" win_param="ListMode=N" title="共同運銷統計表" image="~/images/funmenu/master.gif" />
+      <!--<item itemNo="SAR065" win_class = "ftd.win.view.SAR065L" win_param="ListMode=N" title="共同運銷年報表" image="~/images/funmenu/master.gif" />-->
+      <item itemNo="SAR100" win_class = "ftd.win.view.SAR100L" win_param="ListMode=N" title="果菜交易日報表" image="~/images/funmenu/master.gif" />
+      <item itemNo="SAR190" win_class = "ftd.win.view.SAR190L" win_param="ListMode=N" title="果菜交易月報表" image="~/images/funmenu/master.gif" />
+      <item itemNo="SAR180" win_class = "ftd.win.view.SAR180L" win_param="ListMode=N" title="匯款結算作業" image="~/images/funmenu/master.gif" />
+      <item itemNo="SAR230" win_class = "ftd.win.view.SAR230L" win_param="ListMode=N" title="供應人交易速報" image="~/images/funmenu/master.gif" />
+      <!--<item itemNo="SAQ040" win_class = "ftd.win.view.SAQ040L" win_param="ListMode=N" title="出價紀錄查詢" image="~/images/funmenu/master.gif" />-->
+    </item>
+    
+    <item title="農藥殘留檢驗作業" image="~/images/funmenu/folder.gif">
+        <item itemNo="SAE010" win_class = "ftd.win.view.SAE010L" win_param="ListMode=N" title="農藥檢驗結果登錄" image="~/images/funmenu/master.gif" />
+        <item itemNo="SAR010" win_class = "ftd.win.view.SAR010L" win_param="ListMode=N" title="農藥檢驗月報" image="~/images/funmenu/master.gif" />
+    </item>
+    
+    <!--<item title="進貨卸理貨作業" image="~/images/funmenu/folder.gif">-->
+        <!--<item itemNo="SAE020" win_class = "ftd.win.view.SAE020L" win_param="ListMode=N" title="進貨過磅" image="~/images/funmenu/master.gif" />-->
+        <!--<item itemNo="SAE030" win_class = "ftd.win.view.SAE030L" win_param="ListMode=N" title="進貨資料登錄" image="~/images/funmenu/master.gif" />-->
+        <!--<item itemNo="SAE040" win_class = "ftd.win.view.SAE040L" win_param="ListMode=N" title="卸貨點收" image="~/images/funmenu/master.gif" />-->
+        <!--<item itemNo="SAE050" win_class = "ftd.win.view.SAE050L" win_param="ListMode=N" title="散裝空車除重" image="~/images/funmenu/master.gif" />-->
+        <!--<item itemNo="SAE060" win_class = "ftd.win.view.SAE060L" win_param="ListMode=N" title="拍賣理貨作業" image="~/images/funmenu/master.gif" />-->
+    <!--</item>-->
+    
+    <!--<item title="出貨作業" image="~/images/funmenu/folder.gif">
+      <item itemNo="SAR120" win_class = "ftd.win.view.SAR120L" win_param="ListMode=N" title="出貨一覽表" image="~/images/funmenu/master.gif" />
+      --><!--<item itemNo="SAE080" win_class = "ftd.win.view.SAE080L" win_param="ListMode=N" title="出貨確認" image="~/images/funmenu/master.gif" />--><!--
+    </item>-->
+    
+    <item title="行情作業" image="~/images/funmenu/folder.gif">
+      <!--<item itemNo="SAP040" win_class = "ftd.win.view.SAP040L" win_param="ListMode=N" title="交易結算" image="~/images/funmenu/master.gif" />-->
+      <!--<item itemNo="SAQ010" win_class = "ftd.win.view.SAQ010L" win_param="ListMode=N" title="產品別行情查詢" image="~/images/funmenu/master.gif" />-->
+      <item itemNo="SAQ020" win_class = "ftd.win.view.SAQ020L" win_param="ListMode=N" title="交易行情查詢" image="~/images/funmenu/master.gif" />
+      <item itemNo="SAQ021" win_class = "ftd.win.view.SAQ021L" win_param="ListMode=N" title="日行情波動查詢" image="~/images/funmenu/master.gif" />
+      <item itemNo="SAQ022" win_class = "ftd.win.view.SAQ022L" win_param="ListMode=N" title="旬行情波動查詢" image="~/images/funmenu/master.gif" />
+      <item itemNo="SAE180" win_class = "ftd.win.view.SAE180L" win_param="ListMode=N" title="日市況資料維護" image="~/images/funmenu/master.gif" />
+      <item itemNo="SAE190" win_class = "ftd.win.view.SAE190L" win_param="ListMode=N" title="旬市況資料維護" image="~/images/funmenu/master.gif" />
+      <item itemNo="SAR250" win_class = "ftd.win.view.SAR250L" win_param="ListMode=N" title="產品別交易日報" image="~/images/funmenu/master.gif" />
+      <item itemNo="SAR270" win_class = "ftd.win.view.SAR270L" win_param="ListMode=N" title="品種別交易月報" image="~/images/funmenu/master.gif" />
+      <!--<item itemNo="SAE200" win_class = "ftd.win.view.SAE200L" win_param="ListMode=N" title="交易月報表" image="~/images/funmenu/master.gif" />-->
+      <!--<item itemNo="SAE230" win_class = "ftd.win.view.SAE230L" win_param="ListMode=N" title="交易資料調整" image="~/images/funmenu/master.gif" />-->
+      <!--<item itemNo="SAP060" win_class = "ftd.win.view.SAP060L" win_param="ListMode=N" title="交易行情匯出" image="~/images/funmenu/master.gif" />-->
+      <item itemNo="SAP110" win_class = "ftd.win.view.SAP110L" win_param="ListMode=N" title="共同運銷上傳" image="~/images/funmenu/master.gif" />
+    </item>
+    
+    <item title="貨款作業" image="~/images/funmenu/folder.gif">
+      <item itemNo="SAE130" win_class = "ftd.win.view.SAE130L" win_param="ListMode=N" title="承銷人貨款繳納" image="~/images/funmenu/master.gif" />
+      <!--<item itemNo="SAE140" win_class = "ftd.win.view.SAE140L" win_param="ListMode=N" title="供應人貨款領取" image="~/images/funmenu/master.gif" />-->
+      <!--<item itemNo="SAE145" win_class = "ftd.win.view.SAE145L" win_param="ListMode=N" title="供應人貨款領取2" image="~/images/funmenu/master.gif" />-->
+      <item itemNo="SAE150" win_class = "ftd.win.view.SAE150L" win_param="ListMode=N" title="供應人貨款領取" image="~/images/funmenu/master.gif" />
+      <!--<item itemNo="SAP075" win_class = "ftd.win.view.SAP075L" win_param="ListMode=N" title="日結帳作業" image="~/images/funmenu/master.gif" />-->
+      <!--<item itemNo="SAE220" win_class = "ftd.win.view.SAE220L" win_param="ListMode=N" title="代收代付現金結存維護" image="~/images/funmenu/master.gif" />-->
+      <!--<item itemNo="SAR220" win_class = "ftd.win.view.SAR220L" win_param="ListMode=N" title="代收代付現金結存日報表" image="~/images/funmenu/master.gif" />-->
+      <!--<item itemNo="SAP080" win_class = "ftd.win.view.SAP080L" win_param="ListMode=N" title="貨款轉帳作業" image="~/images/funmenu/master.gif" />-->
+      <!--<item itemNo="SAP090" win_class = "ftd.win.view.SAP090L" win_param="ListMode=N" title="月結作業" image="~/images/funmenu/master.gif" />-->
+      <!--<item itemNo="SAR090" win_class = "ftd.win.view.SAR090L" win_param="ListMode=N" title="應收帳款查詢列印" image="~/images/funmenu/master.gif" />-->
+      <!--<item itemNo="SAR100" win_class = "ftd.win.view.SAR100L" win_param="ListMode=N" title="應收未收帳款查詢列印" image="~/images/funmenu/master.gif" />-->
+      <!--<item itemNo="SAR110" win_class = "ftd.win.view.SAR110L" win_param="ListMode=N" title="應付帳款查詢列印" image="~/images/funmenu/master.gif" />-->
+      <!--<item itemNo="SAR120" win_class = "ftd.win.view.SAR120L" win_param="ListMode=N" title="應付未付帳款查詢列印" image="~/images/funmenu/master.gif" />-->
+      <!--<item itemNo="SAE210" win_class = "ftd.win.view.SAE210L" win_param="ListMode=N" title="承銷人月結資料維護" image="~/images/funmenu/master.gif" />-->
+      <!--<item itemNo="SAQ030" win_class = "ftd.win.view.SAQ030L" win_param="ListMode=N" title="每日淨重查詢" image="~/images/funmenu/master.gif" />-->
+      <!--<item itemNo="SAR210" win_class = "ftd.win.view.SAR210L" win_param="ListMode=N" title="承銷人結帳單補印" image="~/images/funmenu/master.gif" />-->
+      <item itemNo="SAR240" win_class = "ftd.win.view.SAR240L" win_param="ListMode=N" title="承銷人收支一覽表" image="~/images/funmenu/master.gif" />
+      <item itemNo="SAR260" win_class = "ftd.win.view.SAR260L" win_param="ListMode=N" title="應付帳款一覽表" image="~/images/funmenu/master.gif" />
+    </item>
+    
+    <!--<item title="承銷人作業" image="~/images/funmenu/folder.gif">-->
+      <!--<item itemNo="SAE150" win_class = "ftd.win.view.SAE150L" win_param="ListMode=N" title="現金納入補登" image="~/images/funmenu/master.gif" />-->
+      <!--<item itemNo="SAE160" win_class = "ftd.win.view.SAE160L" win_param="ListMode=N" title="交易資料補登" image="~/images/funmenu/master.gif" />-->
+    <!--</item>-->
+
+    <item title="基本資料維護" image="~/images/funmenu/folder.gif">
+      <item itemNo="SAM040" win_class = "ftd.win.view.SAM040L" win_param="ListMode=N" title="產品類別資料維護" image="~/images/funmenu/master.gif" />
+      <item itemNo="SAM010" win_class = "ftd.win.view.SAM010L" win_param="ListMode=N" title="產品資料維護" image="~/images/funmenu/master.gif" />
+      <item itemNo="SAM020" win_class = "ftd.win.view.SAM020L" win_param="ListMode=N" title="承銷人資料維護" image="~/images/funmenu/master.gif" />
+      <item itemNo="SAM030" win_class = "ftd.win.view.SAM030L" win_param="ListMode=N" title="供應人資料維護" image="~/images/funmenu/master.gif" />
+      <item itemNo="SAM190" win_class = "ftd.win.view.SAM190L" win_param="ListMode=N" title="零批商資料維護" image="~/images/funmenu/master.gif" />
+      <item itemNo="SAM050" win_class = "ftd.win.view.SAM050L" win_param="ListMode=N" title="交通工具資料維護" image="~/images/funmenu/master.gif" />
+      <!--<item itemNo="SAM090" win_class = "ftd.win.view.SAM090L" win_param="ListMode=N" title="磅秤資料維護" image="~/images/funmenu/master.gif" />-->
+      <item itemNo="SAM100" win_class = "ftd.win.view.SAM100L" win_param="ListMode=N" title="單位資料維護" image="~/images/funmenu/master.gif" />
+      <!--<item itemNo="SAM110" win_class = "ftd.win.view.SAM110L" win_param="ListMode=N" title="附件資料維護" image="~/images/funmenu/master.gif" />-->
+      <item itemNo="SAM130" win_class = "ftd.win.view.SAM130L" win_param="ListMode=N" title="等級資料維護" image="~/images/funmenu/master.gif" />
+      <item itemNo="SAM140" win_class = "ftd.win.view.SAM140L" win_param="ListMode=N" title="原因主檔維護" image="~/images/funmenu/master.gif" />
+      <!--<item itemNo="SAM150" win_class = "ftd.win.view.SAM150L" win_param="ListMode=N" title="進貨車輛維護" image="~/images/funmenu/master.gif" />-->
+
+      <item itemNo="SAM160" win_class = "ftd.win.view.SAM160L" win_param="ListMode=N" title="競價器維護" image="~/images/funmenu/master.gif" />
+      <item itemNo="SAM170" win_class = "ftd.win.view.SAM170L" win_param="ListMode=N" title="供應人分類" image="~/images/funmenu/master.gif" />
+      <item itemNo="SAM180" win_class = "ftd.win.view.SAM180L" win_param="ListMode=N" title="交易群組維護" image="~/images/funmenu/master.gif" />
+      <item itemNo="SAM200" win_class = "ftd.win.view.SAM200L" win_param="ListMode=N" title="共同運銷通報對象維護" image="~/images/funmenu/master.gif" />
+    </item>
+
+    <item title="查詢作業" image="~/images/funmenu/folder.gif">
+      <item itemNo="SAR280L" win_class = "ftd.win.view.SAR280L" win_param="ListMode=N" title="管理費增減比較表" image="~/images/funmenu/master.gif" />
+      <item itemNo="SAR290L" win_class = "ftd.win.view.SAR290L" win_param="ListMode=N" title="各項收入增減比較表" image="~/images/funmenu/master.gif" />
+    </item>
+    
+  </item>
+  
+  <item title="系統設定" image="~/images/funmenu/folder2.gif">
+    <item itemNo="SYM010" win_class = "ftd.win.view.SYM010L" win_param="ListMode=N" title="系統參數設定" image="~/images/funmenu/master.gif" />
+    <item itemNo="SYM020" win_class = "ftd.win.view.SYM020L" win_param="ListMode=N" title="密碼變更" image="~/images/funmenu/master.gif" />
+    <item itemNo="SYM040" win_class = "ftd.win.view.SYM040L" win_param="ListMode=N" title="工作排程" image="~/images/funmenu/master.gif" />
+    <!--<item itemNo="SYM030" win_class = "ftd.win.view.SYM030L" win_param="ListMode=N" title="本機參數設定" image="~/images/funmenu/master.gif" />-->
+  </item>
+</Menu>

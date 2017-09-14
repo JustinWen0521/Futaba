@@ -1,0 +1,169 @@
+﻿@*@model ftd.query.model.EoMenuStructQryModel*@
+
+@{
+    Layout = "~/Views/Shared/_LayoutCodeQuery.cshtml";
+    ViewBag.Title = @Html.functionName("EOM030", true);
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="condition-container">
+        <table>
+            <tr>
+                <td class="field-title">功能代號</td>
+                <td class="field-content">
+                    <input type="text" id="Q_Code" name="Q_Code" /></td>
+                <td class="field-title">功能名稱</td>
+                <td class="field-content">
+                    <input type="text" id="Q_Name" name="Q_Name" /></td>
+            </tr>
+        </table>
+        <div id="toolbar" class="toolbar">
+            <input type="button" id="cmdQuery" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-state-hover" value="查詢" onclick="doAction('query');" />
+        </div>
+    </div>
+}
+
+<div id="ListGridContainer"></div>
+
+
+@section scripts {
+    <script>
+
+        function doAction(act) {
+            switch (act) {
+                case "query":
+                    doQuery();
+                    break;
+                default:
+            }
+        }
+
+        //查詢
+        function doQuery() {
+            try {
+                var jsonData = {};
+                jsonData = ToJsonObject();
+                jsonData["__RequestVerificationToken"] = $("input[name=\"__RequestVerificationToken\"]").val();
+
+                $('#ListGridContainer').jtable('load', jsonData);
+            }
+            catch (e) {
+                alert(e);
+            }
+        }
+
+        function initGrid() {
+            $('#ListGridContainer').jtable({
+                title: '&nbsp;',
+                paging: true,
+                pageSize: 10,
+                pageSizes: [5, 10, 25, 50, 100, 250, 500],
+                sorting: true,
+                selecting: true,
+                multiselect: false,
+                selectingCheckboxes: false,
+                defaultSorting: 'EOMS_NodeId ASC',
+                actions: {
+                    listAction: '@Url.Action("List", "EoMenuStruct")',
+                },
+                fields: {
+                    EOMS_NodeId: {
+                        title: '功能ID',
+                        width: '0.1%',
+                        key: true,
+                        list: false,
+                        create: false,
+                        edit: false
+                    },
+                    EOMS_Code: {
+                        title: '功能代號',
+                        width: '10%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    EOMS_Name: {
+                        title: '功能名稱',
+                        width: '10%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    EOMS_CustAttr1: {
+                        title: '自訂參數1',
+                        width: '10%',
+                        key: false,
+                        list: false,
+                        create: true,
+                        edit: true
+                    },
+                    EOMS_CustAttr2: {
+                        title: '自訂參數2',
+                        width: '10%',
+                        key: true,
+                        list: false,
+                        create: true,
+                        edit: true
+                    },
+                    EOMS_CustAttr3: {
+                        title: '自訂參數3',
+                        width: '10%',
+                        key: true,
+                        list: false,
+                        create: true,
+                        edit: true
+                    }
+                },
+                selectionChanged: function (e) {
+                    var $selectedRows = $('#ListGridContainer').jtable('selectedRows');
+                    if ($selectedRows.length > 0) {
+                        $selectedRows.each(function () {
+                            //取得選擇的資料列
+                            var record = $(this).data('record');
+                            //自定回傳物件
+                            var returnObj = {
+                                RequestKey: '@ViewBag.RequestKey',
+                                Row: record
+                            };
+                            //將物件轉字串
+                            var jsonStr = JSON.stringify(returnObj);
+                            //取得父視窗
+                            var parent = window.parent;
+                            //取得父視窗回傳值欄位
+                            //var cqResult = parent.$('input[data-cqresult]');
+                            //cqResult.each(function (index) {
+                            //    //設定回傳值
+                            //    $(this).val(jsonStr);
+                            //    //觸發父視窗更新畫面
+                            //    $(this).change();
+                            //});
+
+                            var ctl = parent.$('#CQ_Result');
+                            if (ctl) {
+                                //設定回傳值
+                                ctl.val(jsonStr);
+                                //觸發父視窗更新畫面
+                                ctl.change();
+                            }
+                            //關閉CodeQuery視窗
+                            CloseDialog();
+                        });
+                    }
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            //初始化 Grid
+            initGrid();
+            //載入資料
+            doQuery();
+        });
+    </script>
+}
+

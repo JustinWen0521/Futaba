@@ -1,0 +1,78 @@
+﻿@model ftd.data.EO_DepartmentRow
+
+@{
+    Layout = "~/Views/Shared/_LayoutEdit.cshtml";
+    string viewMode = ViewBag.ViewMode;
+    if (viewMode.isNullOrEmpty())
+    {
+        viewMode = "update";
+    }
+}
+
+@section scripts {
+
+    <script>
+        $(document).ready(function () {
+
+            var parent = window.parent;
+            parent.DialogCloseListener.CloseEvent = function () {
+                if (CheckInput()) {
+                    var tfm = $("#formEdit").serialize();
+                    $.ajax({
+                        url: '@Url.Action("Edit", "EoDepartment")',
+                        type: "POST",
+                        //contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: tfm,
+                        success: function (response) {
+                            Save(response);
+                            //因為使用AJAX，故儲存成功後需自行關閉視窗
+                            var result = response['Result'];
+                            if (result != "ERROR") {
+                                //觸發父視窗重新查詢
+                                parent.DialogCloseListener.whatButtonFireEvent("save");
+                                //關閉對話框
+                                CloseDialog();
+                            }
+                        }
+                    });
+                }
+                return false;
+            };
+        });
+    </script>
+}
+
+<div id="frm">
+    @using (Ajax.BeginForm("Edit", "EoDepartment", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "InitListGeneric", UpdateTargetId = "frm" }, new { id = "formEdit", name = "formEdit" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <div>
+            <input type="hidden" id="ViewMode" name="ViewMode"  value="@viewMode"/>
+            @Html.HiddenFor(m => m.EOD_DepartmentId)
+            @Html.HiddenFor(m => m.EOD_DepartmentType)
+            @Html.HiddenFor(m => m.EOD_VirtualType)
+        </div>
+        <table>
+            <tr>
+                <td class="field-title">群組代號</td>
+                <td class="field-content">@Html.TextBoxFor(m => m.EOD_DepartmentCode, new { title = "!群組代號", required = "required" })</td>
+            </tr>
+            <tr>
+                <td class="field-title">群組名稱</td>
+                <td class="field-content">@Html.TextBoxFor(m => m.EOD_DepartmentName, new { title = "!群組名稱", required = "required" })</td>
+            </tr>
+            <tr>
+                <td class="field-title">排序</td>
+                <td class="field-content">@Html.TextBoxFor(m => m.EOD_SortNo, new { title = "!排序", required = "required" })</td>
+            </tr>
+            <tr>
+                <td class="field-title">備註</td>
+                <td class="field-content">@Html.TextAreaFor(m => m.EOD_Note, 5, 50, new { title = "!備註" })</td>
+            </tr>
+        </table>
+    }
+</div>
+

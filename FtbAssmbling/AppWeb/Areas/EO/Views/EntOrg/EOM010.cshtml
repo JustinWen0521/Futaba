@@ -1,0 +1,440 @@
+﻿@*@model ftd.query.model.EoDepartmentQryModel*@
+
+@{
+    ViewBag.Title = @Html.functionName("EOM010", true);
+}
+
+@section function_name {
+    @Html.functionName("EOM010")
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="EOD_DepartmentId" name="EOD_DepartmentId" value="" />
+
+    <div class="condition-container">
+        <div id="qryTitle">
+            <div id="QueryMode" class="query-mode" onclick="toggleQueryPanel()">查詢條件</div>
+            <div id="QueryLevel" class="query-level">
+                @*<input type="radio" name="Q_QueryLevel" id="Q_QueryLevel_1" value="0" /><label for="Q_QueryLevel_1">查詢增加單</label>
+                <input type="radio" name="Q_QueryLevel" id="Q_QueryLevel_2" value="1" checked="checked" /><label for="Q_QueryLevel_2">查詢基本資料</label>
+                <input type="radio" name="Q_QueryLevel" id="Q_QueryLevel_3" value="2" /><label for="Q_QueryLevel_3">查詢明細資料</label>*@
+            </div>
+            <div id="hint" style="display:inline-block; float:right; color:red; height:24px; overflow:hidden;">
+
+            </div>
+        </div>
+
+        <div class="clr"></div>
+
+        <div id="qryCondition">
+            <table>
+                <tr>
+                    <td class="field-title">群組代號</td>
+                    <td class="field-content"><input type="text" id="Q_DepartmentCodeFrom" name="Q_DepartmentCode" />
+                    <td class="field-title">群組名稱</td>
+                    <td class="field-content"><input type="text" id="Q_DepartmentName" name="Q_DepartmentName" /></td>
+                </tr>
+            </table>
+            @Html.toolBar("EOM010")
+        </div>
+    </div>
+}
+
+<div id="tabs">
+    <ul>
+        <li><a href="#tabs-1">群組</a></li>
+        <li><a href="#tabs-2">成員</a></li>
+    </ul>
+    <div id="tabs-1">
+        <div id="ListGridContainer"></div>
+    </div>
+    <div id="tabs-2">
+        <div id="ListGridContainerDetail"></div>
+    </div>
+</div>
+
+
+@section scripts {
+    <script type="text/javascript" src="~/Scripts/Jtabcontrol.js"></script>
+    <script>
+        //收合或展開查詢條件
+        function toggleQueryPanel() {
+            $("#qryCondition").toggle('show');
+        }
+
+        function doAction(act) {
+            switch (act) {
+                case "query":
+                    doQuery();
+                    break;
+                case "report":
+                    break;
+                default:
+            }
+        }
+
+        //查詢-群組
+        function doQuery() {
+            $("#qryCondition").hide();
+            try {
+                var jsonData = {};
+                jsonData = ToJsonObject();
+                jsonData["__RequestVerificationToken"] = $("input[name=\"__RequestVerificationToken\"]").val();
+
+                $('#ListGridContainer').jtable('load', jsonData);
+            }
+            catch (e) {
+                alert(e);
+            }
+        }
+
+        //新增-群組
+        function doAddNew() {
+            ShowDialog(500, 900, true, "@Url.Action("EOM010Edit")", "新增", false);
+        }
+
+        //修改-群組
+        function getItemCommands(item) {
+            var $btn = $('<button title="修改" class="jtable-command-button jtable-edit-command-button" url="@Url.Action("EOM010Edit")?id=' + item.record.EOD_DepartmentId + '"><span>修改</span></button>');
+            OpenDialog($btn, 500, 900, true);
+            return $btn;
+        }
+
+        //查詢-成員
+        function doQueryDetail(DeptId) {
+            try {
+                $('#ListGridContainerDetail').jtable('load', {
+                    Q_DeptId: DeptId,
+                    __RequestVerificationToken: $("input[name=\"__RequestVerificationToken\"]").val()
+                });
+            }
+            catch (e) {
+                alert(e);
+            }
+        }
+
+        //新增-成員
+        function doAddNewDetail() {
+            ShowDialog(500, 800, true, "@Url.Action("EOM011Create", "EntOrg")?deptId=" + $("#EOD_DepartmentId").val(), "新增", false);
+        }
+
+        //修改-成員
+        function getItemCommandsDetail(item) {
+            var $btn = $('<button title="修改" class="jtable-command-button jtable-edit-command-button" url="@Url.Action("EOM011Edit", "EntOrg")?id=' + item.record.EODM_DeptMemberId + '"><span>修改</span></button>');
+            OpenDialog($btn, 500, 800, true);
+            return $btn;
+        }
+
+        var selRow = "";
+        function initGrid() {
+            $('#ListGridContainer').jtable({
+                title: '&nbsp;',
+                paging: true,
+                pageSize: 10,
+                pageSizes: [5, 10, 25, 50, 100, 250, 500],
+                sorting: true,
+                selecting: true,
+                multiselect: false,
+                selectingCheckboxes: false,
+                defaultSorting: 'EOD_DepartmentId ASC',
+                toolbar: {
+                    hoverAnimation: true,
+                    hoverAnimationDuration: 60,
+                    hoverAnimationEasing: undefined,
+                    items: [{
+                        icon: '../Scripts/jtable/themes/lightcolor/add.png',
+                        text: '新增',
+                        click: doAddNew
+                    }]
+                },
+                actions: {
+                    listAction: '@Url.Action("List", "EoDepartment")',
+                    deleteAction: '@Url.Action("Delete", "EoDepartment")'
+                },
+                fields: {
+                    EditColumn: {
+                        title: '',
+                        width: '0.1%',
+                        key: false,
+                        list: true,
+                        create: false,
+                        edit: false,
+                        listClass: 'jtable-command-column',
+                        display: getItemCommands,
+                        sorting: false
+                    },
+                    EOD_DepartmentId: {
+                        title: '部門ID',
+                        width: '0.1%',
+                        key: true,
+                        list: false,
+                        create: false,
+                        edit: false
+                    },
+                    EOD_DepartmentCode: {
+                        title: '群組代號',
+                        width: '6%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    EOD_DepartmentName: {
+                        title: '群組名稱',
+                        width: '10%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    EOD_DepartmentFullName_XX: {
+                        title: '群組全名',
+                        width: '10%',
+                        key: false,
+                        list: false,
+                        create: false,
+                        edit: false
+                    },
+                    EOD_EmployeeCount_XX: {
+                        title: '人員數',
+                        width: '6%',
+                        key: false,
+                        list: true,
+                        create: false,
+                        edit: false
+                    },
+                    EOD_Note: {
+                        title: '備註',
+                        width: '12%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    EOD_ParentId: {
+                        title: '父群組Id',
+                        width: '10%',
+                        key: false,
+                        list: false,
+                        create: false,
+                        edit: false
+                    },
+                    EOD_ParentCode_XX: {
+                        title: '父群組代號',
+                        width: '10%',
+                        key: false,
+                        list: false,
+                        create: false,
+                        edit: false
+                    },
+                    EOD_ParentName_XX: {
+                        title: '父群組名稱',
+                        width: '10%',
+                        key: false,
+                        list: false,
+                        create: false,
+                        edit: false
+                    },
+                    EOD_ParentFullName_XX: {
+                        title: '父群組全名',
+                        width: '10%',
+                        key: false,
+                        list: false,
+                        create: false,
+                        edit: false
+                    },
+                    EOD_SortNo: {
+                        title: '排序',
+                        width: '6%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    EOD_VirtualType: {
+                        title: '可見性',
+                        width: '6%',
+                        key: false,
+                        list: false,
+                        create: false,
+                        edit: false
+                    }
+                },
+                formSubmitting: function (event, data) {
+                    //data.form("__RequestVerificationToken", $("input[name=\"__RequestVerificationToken\"]").val());
+                    //return true;
+                    return data.form.validationEngine('validate');
+                },
+                selectionChanged: function (e) {
+                    var $selectedRows = $('#ListGridContainer').jtable('selectedRows');
+                    if ($selectedRows.length > 0) {
+                        $selectedRows.each(function () {
+                            var record = $(this).data('record');
+                            selRow = record;
+                            $("#EOD_DepartmentId").val(selRow.EOD_DepartmentId);
+                        });
+                    } else {
+                        selRow = null;
+                        $("#EOD_DepartmentId").val("");
+                    };
+                }
+            });
+
+            $('#ListGridContainerDetail').jtable({
+                title: '&nbsp;',
+                paging: true,
+                pageSize: 10,
+                pageSizes: [5, 10, 25, 50, 100, 250, 500],
+                sorting: true,
+                selecting: true,
+                multiselect: false,
+                selectingCheckboxes: false,
+                defaultSorting: 'EODM_DeptMemberId ASC',
+                toolbar: {
+                    hoverAnimation: true,
+                    hoverAnimationDuration: 60,
+                    hoverAnimationEasing: undefined,
+                    items: [{
+                        icon: '../Scripts/jtable/themes/lightcolor/add.png',
+                        text: '新增',
+                        click: doAddNewDetail
+                    }]
+                },
+                actions: {
+                    listAction: '@Url.Action("List", "EoDeptMember")',
+                    deleteAction: '@Url.Action("Delete", "EoDeptMember")'
+                },
+                fields: {
+                    EditColumn: {
+                        title: '',
+                        width: '0.1%',
+                        key: false,
+                        list: true,
+                        create: false,
+                        edit: false,
+                        listClass: 'jtable-command-column',
+                        display: getItemCommandsDetail,
+                        sorting: false
+                    },
+                    EODM_DeptMemberId: {
+                        title: '群組成員ID',
+                        width: '0.1%',
+                        key: true,
+                        list: false
+                    },
+                    EODM_MemberId: {
+                        title: '成員ID',
+                        width: '10%',
+                        list: false
+                    },
+                    EODM_EmpCode_XX: {
+                        title: '人員代號',
+                        width: '10%',
+                        list: true
+                    },
+                    EODM_EmpName_XX: {
+                        title: '人員姓名',
+                        width: '10%',
+                        list: true
+                    }
+                },
+                formSubmitting: function (event, data) {
+                    //data.form("__RequestVerificationToken", $("input[name=\"__RequestVerificationToken\"]").val());
+                    //return true;
+                    return data.form.validationEngine('validate');
+                },
+                selectionChanged: function (e) {
+                    var $selectedRows = $('#ListGridContainerDetail').jtable('selectedRows');
+                    if ($selectedRows.length > 0) {
+                        $selectedRows.each(function () {
+                            //var record = $(this).data('record');
+                            //selRow = record;
+                            //$("#EODM_DeptMemberId").val(record.EODM_DeptMemberId);
+                        });
+                    } else {
+                        //selRow = null;
+                        //$("#EODM_DeptMemberId").val('');
+                    };
+                }
+            });
+        }
+
+        var tabs;
+        function initTab() {
+            tabs = $("#tabs").tabs();
+            //預設起始頁面--default 0
+            switchpage(tabs, 0);
+
+            //設定頁面切換權限 ex '1;0,2;0' ==> tab[0] 可以開tab[1] ;tab[1] 可以開tab[0]和 tab[2];tab[2] 可以開tab[0]
+            var Seq = '1;0';
+            changeSeq(Seq);
+            showMsg = "不允許切換到該頁籤!";
+            var TabListener = initTabs(tabs);
+
+            try {
+                TabListener.whatButtonFireEvent = function (ui) {
+                    switch (getSelectIndex(ui)) {
+                        case 0:
+                            //$("#Q1").show();
+                            doQuery();
+                            break;
+                        case 1:
+                            if ($("#EOD_DepartmentId").val() == "") {
+                                alert("尚未選擇群組!");
+                                return;
+                            }
+                            //$("#Q1").hide();
+                            doQueryDetail($("#EOD_DepartmentId").val());
+                            break;
+                        default:
+                            break;
+                    }
+                    selRow = "";
+                    return true;
+                };
+            }
+            catch (ex) {
+                alert(ex);
+            }
+        }
+
+        $(document).ready(function () {
+            $("#qryCondition").hide();
+
+            //初始化 Grid
+            initGrid();
+
+            //初始化 Tabs
+            initTab();
+
+            doQuery();
+
+            //Edit後回到列表的動作
+            DialogCloseListener.whatButtonFireEvent = function (obj) {
+                if (obj != "save")
+                    return;
+
+                switch (currentpageIndex) {
+                    case 0:
+                        FireEvent = false;
+                        doQuery();
+                        FireEvent = true;
+                        break;
+                    case 1:
+                        if ($("#EOD_DepartmentId").val() == "") {
+                            alert("尚未選擇群組!");
+                            return;
+                        }
+                        //$("#Q1").hide();
+                        doQueryDetail($("#EOD_DepartmentId").val());
+                        break;
+                    default:
+                        break;
+                }
+            };
+        });
+    </script>
+}
+

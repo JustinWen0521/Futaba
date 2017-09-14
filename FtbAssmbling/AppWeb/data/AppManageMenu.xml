@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Menu>
+  <item title="企業組織" image="~/images/funmenu/folder.gif">
+    <item itemNo="eo.30" win_class = "ftd.web.view.EoDepartmentListWindow" win_param="P_ListMode=N" title="部門主檔" image="~/images/funmenu/master.gif"/>
+    <item itemNo="eo.40" win_class = "ftd.web.view.EoEmployeeTitleListWindow" win_param="P_ListMode=N" title="職稱主檔" image="~/images/funmenu/master.gif" />
+    <item itemNo="eo.50" win_class = "ftd.web.view.EoEmployeeListWindow" win_param="P_ListMode=N" title="職員主檔" image="~/images/funmenu/master.gif" />
+    <item itemNo="eo.60" win_class = "ftd.web.view.EoLoginAccountListWindow" win_param="P_ListMode=N" title="登入帳號" image="~/images/funmenu/master.gif" />
+  </item>
+  <item title="權限控管" image="~/images/funmenu/folder2.gif">
+    <item itemNo="eo.10" win_class = "ftd.web.view.EoPermissionListWindow" win_param="P_ListMode=N" title="權限主檔" image="~/images/funmenu/master.gif" />
+    <item itemNo="eo.20" win_class = "ftd.web.view.EoPermissionSettingListWindow" win_param="P_ListMode=N" title="授權清單" image="~/images/funmenu/master.gif" />
+    <item itemNo="eo.90" win_class = "ftd.web.view.EoMenuListWindow" win_param="P_ListMode=N" title="功能表權限設定" image="~/images/funmenu/master.gif" />
+    <item itemNo="eo.100" win_class = "ftd.web.view.EoUserMenuQueryWindow" win_param="P_ListMode=N" title="功能表授權查詢" image="~/images/funmenu/master.gif" />
+  </item>
+  <item title="網站管理" image="~/images/funmenu/folder.gif" >
+    <item itemNo="em.001" win_class="ftd.web.view.EmSysParameterLWin" win_param="P_ListMode=N" image="~/images/funmenu/master.gif" title="系統參數" />
+    <item itemNo="em.170" win_class="ftd.web.view.EmEventQueueLWin" win_param="P_ListMode=N" image="~/images/funmenu/master.gif" title="EMS事件發送記錄" />
+    <item itemNo="wt.10" win_class = "ftd.web.view.WtServiceExceptionListWindow" win_param="P_ListMode=N" title="例外錯誤" image="~/images/funmenu/master.gif"  />
+    <item itemNo="wt.20" win_class = "ftd.web.view.WtScheduleTaskListWindow" win_param="P_ListMode=N" title="工作排程" image="~/images/funmenu/master.gif"   />
+    <item itemNo="eo.70" win_class = "ftd.web.view.EoUserEventListWindow" win_param="P_ListMode=N" title="網站事件類型" image="~/images/funmenu/master.gif" />
+    <item itemNo="eo.80" win_class = "ftd.web.view.EoUserEventLogListWindow" win_param="P_ListMode=N" title="網站事件紀錄" image="~/images/funmenu/master.gif" />
+    <!--<item itemNo="wt.30" win_class = "ftd.web.view.WtContentTypeListWindow" win_param="P_ListMode=N" title="ContentType" image="~/images/funmenu/master.gif"  />-->
+    <!--<item itemNo="wt.40" win_class = "ftd.web.view.WtWebDirectoryListWindow" win_param="P_ListMode=N" title="Web目錄" image="~/images/funmenu/master.gif"  />-->
+    <!--<item itemNo="wt.50" win_class = "ftd.web.view.WtWebFileListWindow" win_param="P_ListMode=N" title="Web檔案" image="~/images/funmenu/master.gif"  />-->
+  </item>
+</Menu>

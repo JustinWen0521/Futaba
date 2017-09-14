@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<SyDocItems>
+  <SyDocItem Code="A1" Name="土增" Desc="土地增加單" />
+  <SyDocItem Code="A2" Name="土減" Desc="土地減損單" />
+  <SyDocItem Code="A3" Name="土增減" Desc="土地增減值單" />
+  <SyDocItem Code="B1" Name="房增" Desc="建物增加單" />
+  <SyDocItem Code="B2" Name="房減" Desc="建物減損單" />
+  <SyDocItem Code="B3" Name="房增減" Desc="建物增減值單" />
+  <SyDocItem Code="C1" Name="土改增" Desc="土地改良物增加單" />
+  <SyDocItem Code="C2" Name="土改減" Desc="土地改良物減損單" />
+  <SyDocItem Code="C3" Name="土改增減" Desc="土地改良物增減值單" />
+  <SyDocItem Code="D1" Name="財增" Desc="動產增加單" />
+  <SyDocItem Code="D2" Name="財減" Desc="動產減損單" />
+  <SyDocItem Code="D3" Name="財增減" Desc="動產增減值單" />
+  <SyDocItem Code="D4" Name="財移" Desc="動產移動單" />
+  <SyDocItem Code="D5" Name="財廢" Desc="動產廢品處理單" />
+  <SyDocItem Code="E1" Name="有價證券增" Desc="有價證券增加單" />
+  <SyDocItem Code="E2" Name="有價證券增減" Desc="有價證券增減值單" />
+  <SyDocItem Code="E3" Name="有價證券減" Desc="有價證券減損單" />
+  <SyDocItem Code="F1" Name="權利增" Desc="權利增加單" />
+  <SyDocItem Code="F2" Name="權利減" Desc="權利減損單" />
+  <SyDocItem Code="F3" Name="權利增減" Desc="權利增減值單" />
+  <SyDocItem Code="G1" Name="非耗品增" Desc="非消耗品增加單" />
+  <SyDocItem Code="G2" Name="非耗品減" Desc="非消耗品減損單" />
+  <SyDocItem Code="G3" Name="非耗品增減" Desc="非消耗品增減值單" />
+  <SyDocItem Code="G4" Name="非耗品移" Desc="非消耗品移動單" />
+  <SyDocItem Code="G5" Name="非耗品廢" Desc="非消耗品廢品處理單" />
+  <SyDocItem Code="H1" Name="軟體增" Desc="電腦軟體增加單" />
+  <SyDocItem Code="H2" Name="軟體減" Desc="電腦軟體減損單" />
+  <SyDocItem Code="H3" Name="軟體增減" Desc="電腦軟體增減值單" />
+  <SyDocItem Code="H4" Name="軟體移" Desc="電腦軟體移動單" />
+  <SyDocItem Code="H5" Name="軟體廢" Desc="電腦軟體廢品處理單" />
+</SyDocItems>

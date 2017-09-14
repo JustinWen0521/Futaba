@@ -1,0 +1,593 @@
+﻿<html style="overflow: hidden; height: 100%; border: none; margin: 0px; padding: 0px;">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>管理資訊平台</title>
+
+    <link href="css/layout-gray.css" rel="stylesheet" type="text/css" />
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link href="css/accordionmenu.css" rel="stylesheet" type="text/css">
+    <link href="css/marquee.css" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="js/jquery-latest.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-latest.js"></script>
+    <script type="text/javascript" src="js/jquery.layout-latest.js"></script>
+    <script type="text/javascript" src="js/debug.js"></script>
+    <script src="js/accordionmenu.js"></script>
+    <script type="text/javascript" src="js/marquee.js"></script>
+
+    <!--table use-->
+    <link href="css/ui.jqgrid.css" rel="stylesheet">
+    <link href="css/jquery.ui.theme.css" rel="stylesheet">
+    <!--表格樣式-->
+
+    <script src="js/jquery.jqGrid.src.js"></script>
+    <script src="js/grid.locale-tw.js"></script>
+    <script src="js/modernizr-2.6.2.js"></script>
+    <script>
+        $(function () {
+            $("#datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true
+            });
+        });
+    </script>
+    <script type="text/javascript">
+
+        function outputHashStructure(hash, title) {
+            if ($.type(hash) === 'string') {
+                hash = eval(hash);
+            }
+            var data = getKeys(hash);
+            console.data(data, title || 'data');
+            return data;
+
+            function getKeys(branch) {
+                var keys = {};
+                $.each(branch, function (k, v) {
+                    if ($.isPlainObject(v)) {
+                        // we can skip sub-keys in options, state, etc.
+                        if (k.match(/(options|state)/)) // 
+                            keys[k] = {};
+                        else
+                            keys[k] = getKeys(v);
+                    }
+                });
+                return keys;
+            };
+        };
+
+        $(document).ready(function () {
+            pageLayout = $('body').layout({
+                name: 'outerLayout'
+            , west: { //left menu收合區寬度比例設定
+                size: .20
+                ,	//children: {
+                //					name:		''
+                //					//name:		'middleLayout'
+                //				,	center__children: {
+                //						name:		'innerLayout'
+                //					,	east__size:	.33
+                //					,	west__size:	.33
+                //					,	autoResize:	true // try to maintain percentage sizes
+                //					,	stateManagement__autoLoad: false // disable cascaded state-loading
+                //					}
+                //				}
+            }
+            , east: { //right box(show data)
+                initClosed: true
+            }
+            , stateManagement: {
+                enabled: true	// NOTE: includeChildren = true  by default
+            }
+            });
+
+            // manually add a layout inside the center content-div
+            // the page-layout will be automatically detected and updated
+            pageLayout.center.content.layout();
+
+            // sync checkbox with layout state options
+            var state = pageLayout.options.stateManagement;
+            $('#autoSaveState').attr("checked", (state.enabled && !!state.autoSave));
+            $('#autoLoadState').attr("checked", (state.enabled && !!state.autoLoad));
+
+        });
+
+    </script>
+
+    <script>//表格
+        //功能鍵：修改/刪除/明細
+        //function itemActionsFormatter(cellvalue, options, rowObject) {
+        //    // format the cellvalue to new format
+        //    funEdit = "<img src=\"/images/edit.gif\" title=\"編輯\" style=\"cursor: pointer;\" onClick=\"doEdit('" + cellvalue + "');\" />";
+        //    funDelete = "<img src=\"/images/delete.gif\" title=\"刪除\" style=\"cursor: pointer;\" onClick=\"doDelete('" + cellvalue + "');\" />";
+        //    return funEdit + "&nbsp;" + funDelete;
+        //}8uij
+
+        //子項功能連結
+        function detailLinkFormatter(cellvalue, options, rowObject) {
+            // format the cellvalue to new format
+            funDetails = "<a href='/UnitMovable/Movable/" + cellvalue + "'>基本資料</a>";
+            return funDetails;
+        }
+
+        //切換查詢模式(基本/進階)
+        function queryMode() {
+            if (document.getElementById("QueryCondition_Advance").style.display.toString() == "none") {
+                document.getElementById("QueryCondition_Advance").style.display = "";
+                document.getElementById("QueryMode").textContent = "進階條件－";
+            }
+            else {
+                document.getElementById("QueryCondition_Advance").style.display = "none";
+                document.getElementById("QueryMode").textContent = "進階條件＋";
+            }
+        }
+
+        //查詢
+        function doQuery() {
+            var grid = $("#grid");
+            grid.trigger('reloadGrid');
+        }
+
+        //新增
+        function doAdd() {
+            jQuery("#grid").editGridRow("new", { height: 280, reloadAfterSubmit: true, closeOnEscape: true }); //, addedrow: first });
+        }
+
+        //修改
+        function doEdit(id) {
+            $("#ItemWindow").dialog('open');
+        }
+
+        //刪除
+        function doDelete(id) {
+            $("#ItemWindow").dialog('open');
+        }
+
+        //隱藏 新增/修改/刪除 視窗(div)
+        $("#ItemWindow").dialog({
+            autoOpen: false
+        });
+
+        function initGrid() {
+            var grid = $('#grid');
+            grid.jqGrid({
+                url: '/UmAddProof/',
+                editurl: '/UmAddProof/Edit',
+                datatype: 'json',
+                jsonReader: {
+                    repeatitems: false,
+                    id: 'UMA_AddProofId'
+                    //userdata: "userdata",
+                },
+                mtype: 'POST',
+                //width: 960,
+                //autowidth: true,
+                shrinkToFit: true,
+                height: 'auto',
+                pager: '#pager',
+                rowNum: 10,
+                rowList: [10, 20, 50],
+                viewrecords: true,
+                //rownumbers: true,
+                //rownumWidth: 40,
+                sortname: 'UMA_CaseNo',
+                sortorder: "asc",
+                caption: '增加單',
+                //toolbar: [true, 'top'],
+                //userDataOnFooter: true,
+                //userData: function () { return jQuery("#grid").jqGrid('getGridParam', 'userData'); },
+                postData: {
+                    Q_CaseName: function () { return $("#Q_CaseName").val(); },
+                    Q_CaseNoFrom: function () { return $("#Q_CaseNoFrom").val(); },
+                    Q_CaseNoTo: function () { return $("#Q_CaseNoTo").val(); },
+                    Q_EnterDate: function () { return $("#Q_EnterDate").val(); },
+                    Q_EnterOrgId: function () { return $("#Q_EnterOrgId").val(); },
+                    Q_ManageNo: function () { return $("#Q_ManageNo").val(); },
+                    Q_OrganAName_XX: function () { return $("#Q_OrganAName_XX").val(); },
+                    Q_OrganSName_XX: function () { return $("#Q_OrganSName_XX").val(); },
+                    Q_Ownership: function () { return $("#Q_Ownership").val(); },
+                    Q_ProofDoc: function () { return $("#Q_ProofDoc").val(); },
+                    Q_ProofNo: function () { return $("#Q_ProofNo").val(); },
+                    Q_SummonsNoFrom: function () { return $("#Q_SummonsNoFrom").val(); },
+                    Q_SummonsNoTo: function () { return $("#Q_SummonsNoTo").val(); }
+                },
+                //colNames: ['', '', '增加單Id', '權屬', '電腦單號', '案名', '填單日期', '入帳日期', '月結', '入帳機關名稱'],
+                colModel: [
+                    {
+                        name: 'act', label: ' ', index: 'act', width: 40, sortable: false, align: 'center', resizable: false
+                        //formatter: itemActionsFormatter
+                    },
+                    {
+                        name: 'UMA_AddProofId', label: ' ', index: 'detail', width: 70, sortable: false, align: 'center', resizable: false,
+                        //edittype: 'select',
+                        //formatter: 'showlink',
+                        //formatoptions: { baseLinkUrl: '/UnitMovable/Movable/', addParam: '' }
+                        formatter: detailLinkFormatter
+                    },
+                    {
+                        name: 'UMA_AddProofId', label: '增加單Id', width: 10, align: 'left', hidden: true,
+                        editable: false, edittype: 'text', editoptions: { size: 50, maxlength: 100 }, editrules: { required: true }
+                    },
+                    {
+                        name: 'UMA_OwnershipName_XX', label: '權屬', width: 50, align: 'left', hidden: true,
+                        editable: true, edittype: 'select', editoptions: { value: "1:市有;2:國有;3:自有" }, editrules: { required: true }, edithidden: false
+                    },
+                    {
+                        name: 'UMA_CaseNo', label: '電腦單號', width: 100, align: 'left',
+                        editable: true, edittype: 'text', editoptions: { size: 50, maxlength: 100 }, editrules: { required: true }
+                    },
+                    {
+                        name: 'UMA_CaseName', label: '案名', width: 300, align: 'left',
+                        editable: true, edittype: 'text', editoptions: { size: 50, maxlength: 100 }, editrules: { required: true }
+                    },
+                    {
+                        name: 'UMA_WriteDate', label: '填單日期', width: 80, align: 'left',
+                        editable: true, edittype: 'text', editoptions: { size: 50, maxlength: 100 }, editrules: { required: true }
+                    },
+                    {
+                        name: 'UMA_EnterDate', label: '入帳日期', width: 100, align: 'left',
+                        editable: true, edittype: 'text', editoptions: { size: 50, maxlength: 100 }, editrules: { required: true }
+                    },
+                    {
+                        name: 'UMA_Closed', label: '月結', width: 100, align: 'left',
+                        editable: true, edittype: 'text', editoptions: { size: 50, maxlength: 100 }, editrules: { required: true }
+                    },
+                    //{
+                    //    name: 'UMA_EnterOrgId', label: '入帳機關編號', width: 100, align: 'left',
+                    //    editable: true, edittype: 'text', editoptions: { size: 50, maxlength: 100 }, editrules: { required: true }
+                    //},
+                    {
+                        name: 'UMA_OrganSName_XX', label: '入帳機關', width: 120, align: 'left',
+                        editable: true, edittype: 'text', editoptions: { size: 50, maxlength: 100 }, editrules: { required: true }
+                    }
+                ],
+                loadError: function (xhr, st, err) {
+                    return jQuery("#rsperror").html("Type: " + st + "; Response: " + xhr.status + " " + xhr.statusText);
+                },
+                //onSortCol: function (name, index) { alert("Column Name: " + name + " Column Index: " + index); },
+                //ondblClickRow: function (id) { alert("You double click row with id: " + id); },
+                gridComplete: function () {
+                    var ids = jQuery("#grid").jqGrid('getDataIDs');
+                    for (var i = 0; i < ids.length; i++) {
+                        var cl = ids[i];
+                        btnEdit = "<img src=\"/images/edit.gif\" title=\"編輯\" style=\"cursor: pointer;\" onclick=\"jQuery('#grid').jqGrid('editGridRow','" + cl + "',{checkOnSubmit:true,checkOnUpdate:true,closeAfterEdit:true,closeOnEscape:true});\" />";
+                        btnDelete = "<img src=\"/images/delete.gif\" title=\"刪除\" style=\"cursor: pointer;\" onclick=\"jQuery('#grid').jqGrid('delGridRow','" + cl + "',{closeOnEscape:true});\" />";
+                        jQuery("#grid").jqGrid('setRowData', ids[i], { act: btnEdit + "&nbsp;" + btnDelete });
+                    }
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            //初始化jqGrid
+            initGrid();
+        });
+    </script>
+    <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable" tabindex="-1" role="dialog" aria-describedby="ItemWindow" aria-labelledby="ui-id-1" style="display: none; position: absolute;">
+        <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
+            <span id="ui-id-1" class="ui-dialog-title">&nbsp;</span>
+            <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close" role="button" aria-disabled="false" title="close">
+                <span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span><span class="ui-button-text">close</span></button>
+        </div>
+        <div id="ItemWindow" class="ui-dialog-content ui-widget-content">
+            <input type="text">
+            <input type="text">
+            <input type="text">
+        </div>
+        <div class="ui-resizable-handle ui-resizable-n" style="z-index: 90;"></div>
+        <div class="ui-resizable-handle ui-resizable-e" style="z-index: 90;"></div>
+        <div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div>
+        <div class="ui-resizable-handle ui-resizable-w" style="z-index: 90;"></div>
+        <div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se" style="z-index: 90;"></div>
+        <div class="ui-resizable-handle ui-resizable-sw" style="z-index: 90;"></div>
+        <div class="ui-resizable-handle ui-resizable-ne" style="z-index: 90;"></div>
+        <div class="ui-resizable-handle ui-resizable-nw" style="z-index: 90;"></div>
+    </div>
+
+</head>
+<body class="ui-layout-container dt-example">
+    <!--上方logo區-->
+    <div class="ui-layout-north ui-layout-pane ui-layout-pane-north">
+        <img src="images/logo.png" alt="Logo" width="332" height="50" style="float: left;">
+        <div class="ButtomStyle2">系統管理員登入訊息顯示，<a href="#">登出</a></div>
+        <a href="#" class="ButtomStyle1">首頁</a>
+        <a href="#" class="ButtomStyle1">關於系統</a>
+        <a href="#" class="ButtomStyle1">連絡我們</a>
+
+        <div class="clr"></div>
+        <!--訊息跑馬燈start-->
+        <div class="NewsBox">
+            <div id="abgne_marquee">
+                <ul>
+                    <li><a href="#">我是訊息1號 </a></li>
+                    <li><a href="#">我是訊息2號 </a></li>
+                    <li><a href="#">我是訊息3號 </a></li>
+                    <li><a href="#">我是訊息4號  </a></li>
+                    <li><a href="#">我是訊息5號 </a></li>
+                    <li><a href="#">我是訊息6號 </a></li>
+
+                    <li><a href="#">我是訊息1號 </a></li>
+                    <li><a href="#">我是訊息2號 </a></li>
+                    <li><a href="#">我是訊息3號 </a></li>
+                    <li><a href="#">我是訊息4號  </a></li>
+                    <li><a href="#">我是訊息5號 </a></li>
+                    <li><a href="#">我是訊息6號 </a></li>
+                </ul>
+            </div>
+        </div>
+        <!--訊息跑馬燈end-->
+    </div>
+    <!--middle center顯示資料區-->
+    <div class="ui-layout-center container blue ui-layout-pane ui-layout-pane-center ui-layout-pane-hover ui-layout-pane-center-hover ui-layout-pane-open-hover ui-layout-pane-center-open-hover">
+        <section class="content-wrapper main-content clear-fix">
+
+            <h2>動產增加單</h2>
+
+            <form action="" method="post">
+                <input name="__RequestVerificationToken" type="hidden" value="u5wW7jL0vLmtFkEMhfGL5306JT8h1O_sOORKCVdnVZg0TGkPYq5bymL8kea6pc6Ve0Tq2csqdc1opJZkAlBoV-5xkZohOOzB_tPxTxQGlQqKrSSmnbTf699vJ_OGy2AA0ERRaGLr18l6sTlovNoEQzIfeJYv9aSC_410umv0dWI1">
+                <fieldset>
+                    <div class="title2">查詢條件</div>
+
+                    <div id="QueryMode" onclick="queryMode();">進階條件</div>
+                    <button id="btnQuery" type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-state-hover" onclick="doQuery();" value="查詢">查詢</button>
+                    <div class="clr"></div>
+                    <div id="QueryCondition_Base">
+                        <div>
+                            <label class="w">案名</label><input type="text" id="Q_CaseName" name="Q_CaseName"></div>
+                        <div>
+                            <label>電腦單號</label>
+                            <input type="text" id="Q_CaseNoFrom" name="Q_CaseNoFrom" class="nkfcp-caseno">
+                            ~<input type="text" id="Q_CaseNoTo" name="Q_CaseNoTo" class="nkfcp-caseno">
+                        </div>
+                    </div>
+                    <div class="clr"></div>
+                    <div id="QueryCondition_Advance" style="display: none;">
+                        <div>
+                            <label>入帳日期</label><input type="text" id="Q_EnterDate" name="Q_EnterDate"></div>
+                        <div>
+                            <label>入帳機關</label><input type="text" id="Q_EnterOrgId" name="Q_EnterOrgId"></div>
+                        <div>
+                            <label>財產管理單位</label><input type="text" id="Q_ManageNo" name="Q_ManageNo"></div>
+                        <div>
+                            <label>機關全名</label><input type="text" id="Q_OrganAName_XX" name="Q_OrganAName_XX"></div>
+                        <div>
+                            <label>機關簡稱</label><input type="text" id="Q_OrganSName_XX" name="Q_OrganSName_XX"></div>
+                        <div>
+                            <label>權屬</label><input type="text" id="Q_Ownership" name="Q_Ownership"></div>
+                        <div>
+                            <label>增加單編號－字</label><input type="text" id="Q_ProofDoc" name="Q_ProofDoc"></div>
+                        <div>
+                            <label>增加單編號－號</label><input type="text" id="Q_ProofNo" name="Q_ProofNo"></div>
+                        <div>
+                            <label>傳票號數</label><input type="text" id="Q_SummonsNoFrom" name="Q_SummonsNoFrom">～<input type="text" id="Q_SummonsNoTo" name="Q_SummonsNoTo"></div>
+
+                    </div>
+
+                    <div class="clr"></div>
+
+                </fieldset>
+            </form>
+            <div id="toolbar">
+                <button id="btnAdd" type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-state-hover" onclick="doAdd();" value="新增">新增</button>
+            </div>
+            <div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all" id="gbox_grid" dir="ltr" style="width: 950px;">
+                <div class="ui-widget-overlay jqgrid-overlay" id="lui_grid"></div>
+                <div class="loading ui-state-default ui-state-active" id="load_grid" style="display: none;">載入中...</div>
+                <div class="ui-jqgrid-view" id="gview_grid" style="width: 950px;">
+                    <div class="ui-jqgrid-titlebar ui-jqgrid-caption ui-widget-header ui-corner-top ui-helper-clearfix"><a role="link" class="ui-jqgrid-titlebar-close ui-corner-all HeaderButton" style="right: 0px;"><span class="ui-icon ui-icon-circle-triangle-n"></span></a><span class="ui-jqgrid-title">增加單</span></div>
+                    <div class="ui-state-default ui-jqgrid-hdiv" style="width: 950px;">
+                        <div class="ui-jqgrid-hbox">
+                            <table class="ui-jqgrid-htable" style="width: 950px" role="grid" aria-labelledby="gbox_grid" cellspacing="0" cellpadding="0" border="0">
+                                <thead>
+                                    <tr class="ui-jqgrid-labels" role="rowheader">
+                                        <th id="grid_act" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 40px;">
+                                            <div id="jqgh_grid_act" class="ui-jqgrid-sortable"><span class="s-ico" style="display: none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div>
+                                        </th>
+                                        <th id="grid_UMA_AddProofId" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 70px;">
+                                            <div id="jqgh_grid_UMA_AddProofId" class="ui-jqgrid-sortable"><span class="s-ico" style="display: none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div>
+                                        </th>
+                                        <th id="Th1" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 10px; display: none;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="Div1" class="ui-jqgrid-sortable">增加單Id<span class="s-ico" style="display: none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div>
+                                        </th>
+                                        <th id="grid_UMA_OwnershipName_XX" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 50px; display: none;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_grid_UMA_OwnershipName_XX" class="ui-jqgrid-sortable">權屬<span class="s-ico" style="display: none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div>
+                                        </th>
+                                        <th id="grid_UMA_CaseNo" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 100px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_grid_UMA_CaseNo" class="ui-jqgrid-sortable">電腦單號<span class="s-ico" style=""><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div>
+                                        </th>
+                                        <th id="grid_UMA_CaseName" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 300px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_grid_UMA_CaseName" class="ui-jqgrid-sortable">案名<span class="s-ico" style="display: none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div>
+                                        </th>
+                                        <th id="grid_UMA_WriteDate" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 80px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_grid_UMA_WriteDate" class="ui-jqgrid-sortable">填單日期<span class="s-ico" style="display: none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div>
+                                        </th>
+                                        <th id="grid_UMA_EnterDate" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 100px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_grid_UMA_EnterDate" class="ui-jqgrid-sortable">入帳日期<span class="s-ico" style="display: none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div>
+                                        </th>
+                                        <th id="grid_UMA_Closed" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 100px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_grid_UMA_Closed" class="ui-jqgrid-sortable">月結<span class="s-ico" style="display: none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div>
+                                        </th>
+                                        <th id="grid_UMA_OrganSName_XX" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 120px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_grid_UMA_OrganSName_XX" class="ui-jqgrid-sortable">入帳機關<span class="s-ico" style="display: none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="ui-jqgrid-bdiv" style="height: auto; width: 950px;">
+                        <div style="position: relative;">
+                            <div></div>
+                            <table id="grid" tabindex="0" cellspacing="0" cellpadding="0" border="0" role="grid" aria-multiselectable="false" aria-labelledby="gbox_grid" class="ui-jqgrid-btable" style="width: 950px;">
+                                <tbody>
+                                    <tr class="jqgfirstrow" role="row" style="height: auto">
+                                        <td role="gridcell" style="height: 0px; width: 40px;"></td>
+                                        <td role="gridcell" style="height: 0px; width: 70px;"></td>
+                                        <td role="gridcell" style="height: 0px; width: 10px; display: none;"></td>
+                                        <td role="gridcell" style="height: 0px; width: 50px; display: none;"></td>
+                                        <td role="gridcell" style="height: 0px; width: 100px;"></td>
+                                        <td role="gridcell" style="height: 0px; width: 300px;"></td>
+                                        <td role="gridcell" style="height: 0px; width: 80px;"></td>
+                                        <td role="gridcell" style="height: 0px; width: 100px;"></td>
+                                        <td role="gridcell" style="height: 0px; width: 100px;"></td>
+                                        <td role="gridcell" style="height: 0px; width: 120px;"></td>
+                                    </tr>
+                                    <tr role="row" id="UMA_282562" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                                        <td role="gridcell" style="text-align: center;" title="" aria-describedby="grid_act">
+                                            <img src="images/edit.gif" title="編輯" style="cursor: pointer;" onclick="jQuery(&#39;#grid&#39;).jqGrid(&#39;editGridRow&#39;,&#39;UMA_282562&#39;,{checkOnSubmit:true,checkOnUpdate:true,closeAfterEdit:true,closeOnEscape:true});">&nbsp;<img src="images/delete.gif" title="刪除" style="cursor: pointer;" onclick="jQuery(&#39;#grid&#39;).jqGrid(&#39;delGridRow&#39;,&#39;UMA_282562&#39;,{closeOnEscape:true});"></td>
+                                        <td role="gridcell" style="text-align: center;" title="基本資料" aria-describedby="grid_UMA_AddProofId"><a href="http://61.218.231.23/UnitMovable/Movable/UMA_282562">基本資料</a></td>
+                                        <td role="gridcell" style="text-align: left; display: none;" title="UMA_282562" aria-describedby="grid_UMA_AddProofId">UMA_282562</td>
+                                        <td role="gridcell" style="text-align: left; display: none;" title="市有" aria-describedby="grid_UMA_OwnershipName_XX">市有</td>
+                                        <td role="gridcell" style="text-align: left;" title="0730630001" aria-describedby="grid_UMA_CaseNo">0730630001</td>
+                                        <td role="gridcell" style="text-align: left;" title="" aria-describedby="grid_UMA_CaseName">&nbsp;</td>
+                                        <td role="gridcell" style="text-align: left;" title="0730616" aria-describedby="grid_UMA_WriteDate">0730616</td>
+                                        <td role="gridcell" style="text-align: left;" title="0730630" aria-describedby="grid_UMA_EnterDate">0730630</td>
+                                        <td role="gridcell" style="text-align: left;" title="Y" aria-describedby="grid_UMA_Closed">Y</td>
+                                        <td role="gridcell" style="text-align: left;" title="資訊中心" aria-describedby="grid_UMA_OrganSName_XX">資訊中心</td>
+                                    </tr>
+                                    <tr role="row" id="UMA_282563" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                                        <td style="text-align: center;" title="" aria-describedby="grid_act" role="gridcell">
+                                            <img src="images/edit.gif" title="編輯" style="cursor: pointer;" onclick="jQuery(&#39;#grid&#39;).jqGrid(&#39;editGridRow&#39;,&#39;UMA_282563&#39;,{checkOnSubmit:true,checkOnUpdate:true,closeAfterEdit:true,closeOnEscape:true});">&nbsp;<img src="images/delete.gif" title="刪除" style="cursor: pointer;" onclick="jQuery(&#39;#grid&#39;).jqGrid(&#39;delGridRow&#39;,&#39;UMA_282563&#39;,{closeOnEscape:true});"></td>
+                                        <td style="text-align: center;" title="基本資料" aria-describedby="grid_UMA_AddProofId" role="gridcell"><a href="http://61.218.231.23/UnitMovable/Movable/UMA_282563">基本資料</a></td>
+                                        <td style="text-align: left; display: none;" title="UMA_282563" aria-describedby="grid_UMA_AddProofId" role="gridcell">UMA_282563</td>
+                                        <td style="text-align: left; display: none;" title="市有" aria-describedby="grid_UMA_OwnershipName_XX" role="gridcell">市有</td>
+                                        <td style="text-align: left;" title="0760630001" aria-describedby="grid_UMA_CaseNo" role="gridcell">0760630001</td>
+                                        <td style="text-align: left;" title="" aria-describedby="grid_UMA_CaseName" role="gridcell">&nbsp;</td>
+                                        <td style="text-align: left;" title="0760630" aria-describedby="grid_UMA_WriteDate" role="gridcell">0760630</td>
+                                        <td style="text-align: left;" title="0760630" aria-describedby="grid_UMA_EnterDate" role="gridcell">0760630</td>
+                                        <td style="text-align: left;" title="Y" aria-describedby="grid_UMA_Closed" role="gridcell">Y</td>
+                                        <td style="text-align: left;" title="資訊中心" aria-describedby="grid_UMA_OrganSName_XX" role="gridcell">資訊中心</td>
+                                    </tr>
+                                    <tr role="row" id="UMA_282564" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                                        <td role="gridcell" style="text-align: center;" title="" aria-describedby="grid_act">
+                                            <img src="images/edit.gif" title="編輯" style="cursor: pointer;" onclick="jQuery(&#39;#grid&#39;).jqGrid(&#39;editGridRow&#39;,&#39;UMA_282564&#39;,{checkOnSubmit:true,checkOnUpdate:true,closeAfterEdit:true,closeOnEscape:true});">&nbsp;<img src="images/delete.gif" title="刪除" style="cursor: pointer;" onclick="jQuery(&#39;#grid&#39;).jqGrid(&#39;delGridRow&#39;,&#39;UMA_282564&#39;,{closeOnEscape:true});"></td>
+                                        <td role="gridcell" style="text-align: center;" title="基本資料" aria-describedby="grid_UMA_AddProofId"><a href="http://61.218.231.23/UnitMovable/Movable/UMA_282564">基本資料</a></td>
+                                        <td role="gridcell" style="text-align: left; display: none;" title="UMA_282564" aria-describedby="grid_UMA_AddProofId">UMA_282564</td>
+                                        <td role="gridcell" style="text-align: left; display: none;" title="市有" aria-describedby="grid_UMA_OwnershipName_XX">市有</td>
+                                        <td role="gridcell" style="text-align: left;" title="0760731001" aria-describedby="grid_UMA_CaseNo">0760731001</td>
+                                        <td role="gridcell" style="text-align: left;" title="" aria-describedby="grid_UMA_CaseName">&nbsp;</td>
+                                        <td role="gridcell" style="text-align: left;" title="0760716" aria-describedby="grid_UMA_WriteDate">0760716</td>
+                                        <td role="gridcell" style="text-align: left;" title="0760731" aria-describedby="grid_UMA_EnterDate">0760731</td>
+                                        <td role="gridcell" style="text-align: left;" title="Y" aria-describedby="grid_UMA_Closed">Y</td>
+                                        <td role="gridcell" style="text-align: left;" title="資訊中心" aria-describedby="grid_UMA_OrganSName_XX">資訊中心</td>
+                                    </tr>
+                                    <tr role="row" id="UMA_282565" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr">
+                                        <td style="text-align: center;" title="" aria-describedby="grid_act" role="gridcell">
+                                            <img src="images/edit.gif" title="編輯" style="cursor: pointer;" onclick="jQuery(&#39;#grid&#39;).jqGrid(&#39;editGridRow&#39;,&#39;UMA_282565&#39;,{checkOnSubmit:true,checkOnUpdate:true,closeAfterEdit:true,closeOnEscape:true});">&nbsp;<img src="images/delete.gif" title="刪除" style="cursor: pointer;" onclick="jQuery(&#39;#grid&#39;).jqGrid(&#39;delGridRow&#39;,&#39;UMA_282565&#39;,{closeOnEscape:true});"></td>
+                                        <td style="text-align: center;" title="基本資料" aria-describedby="grid_UMA_AddProofId" role="gridcell"><a href="http://61.218.231.23/UnitMovable/Movable/UMA_282565">基本資料</a></td>
+                                        <td style="text-align: left; display: none;" title="UMA_282565" aria-describedby="grid_UMA_AddProofId" role="gridcell">UMA_282565</td>
+                                        <td style="text-align: left; display: none;" title="市有" aria-describedby="grid_UMA_OwnershipName_XX" role="gridcell">市有</td>
+                                        <td style="text-align: left;" title="0760831001" aria-describedby="grid_UMA_CaseNo" role="gridcell">0760831001</td>
+                                        <td style="text-align: left;" title="" aria-describedby="grid_UMA_CaseName" role="gridcell">&nbsp;</td>
+                                        <td style="text-align: left;" title="0760816" aria-describedby="grid_UMA_WriteDate" role="gridcell">0760816</td>
+                                        <td style="text-align: left;" title="0760831" aria-describedby="grid_UMA_EnterDate" role="gridcell">0760831</td>
+                                        <td style="text-align: left;" title="Y" aria-describedby="grid_UMA_Closed" role="gridcell">Y</td>
+                                        <td style="text-align: left;" title="資訊中心" aria-describedby="grid_UMA_OrganSName_XX" role="gridcell">資訊中心</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui-jqgrid-resize-mark" id="rs_mgrid">&nbsp;</div>
+                <div id="pager" class="ui-state-default ui-jqgrid-pager ui-corner-bottom" dir="ltr" style="width: 950px;">
+                    <div id="pg_pager" class="ui-pager-control" role="group">
+                        <table cellspacing="0" cellpadding="0" border="0" class="ui-pg-table" style="width: 100%; table-layout: fixed; height: 100%; color: #FFF;" role="row">
+                            <tbody>
+                                <tr>
+                                    <td id="pager_left" align="left"></td>
+                                    <td id="pager_center" align="center" style="white-space: pre; width: 273px;">
+                                        <table cellspacing="0" cellpadding="0" border="0" style="table-layout: auto;" class="ui-pg-table">
+                                            <tbody>
+                                                <tr>
+                                                    <td id="first_pager" class="ui-pg-button ui-corner-all ui-state-disabled"><span class="ui-icon ui-icon-seek-first"></span></td>
+                                                    <td id="prev_pager" class="ui-pg-button ui-corner-all ui-state-disabled"><span class="ui-icon ui-icon-seek-prev"></span></td>
+                                                    <td class="ui-pg-button ui-state-disabled" style="width: 4px;"><span class="ui-separator"></span></td>
+                                                    <td dir="ltr">
+                                                        <input class="ui-pg-input" type="text" size="2" maxlength="7" value="0" role="textbox">
+                                                        共 <span id="sp_1_pager">79</span> 頁</td>
+                                                    <td class="ui-pg-button ui-state-disabled" style="width: 4px;"><span class="ui-separator"></span></td>
+                                                    <td id="next_pager" class="ui-pg-button ui-corner-all"><span class="ui-icon ui-icon-seek-next"></span></td>
+                                                    <td id="last_pager" class="ui-pg-button ui-corner-all"><span class="ui-icon ui-icon-seek-end"></span></td>
+                                                    <td dir="ltr">
+                                                        <select class="ui-pg-selbox" role="listbox">
+                                                            <option role="option" value="10" selected="selected">10</option>
+                                                            <option role="option" value="20">20</option>
+                                                            <option role="option" value="50">50</option>
+                                                        </select></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td id="pager_right" align="right">
+                                        <div dir="ltr" style="text-align: right" class="ui-paging-info">1 - 10 共 784 筆</div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+    <!--左邊區塊-->
+    <div class="ui-layout-west blue ui-layout-pane ui-layout-pane-west ui-layout-container">
+        <!--選單-->
+        <div id="acdnmenu">
+            <ul>
+                <li>企業組織
+            <ul>
+                <li>EO.030-部門主檔
+                    <ul>
+                        <li><a href="#">Level3.1</a></li>
+                        <li><a href="#">Level3.2</a></li>
+                        <li><a href="#">Level3.3</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">EO.040-職稱主檔</a></li>
+                <li><a href="#">EO.050-職員主檔</a></li>
+                <li><a href="#">EO.060-登入帳號</a></li>
+            </ul>
+                </li>
+                <li>權限控管
+        	<ul>
+                <li><a href="#">EO.010-權限主檔</a></li>
+                <li><a href="#">EO.020-授權清單</a></li>
+                <li><a href="#">EO.090-功能表權限設定</a></li>
+                <li><a href="#">EO.100-功能表授權查詢</a></li>
+            </ul>
+                </li>
+
+                <li>網站管理
+        		<ul>
+                    <li><a href="#">WT.020-工作排程</a></li>
+                    <li><a href="#">EO.070-網站事件類型</a></li>
+                    <li><a href="#">EO.080-網站事件紀錄</a></li>
+                    <li><a href="#">WT.060-網頁內容維護</a></li>
+                    <li><a href="#">WT.070-公告訊息維護</a></li>
+                    <li><a href="#">WT.080-活動花絮維護</a></li>
+                </ul>
+                </li>
+            </ul>
+        </div>
+        <!--選單結束-->
+    </div>
+
+    <div id="" class="ui-layout-resizer ui-layout-resizer-north ui-layout-resizer-open ui-layout-resizer-north-open" title="Resize">
+        <div id="Div2" class="ui-layout-toggler ui-layout-toggler-north ui-layout-toggler-open ui-layout-toggler-north-open" title="Close"></div>
+    </div>
+    <div id="Div3" class="ui-layout-resizer ui-layout-resizer-south ui-layout-resizer-open ui-layout-resizer-south-open" title="Resize">
+        <div id="Div4" class="ui-layout-toggler ui-layout-toggler-south ui-layout-toggler-open ui-layout-toggler-south-open" title="Close"></div>
+    </div>
+
+    <!--下方註腳區-->
+    <div class="ui-layout-south ui-layout-pane ui-layout-pane-south">Copyright © 2014 . All rights reserved</div>
+
+
+    <div class="ui-layout-resizer ui-layout-resizer-north ui-layout-resizer-open ui-layout-resizer-north-open" title="Resize">
+        <div id="Div5" class="ui-layout-toggler ui-layout-toggler-north ui-layout-toggler-open ui-layout-toggler-north-open" title="Close"></div>
+    </div>
+    <div class="ui-layout-resizer ui-layout-resizer-south ui-layout-resizer-open ui-layout-resizer-south-open" title="Resize">
+        <div id="Div6" class="ui-layout-toggler ui-layout-toggler-south ui-layout-toggler-open ui-layout-toggler-south-open" title="Close"></div>
+    </div>
+    <div class="ui-layout-resizer ui-layout-resizer-west ui-layout-resizer-open ui-layout-resizer-west-open" title="Resize">
+        <div id="Div7" class="ui-layout-toggler ui-layout-toggler-west ui-layout-toggler-open ui-layout-toggler-west-open" title="Close"></div>
+    </div>
+
+
+</body>
+</html>

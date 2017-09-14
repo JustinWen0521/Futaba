@@ -1,0 +1,277 @@
+﻿@*@model ftd.query.model.ZzOrderQryModel*@
+
+@{
+    Layout = "~/Views/Shared/_LayoutCodeQuery.cshtml";
+    ViewBag.Title = @Html.functionName("程式代號", true);
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="condition-container">
+        <table>
+            <tr>
+                <td>訂單號碼</td>
+                <td><input type="text" id="Q_OrderNo" name="Q_OrderNo" /></td>
+                <td>訂單日期</td>
+                <td><input type="text" id="Q_DateFrom" name="Q_DateFrom" />
+                ～
+                <input type="text" id="Q_DateTo" name="Q_DateTo" /></td>
+            </tr>
+            <tr>
+                <td>訂單說明</td>
+                <td><input type="text" id="Q_Desc" name="Q_Desc" /></td>
+                <td>啟用</td>
+                <td><input type="text" id="Q_IsEnable" name="Q_IsEnable" /></td>
+            </tr>
+            <tr>
+                <td>啟用</td>
+                <td><input type="text" id="Q_IsEnableName_XX" name="Q_IsEnableName_XX" /></td>
+                <td>訂單總金額</td>
+                <td><input type="text" id="Q_OrderAmount_XXFrom" name="Q_OrderAmount_XXFrom" />
+                ～
+                <input type="text" id="Q_OrderAmount_XXTo" name="Q_OrderAmount_XXTo" /></td>
+            </tr>
+        </table>
+        <div id="toolbar" class="toolbar">
+            <input type="button" id="cmdQuery" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-state-hover" value="查詢" onclick="doAction('query');" />
+        </div>
+    </div>
+}
+
+<div id="ListGridContainer"></div>
+
+
+@section scripts {
+    <script>
+
+        function doAction(act) {
+            switch (act) {
+                case "query":
+                    doQuery();
+                    break;
+                default:
+            }
+        }
+
+        //查詢
+        function doQuery() {
+            try {
+                var jsonData = {};
+                jsonData = ToJsonObject();
+                jsonData["__RequestVerificationToken"] = $("input[name=\"__RequestVerificationToken\"]").val();
+
+                $('#ListGridContainer').jtable('load', jsonData);
+            }
+            catch (e) {
+                alert(e);
+            }
+        }
+
+        function initGrid() {
+            $('#ListGridContainer').jtable({
+                title: '&nbsp;',
+                paging: true,
+                pageSize: 10,
+                pageSizes: [5, 10, 25, 50, 100, 250, 500],
+                sorting: true,
+                selecting: true,
+                multiselect: false,
+                selectingCheckboxes: false,
+                defaultSorting: 'ZZO_OderId ASC',
+                actions: {
+                    listAction: '@Url.Action("List", "ZzOrder")',
+                },
+                fields: {
+                    ZZO_OderId: {
+                        title: '訂單ID',
+                        width: '0.1%',
+                        key: true,
+                        list: false,
+                        create: false,
+                        edit: false
+                    },
+                    ZZO_OrderNo: {
+                        title: '訂單號碼',
+                        width: '10%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    ZZO_Date: {
+                        title: '訂單日期',
+                        width: '10%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    ZZO_Desc: {
+                        title: '訂單說明',
+                        width: '10%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    ZZO_IsEnable: {
+                        title: '啟用',
+                        width: '10%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    ZZO_IsEnableName_XX: {
+                        title: '啟用',
+                        width: '10%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    ZZO_OrderAmount_XX: {
+                        title: '訂單總金額',
+                        width: '10%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    ZZO_CreatorId: {
+                        title: '建立者ID',
+                        width: '10%',
+                        key: false,
+                        list: true,
+                        create: true,
+                        edit: true
+                    },
+                    ZZO_CreatorName_XX: {
+                        title: '建立者姓名',
+                        width: '10%',
+                        key: false,
+                        list: false,
+                        create: false,
+                        edit: false
+                    },
+                    ZZO_CreateDate: {
+                        title: '建立日期',
+                        width: '10%',
+                        key: false,
+                        list: false,
+                        create: false,
+                        edit: false
+                    },
+                    ZZO_UpdaterId: {
+                        title: '異動者ID',
+                        width: '10%',
+                        key: false,
+                        list: false,
+                        create: false,
+                        edit: false
+                    },
+                    ZZO_UpdaterName_XX: {
+                        title: '異動者姓名',
+                        width: '10%',
+                        key: false,
+                        list: false,
+                        create: false,
+                        edit: false
+                    },
+                    ZZO_UpdateDate: {
+                        title: '異動日期',
+                        width: '10%',
+                        key: false,
+                        list: false,
+                        create: false,
+                        edit: false
+                    }
+                },
+                selectionChanged: function (e) {
+                    var $selectedRows = $('#ListGridContainer').jtable('selectedRows');
+                    if ($selectedRows.length > 0) {
+                        $selectedRows.each(function () {
+                            //取得選擇的資料列
+                            var record = $(this).data('record');
+                            //自定回傳物件
+                            var returnObj = {
+                                RequestKey: '@ViewBag.RequestKey',
+                                Row: record
+                            };
+                            //將物件轉字串
+                            var jsonStr = JSON.stringify(returnObj);
+                            //取得父視窗
+                            var parent = window.parent;
+                            //取得父視窗回傳值欄位
+                            var ctl = parent.$('#CQ_Result');
+                            if (ctl) {
+                                //設定回傳值
+                                ctl.val(jsonStr);
+                                //觸發父視窗更新畫面
+                                ctl.change();
+                            }
+                            //關閉CodeQuery視窗
+                            CloseDialog();
+                        });
+                    };
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            //初始化 Grid
+            initGrid();
+
+            //載入資料
+            doQuery();
+        });
+
+
+        //**********************************************
+        //請在呼叫端的視窗中增加隱藏欄位以便接收回傳值，如下：
+        //<input type="hidden" id="CQ_Result" name="CQ_Result" data-cqresult="default" value="" />
+
+        //如需自訂實作查詢，請將下列Script複製到呼叫端的視窗中，如：EOM010Edit.cshtml
+        @*//CodeQuery-ZZ_Order
+        function CQ_ZzOrderOpen() {
+            CodeQuery(500, 800, true, "@Url.Action("CodeQuery", "ZzOrder")" + "?RequestKey=ZzOrder", "查詢");
+        }
+
+        function CQ_ZzOrderFinish(item) {
+            // TODO: 回傳值要更新的欄位
+            $('#ID').val(item.ZZO_OderId);
+            $('#Code').val(item.ZZ_OrderCode);
+            $('#Name').val(item.ZZ_OrderName);
+        }
+
+        $("#CQ_Result").change(function () {
+            //取得回傳的資料(JSON String)
+            var jsonString = $("#CQ_Result").val();
+            //alert(jsonString);
+
+            //解析回傳的資料(JSON String --> JSON Object)
+            var returnObj = JSON.parse(jsonString, function (key, value) {
+                var type;
+                if (value && typeof value === 'object') {
+                    type = value.type;
+                    if (typeof type === 'string' && typeof window[type] === 'function') {
+                        return new (window[type])(value);
+                    }
+                }
+                return value;
+            });
+            var item = returnObj.Row;
+            switch (returnObj.RequestKey) {
+                case 'ZzOrder':
+                    CQ_ZzOrderFinish(item);
+                    break;
+                default:
+                    break;
+            }
+        });*@
+
+    </script>
+}
+

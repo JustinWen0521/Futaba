@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="TableDefinitionDataSet" targetNamespace="http://tempuri.org/TableDefinitionDataSet.xsd" xmlns:mstns="http://tempuri.org/TableDefinitionDataSet.xsd" xmlns="http://tempuri.org/TableDefinitionDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="TableDefinitionDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="TableDefinitionDataSet" msprop:Generator_UserDSName="TableDefinitionDataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="FieldDefinition" msprop:Generator_TableClassName="FieldDefinitionDataTable" msprop:Generator_TableVarName="tableFieldDefinition" msprop:Generator_RowChangedName="FieldDefinitionRowChanged" msprop:Generator_TablePropName="FieldDefinition" msprop:Generator_RowDeletingName="FieldDefinitionRowDeleting" msprop:Generator_RowChangingName="FieldDefinitionRowChanging" msprop:Generator_RowEvHandlerName="FieldDefinitionRowChangeEventHandler" msprop:Generator_RowDeletedName="FieldDefinitionRowDeleted" msprop:Generator_RowClassName="FieldDefinitionRow" msprop:Generator_UserTableName="FieldDefinition" msprop:Generator_RowEvArgName="FieldDefinitionRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ShortName" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="ShortName" msprop:Generator_ColumnVarNameInTable="columnShortName" msprop:Generator_ColumnPropNameInTable="ShortNameColumn" msprop:Generator_UserColumnName="ShortName" type="xs:string" minOccurs="0" />
+              <xs:element name="FullName" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="FullName" msprop:Generator_ColumnVarNameInTable="columnFullName" msprop:Generator_ColumnPropNameInTable="FullNameColumn" msprop:Generator_UserColumnName="FullName" type="xs:string" minOccurs="0" />
+              <xs:element name="DisplayName" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="DisplayName" msprop:Generator_ColumnVarNameInTable="columnDisplayName" msprop:Generator_ColumnPropNameInTable="DisplayNameColumn" msprop:Generator_UserColumnName="DisplayName" type="xs:string" minOccurs="0" />
+              <xs:element name="KeyType" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="KeyType" msprop:Generator_ColumnVarNameInTable="columnKeyType" msprop:Generator_ColumnPropNameInTable="KeyTypeColumn" msprop:Generator_UserColumnName="KeyType" type="xs:string" minOccurs="0" />
+              <xs:element name="DataType" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="DataType" msprop:Generator_ColumnVarNameInTable="columnDataType" msprop:Generator_ColumnPropNameInTable="DataTypeColumn" msprop:Generator_UserColumnName="DataType" type="xs:string" minOccurs="0" />
+              <xs:element name="DataLength" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="DataLength" msprop:Generator_ColumnVarNameInTable="columnDataLength" msprop:Generator_ColumnPropNameInTable="DataLengthColumn" msprop:Generator_UserColumnName="DataLength" type="xs:string" minOccurs="0" />
+              <xs:element name="Precision" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="Precision" msprop:Generator_ColumnVarNameInTable="columnPrecision" msprop:Generator_ColumnPropNameInTable="PrecisionColumn" msprop:Generator_UserColumnName="Precision" type="xs:string" minOccurs="0" />
+              <xs:element name="Scale" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="Scale" msprop:Generator_ColumnVarNameInTable="columnScale" msprop:Generator_ColumnPropNameInTable="ScaleColumn" msprop:Generator_UserColumnName="Scale" type="xs:string" minOccurs="0" />
+              <xs:element name="DefaultValue" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="DefaultValue" msprop:Generator_ColumnVarNameInTable="columnDefaultValue" msprop:Generator_ColumnPropNameInTable="DefaultValueColumn" msprop:Generator_UserColumnName="DefaultValue" type="xs:string" minOccurs="0" />
+              <xs:element name="MinValue" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="MinValue" msprop:Generator_ColumnVarNameInTable="columnMinValue" msprop:Generator_ColumnPropNameInTable="MinValueColumn" msprop:Generator_UserColumnName="MinValue" type="xs:string" minOccurs="0" />
+              <xs:element name="MaxValue" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="MaxValue" msprop:Generator_ColumnVarNameInTable="columnMaxValue" msprop:Generator_ColumnPropNameInTable="MaxValueColumn" msprop:Generator_UserColumnName="MaxValue" type="xs:string" minOccurs="0" />
+              <xs:element name="ColumnType" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="ColumnType" msprop:Generator_ColumnVarNameInTable="columnColumnType" msprop:Generator_ColumnPropNameInTable="ColumnTypeColumn" msprop:Generator_UserColumnName="ColumnType" type="xs:string" minOccurs="0" />
+              <xs:element name="ReferenceKey" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="ReferenceKey" msprop:Generator_ColumnVarNameInTable="columnReferenceKey" msprop:Generator_ColumnPropNameInTable="ReferenceKeyColumn" msprop:Generator_UserColumnName="ReferenceKey" type="xs:string" minOccurs="0" />
+              <xs:element name="ReferenceField" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="ReferenceField" msprop:Generator_ColumnVarNameInTable="columnReferenceField" msprop:Generator_ColumnPropNameInTable="ReferenceFieldColumn" msprop:Generator_UserColumnName="ReferenceField" type="xs:string" minOccurs="0" />
+              <xs:element name="IsRequired" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="IsRequired" msprop:Generator_ColumnVarNameInTable="columnIsRequired" msprop:Generator_ColumnPropNameInTable="IsRequiredColumn" msprop:Generator_UserColumnName="IsRequired" type="xs:string" minOccurs="0" />
+              <xs:element name="IsSearch" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="IsSearch" msprop:Generator_ColumnVarNameInTable="columnIsSearch" msprop:Generator_ColumnPropNameInTable="IsSearchColumn" msprop:Generator_UserColumnName="IsSearch" type="xs:string" minOccurs="0" />
+              <xs:element name="IsSearchRange" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="IsSearchRange" msprop:Generator_ColumnVarNameInTable="columnIsSearchRange" msprop:Generator_ColumnPropNameInTable="IsSearchRangeColumn" msprop:Generator_UserColumnName="IsSearchRange" type="xs:string" minOccurs="0" />
+              <xs:element name="IsListVisible" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="IsListVisible" msprop:Generator_ColumnVarNameInTable="columnIsListVisible" msprop:Generator_ColumnPropNameInTable="IsListVisibleColumn" msprop:Generator_UserColumnName="IsListVisible" type="xs:string" minOccurs="0" />
+              <xs:element name="Example" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="Example" msprop:Generator_ColumnVarNameInTable="columnExample" msprop:Generator_ColumnPropNameInTable="ExampleColumn" msprop:Generator_UserColumnName="Example" type="xs:string" minOccurs="0" />
+              <xs:element name="Remark" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="Remark" msprop:Generator_ColumnVarNameInTable="columnRemark" msprop:Generator_ColumnPropNameInTable="RemarkColumn" msprop:Generator_UserColumnName="Remark" type="xs:string" minOccurs="0" />
+              <xs:element name="IsCreateVisible" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="IsCreateVisible" msprop:Generator_ColumnVarNameInTable="columnIsCreateVisible" msprop:Generator_ColumnPropNameInTable="IsCreateVisibleColumn" msprop:Generator_UserColumnName="IsCreateVisible" type="xs:string" minOccurs="0" />
+              <xs:element name="IsEditVisible" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="IsEditVisible" msprop:Generator_ColumnVarNameInTable="columnIsEditVisible" msprop:Generator_ColumnPropNameInTable="IsEditVisibleColumn" msprop:Generator_UserColumnName="IsEditVisible" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

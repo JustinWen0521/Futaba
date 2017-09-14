@@ -1,0 +1,70 @@
+﻿@if (ftd.web.AppUserSession.User != null && ftd.web.AppUserSession.User.UserFunctions != null)
+{
+
+    <script>
+        function menuCollapseAll() {
+            $('#menutree').tree('collapseAll');
+        }
+        function menuExpandAll() {
+            $('#menutree').tree('expandAll');
+        }
+    </script>
+        
+    var xmlMenu = ftd.web.AppUserSession.User.UserMenu;
+
+    //判斷是否有事情未作完，是的話強迫鎖定該功能選單!
+    //if (true)
+    //{
+    //    menuNodes = menuNodes.Where(t => t.Attributes["title"] == "土地管理").ToList();
+    //}
+
+    @helper GenerateTree(IEnumerable<ftd.data.FtdXmlMenuNode> nodes, string nodeID)
+    {
+        if (nodes.Any(x => x.Parent.ID == nodeID))
+        {
+        <ul>
+            @foreach (var node in nodes)
+            {
+                <li>
+                    <span>
+                    @if (node.ChildNodes.Count > 0)
+                    {
+                        <span>@string.Format("{0}-{1}", node["itemNo"], node["title"])</span>
+                    }
+                    else
+                    {
+                        @Html.ActionLink(string.Format("{0}-{1}", node["itemNo"], node["title"]), node["action"], node["controller"])
+                    }
+                    </span>
+                    @GenerateTree(node.ChildNodes, node.ID)
+                </li>
+            }
+        </ul>
+        }
+    }
+    
+    <div style="margin: 5px 0;">
+        <a href="#" class="easyui-linkbutton" onclick="menuExpandAll()">全部展開</a>
+        <a href="#" class="easyui-linkbutton" onclick="menuCollapseAll()">全部收合</a>
+        @*@if (ftd.web.AppUserSession.User != null && !ftd.web.AppUserSession.User.IsGuest)
+        {
+            <a href="http://163.29.242.88:8080/DLA" target="_blank" class="easyui-linkbutton" onclick="">地理資訊系統(GIS)</a>
+            <a href="#" target="_blank" class="easyui-linkbutton" onclick="">知識管理系統</a>
+        }*@
+    </div>
+    
+    <div id="TreeView" >
+        @if (xmlMenu != null)
+        {
+            <ul id="menutree" class="easyui-tree" data-options="lines:true">
+            @foreach (var node in xmlMenu.RootNode.ChildNodes)
+            {
+                <li>
+                    <span>@string.Format("{0}-{1}", node["itemNo"], node["title"])</span>
+                    @GenerateTree(node.ChildNodes, node.ID)
+                </li>
+            }
+            </ul>
+        }
+    </div>
+}

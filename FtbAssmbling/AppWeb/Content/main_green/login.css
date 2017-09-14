@@ -1,0 +1,125 @@
+﻿@charset "utf-8";
+body {
+	font-size: 13px;
+	line-height: 150%;
+	color: #333;
+	padding: 0;
+	margin: 0;
+	text-align: center;
+	background-color: #FFF;
+	background-repeat: repeat-x;
+	background-image: url(../../Images/bg-green.gif);
+}
+
+.clr{clear:both}
+form{ padding:0; margin:0}
+a:link{
+	color: #333333;
+	text-decoration: none;
+	}
+a:visited{
+	color: #333333;
+	text-decoration: none;
+	 }
+a:hover{
+	color: #03C;
+	text-decoration: none;
+	}
+a:active{
+	color: #333333;
+	text-decoration: none;
+	}
+	
+/*index-login*/	
+#L_container{
+	width: 1000px;
+	height: 500px;
+	margin: 0 auto;
+	padding: 0;
+	text-align: left;
+	/*position:absolute;*/
+	dispaly: inline-block;
+	background-image: url(../../images/login-green.jpg);
+	background-repeat: no-repeat;
+	}
+
+#L_Located{
+	position: relative;
+	top: 155px;
+	left: 500px;
+	/*display: inline-block;*/
+	font-size: 15px;
+	color: #000;
+	line-height: 180%;
+	width: 500px;
+	font-weight: bold;
+}
+#L_Located label input{
+	float:left;	
+}
+#L_middle{
+	text-align: center;
+	/*color: #5A5A5A;*/
+	position: relative;
+	top: 171px;
+	font-size: 1em;
+	left: 500px;
+	width: 800px;
+}
+#L_middle div{ 
+    float:left;
+    /*width:150px;*/ 
+    height:30px; 
+    /*line-height:30px;*/
+    color:red;
+}
+#L_Submenu{
+	text-align: right;
+	/*color: #cecece;*/
+	position: absolute;
+	top: 10px;
+	font-size: 1em;
+	left: 180px;
+	width: 300px;
+}
+#L_Submenu a:link{ color:#093}	
+#L_Submenu a:hover{ color:#333}	
+#L_Footer{
+	text-align: right;
+	color: #999999;
+	position: relative;
+	top: 230px;
+	font-size: 1em;
+	left: 0px;
+	width: 820px;
+	padding-right: 180px;
+	}
+.BoxStyle1{
+	border: 1PX solid #999;
+	background-color: #EAEAEA;
+	font-family: Tahoma, Geneva, sans-serif;
+	font-size: 15px;
+	height: 20px;
+}
+.ButtomStyle1{
+	cursor: hand;
+	border: 1px solid #0066CC;
+	background-color: #03C;
+	font-size: 15px;
+	font-weight: bold;
+	color: #FFF;
+	}
+.ButtomStyle1:hover{
+	cursor:hand;
+	border:1px solid #0dc40d;
+	background-color:#057005;
+	font-size:15px;
+	font-weight:bold;
+	color:#FFF;
+	}	
+.ButtomStyle2{
+	font-weight: bold;
+	border: 1px solid #FFFFFF;
+	font-size: 15px;
+	background-color: #CCC;
+	}

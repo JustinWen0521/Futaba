@@ -1,0 +1,110 @@
+﻿@model ftd.data.WT_ScheduleTaskRow
+
+@{
+    Layout = "~/Views/Shared/_LayoutEdit.cshtml";
+    string viewMode = ViewBag.ViewMode;
+    if (viewMode.isNullOrEmpty())
+    {
+        viewMode = "update";
+    }
+}
+
+@section scripts {
+
+    <script>
+        $(document).ready(function () {
+            var parent = window.parent;
+            parent.DialogCloseListener.CloseEvent = function () {
+                if (!CheckInput()) {
+                    return false;
+                }
+
+                var tfm = $("#formEdit").serialize();
+                $.ajax({
+                    url: '@Url.Action("Edit", "WtScheduleTask")',
+                    type: "POST",
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: tfm,
+                    success: function (response) {
+                        Save(response);
+                        //因為使用AJAX，故儲存成功後需自行關閉視窗
+                        var result = response['Result'];
+                        if (result != "ERROR") {
+                            //觸發父視窗重新查詢
+                            parent.DialogCloseListener.whatButtonFireEvent("save");
+                            //關閉對話框
+                            CloseDialog();
+                        }
+                    }
+                });
+                return false;
+            };
+        });
+    </script>
+}
+
+<div id="frm">
+    @using (Ajax.BeginForm("Edit", "WtScheduleTask", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "InitListGeneric", UpdateTargetId = "frm" }, new { id = "formEdit", name = "formEdit" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <div>
+            <input type="hidden" id="ViewMode" name="ViewMode"  value="@viewMode"/>
+            <input type="hidden" id="CQ_Result" name="CQ_Result" value="" />
+            @Html.HiddenFor(m => m.WTST_ScheduleTaskId)
+        </div>
+        <table>
+            <tr>
+                <td class="field-title" colspan="3">排程服務</td>
+            </tr>
+            <tr>
+                <td class="field-title">排程名稱</td>
+                <td class="field-content">@Html.TextBoxFor(m => m.WTST_TaskName, new { title = "!排程名稱", required = "required", style = "width:400px;" })</td>
+            </tr>
+            <tr>
+                <td class="field-title">啟用</td>
+                <td class="field-content">
+                    @Html.dropDownListFor(m => m.WTST_IsEnable, ftd.data.AppCodeTypeName.CTN_WTST_IsEnable, true, new { title = "!啟用", required = "required" })
+                </td>
+            </tr>
+            <tr>
+                <td class="field-title">排程描述</td>
+                <td class="field-content">@Html.TextAreaFor(m => m.WTST_Description, 3, 100, new { title = "!排程描述", required = "required" })</td>
+            </tr>
+            <tr>
+                <td class="field-title">物件類型</td>
+                <td class="field-content">@Html.TextAreaFor(m => m.WTST_ObjectTypeName, 3, 100, new { title = "!物件類型", required = "required" })</td>
+            </tr>
+            <tr>
+                <td class="field-title">物件參數</td>
+                <td class="field-content">@Html.TextAreaFor(m => m.WTST_Parameters, 3, 100, new { title = "!物件參數" })</td>
+            </tr>
+            <tr>
+                <td class="field-title" colspan="3">最後一次執行狀態</td>
+            </tr>
+            <tr>
+                <td class="field-title">起始時間</td>
+                <td class="field-content">@Html.TextBoxFor(m => m.WTST_ExecuteBeginDate, new { title = "!起始時間", @readonly = "readonly" })</td>
+            </tr>
+            <tr>
+                <td class="field-title">結束時間</td>
+                <td class="field-content">@Html.TextBoxFor(m => m.WTST_ExecuteEndDate, new { title = "!結束時間", @readonly = "readonly" })</td>
+            </tr>
+            <tr>
+                <td class="field-title">執行時間</td>
+                <td class="field-content">@Html.TextBoxFor(m => m.WTST_ExecuteSeconds_XX, new { title = "!WTST_ExecuteSeconds_XX", @readonly = "readonly" })</td>
+            </tr>
+            <tr>
+                <td class="field-title">執行結果</td>
+                <td class="field-content">@Html.TextBoxFor(m => m.WTST_ExecuteStateName_XX, new { title = "!執行結果", @readonly = "readonly" })</td>
+            </tr>
+            <tr>
+                <td class="field-title">例外內容</td>
+                <td class="field-content">@Html.TextAreaFor(m => m.WTST_ExecuteException, 3, 100, new { title = "!例外內容", @readonly = "readonly" })</td>
+            </tr>
+        </table>
+    }
+</div>
+
