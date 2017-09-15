@@ -14,6 +14,7 @@ using ftd.mvc.Areas.AL.Models;
 
 namespace ftd.mvc.Areas.AL.Controllers
 {
+	
     /// <summary>
     /// 這是讀取組立工程明細 controller
     /// </summary>

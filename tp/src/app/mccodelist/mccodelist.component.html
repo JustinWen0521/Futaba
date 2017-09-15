@@ -1,0 +1,59 @@
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css" >
+<link rel="stylesheet" href="/assets/css/bootstrap-grid.css" >
+
+<div class="container">
+  <div class="row" >
+      <div class="col-md">
+          <form role="form">
+          <div class="input-group date form_datetime col-md-5"
+               [attr.data-date]="'1979-09-16T05:25:07Z'"
+               [attr.data-date-format]="'dd MM yyyy - HH:ii p'"
+               [attr.data-link-field]="'dtp_input1'">
+               <input
+                  type="hidden"
+                  name="DOMCode"
+                  [(ngModel)] = "code">
+               <input class="date" type="text"
+                  name="DOMDate"
+                  [(ngModel)] = "date"
+                  >
+               <button type="submit"
+                  style="background-color:aqua"
+                  class="btn btn-default"
+                  (click)="doquery()"
+                >
+                查詢
+              </button>
+            </div>
+          </form>
+      </div>
+  </div>
+  <br/>
+  <!--all line detail start-->
+  <div  class="row">
+    <div  *ngFor="let mch of datas" class="col-md">
+      <h3 style="border:solid;background-color:lightgreen;font-family: impact;color:brown">{{ mch.name }}</h3>
+        <table class="table table-bordered'" style="border:ridge">
+          <thead>
+            <tr>
+              <th>時間</th>
+              <th>品種</th>
+              <th>數量</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of mch.detail"  >
+              <td>{{item.dateHr}}</td>
+              <td>{{item.item}}</td>
+              <td>{{item.qty}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  </div>
+  <!--all line detail end-->
+</div>
+
+
