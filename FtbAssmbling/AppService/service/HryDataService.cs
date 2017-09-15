@@ -52,8 +52,12 @@ namespace ftd.service
             if (!strDate.isNullOrEmpty())
             {
                 getDateFromString(strDate , ref dteTmp);
+                /* //晚班為頭
                 dteDateS = dteTmp.AddDays(-1).AddHours(19);
                 dteDateE = dteTmp.AddHours(18);
+                 * */
+                dteDateS = dteTmp;
+                dteDateE = dteTmp.AddHours(23).AddMinutes(59).AddSeconds(59);
             }            
         }
 
