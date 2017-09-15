@@ -54,87 +54,87 @@ namespace FtdDemo
 
         public String GetAssemblingDetailByDate(string code, string date)
         {
-            AlAssmblingDetailQryModel qm = new AlAssmblingDetailQryModel();
-            qm.Q_MCCode = code;
-            qm.Q_Date = date;
-            var dt = AlDataService.Instance.AlAssmblingDetail_getDayList(qm);
+            //AlAssmblingDetailQryModel qm = new AlAssmblingDetailQryModel();
+            //qm.Q_MCCode = code;
+            //qm.Q_Date = date;
+            //var dt = AlDataService.Instance.AlAssmblingDetail_getDayList(qm);
 
 
-            Dictionary<string, String[,]> data = new Dictionary<string, String[,]>();
-            if (dt != null && dt.Rows.Count > 0)
-            {
-                string codeIdxPast = null;
-                String[] arrTimeWork = null;
-                var arrLine = HryDataService.Instance.getArrayForAssemblingDetail(ref arrTimeWork);
-                Int32 sumMorning = 0, sumNighting = 0;
-                for (var i = 0; i < dt.Rows.Count; i++)
-                {
-                    var row = dt.Rows[i];
-                    string codeIdx = Convert.ToString(row[AppDataName.ALA_MCCode]);
-                    var hh = Convert.ToDateTime(row[AppDataName.ALAD_DATE]).Hour.ToString();
-                    hh = (hh.Length == 1) ? String.Concat("0", hh) : hh;
-                    int index = 0;
+            //Dictionary<string, String[,]> data = new Dictionary<string, String[,]>();
+            //if (dt != null && dt.Rows.Count > 0)
+            //{
+            //    string codeIdxPast = null;
+            //    String[] arrTimeWork = null;
+            //    var arrLine = HryDataService.Instance.getArrayForAssemblingDetail(ref arrTimeWork);
+            //    Int32 sumMorning = 0, sumNighting = 0;
+            //    for (var i = 0; i < dt.Rows.Count; i++)
+            //    {
+            //        var row = dt.Rows[i];
+            //        string codeIdx = Convert.ToString(row[AppDataName.ALA_MCCode]);
+            //        var hh = Convert.ToDateTime(row[AppDataName.ALAD_DATE]).Hour.ToString();
+            //        hh = (hh.Length == 1) ? String.Concat("0", hh) : hh;
+            //        int index = 0;
 
-                    #region 第一筆
-                    if (codeIdxPast.isNullOrEmpty())
-                    {
-                        index = Array.IndexOf(arrTimeWork, hh);
-                        if (index > 0)
-                        {
-                            arrLine[index, 2] = Convert.ToString(row[AppDataName.ALAD_ITEM]);
-                            arrLine[index, 3] = Convert.ToString(row[AppDataName.ALAD_QTY]);
-                            if (Convert.ToInt32(hh) >= 7 && Convert.ToInt32(hh) <= 18)
-                            {
-                                sumMorning += Convert.ToInt32(arrLine[index, 3]);
-                            }
-                            if ((Convert.ToInt32(hh) >= 19 && Convert.ToInt32(hh) <= 23) || (Convert.ToInt32(hh) >= 0 && Convert.ToInt32(hh) <= 6))
-                            {
-                                sumNighting += Convert.ToInt32(arrLine[index, 3]);
-                            }
-                        }
-                        codeIdxPast = codeIdx;
-                        continue;
-                    }
-                    #endregion
+            //        #region 第一筆
+            //        if (codeIdxPast.isNullOrEmpty())
+            //        {
+            //            index = Array.IndexOf(arrTimeWork, hh);
+            //            if (index > 0)
+            //            {
+            //                arrLine[index, 2] = Convert.ToString(row[AppDataName.ALAD_ITEM]);
+            //                arrLine[index, 3] = Convert.ToString(row[AppDataName.ALAD_QTY]);
+            //                if (Convert.ToInt32(hh) >= 7 && Convert.ToInt32(hh) <= 18)
+            //                {
+            //                    sumMorning += Convert.ToInt32(arrLine[index, 3]);
+            //                }
+            //                if ((Convert.ToInt32(hh) >= 19 && Convert.ToInt32(hh) <= 23) || (Convert.ToInt32(hh) >= 0 && Convert.ToInt32(hh) <= 6))
+            //                {
+            //                    sumNighting += Convert.ToInt32(arrLine[index, 3]);
+            //                }
+            //            }
+            //            codeIdxPast = codeIdx;
+            //            continue;
+            //        }
+            //        #endregion
 
-                    #region 下一條LINE
-                    if (!codeIdxPast.equalIgnoreCase(codeIdx))
-                    {
-                        index = Array.IndexOf(arrTimeWork, "Morning小計");
-                        arrLine[index, 3] = Convert.ToString(sumMorning);
-                        index = Array.IndexOf(arrTimeWork, "Morning小計");
-                        arrLine[index, 3] = Convert.ToString(sumNighting);
-                        index = Array.IndexOf(arrTimeWork, "Day合計");
-                        arrLine[index, 3] = Convert.ToString(sumMorning + sumNighting);
-                        data.Add(codeIdxPast, arrLine);
-                        sumMorning = 0;
-                        sumNighting = 0;
-                        codeIdxPast = codeIdx;
-                        arrLine = HryDataService.Instance.getArrayForAssemblingDetail(ref arrTimeWork);
-                    }
-                    #endregion
+            //        #region 下一條LINE
+            //        if (!codeIdxPast.equalIgnoreCase(codeIdx))
+            //        {
+            //            index = Array.IndexOf(arrTimeWork, "Morning小計");
+            //            arrLine[index, 3] = Convert.ToString(sumMorning);
+            //            index = Array.IndexOf(arrTimeWork, "Morning小計");
+            //            arrLine[index, 3] = Convert.ToString(sumNighting);
+            //            index = Array.IndexOf(arrTimeWork, "Day合計");
+            //            arrLine[index, 3] = Convert.ToString(sumMorning + sumNighting);
+            //            data.Add(codeIdxPast, arrLine);
+            //            sumMorning = 0;
+            //            sumNighting = 0;
+            //            codeIdxPast = codeIdx;
+            //            arrLine = HryDataService.Instance.getArrayForAssemblingDetail(ref arrTimeWork);
+            //        }
+            //        #endregion
 
-                    #region 下一筆
-                    index = Array.IndexOf(arrTimeWork, hh);
-                    if (index > 0)
-                    {
-                        arrLine[index, 2] = Convert.ToString(row[AppDataName.ALAD_ITEM]);
-                        arrLine[index, 3] = Convert.ToString(row[AppDataName.ALAD_QTY]);
-                        if (Convert.ToInt32(hh) >= 7 && Convert.ToInt32(hh) <= 18)
-                        {
-                            sumMorning += Convert.ToInt32(arrLine[index, 3]);
-                        }
-                        if ((Convert.ToInt32(hh) >= 19 && Convert.ToInt32(hh) <= 23) || (Convert.ToInt32(hh) >= 0 && Convert.ToInt32(hh) <= 6))
-                        {
-                            sumNighting += Convert.ToInt32(arrLine[index, 3]);
-                        }
-                    }
-                    #endregion
+            //        #region 下一筆
+            //        index = Array.IndexOf(arrTimeWork, hh);
+            //        if (index > 0)
+            //        {
+            //            arrLine[index, 2] = Convert.ToString(row[AppDataName.ALAD_ITEM]);
+            //            arrLine[index, 3] = Convert.ToString(row[AppDataName.ALAD_QTY]);
+            //            if (Convert.ToInt32(hh) >= 7 && Convert.ToInt32(hh) <= 18)
+            //            {
+            //                sumMorning += Convert.ToInt32(arrLine[index, 3]);
+            //            }
+            //            if ((Convert.ToInt32(hh) >= 19 && Convert.ToInt32(hh) <= 23) || (Convert.ToInt32(hh) >= 0 && Convert.ToInt32(hh) <= 6))
+            //            {
+            //                sumNighting += Convert.ToInt32(arrLine[index, 3]);
+            //            }
+            //        }
+            //        #endregion
 
-                }
-                data.Add(codeIdxPast, arrLine);
+            //    }
+            //    data.Add(codeIdxPast, arrLine);
 
-            }
+            //}
 
 
 

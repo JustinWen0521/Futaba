@@ -67,7 +67,7 @@ namespace AppServiceGen
             if (site_name == "FtbAssmbling")
             {
                 var site = new CWebSite();
-                site.DeployUrl = "http://192.168.160.16/FtbAssmbling/webservice/FdpDeployService.asmx";
+                site.DeployUrl = "http://192.168.160.14/FtbAssmbling/webservice/FdpDeployService.asmx";
                 site.Package_RootName = "Web";
                 site.Package_PrefixFileName = "FtbAssmbling_";
                 return site;

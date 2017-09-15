@@ -1,3 +1,0 @@
-1.NuGet 若有更新 package，使用框架 AppServiceGen 佈署(Deploy) 至 Server 時，需一併更新 Web.config
-因為：打包時，會從遠端 Server 下載 FtdConfig.cfg 及 Web.config，故此二個檔案有異動時，需注意更新至 Server。
-

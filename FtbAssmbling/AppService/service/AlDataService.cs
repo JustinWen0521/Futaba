@@ -15,6 +15,11 @@ namespace ftd.service
     {
         public static readonly AlDataService Instance;
 
+        /// <summary>
+        /// 每條線別第一台機器位置
+        /// </summary>
+        private static int FirstLocation = 0;
+
         static AlDataService()
         {            
             FtdCreatorService.Instance.createObject<AlDataService>(ref Instance);
@@ -77,16 +82,36 @@ namespace ftd.service
         /// </summary>
         /// <param name="colId">線別ID(0~6線)</param>
         /// <returns>AL_AssmblingDataTable</returns>
-        public AL_AssmblingDataTable AL_Assmbling_getAllList(string colId)
+        public AL_AssmblingDataTable AL_Assmbling_getAllList(int colId)
         {
-            if (colId == null || colId.equalIgnoreCase(string.Empty))
+            if (colId == null || colId < 0)
                 return null;
 
-            int ColID = Convert.ToInt32(colId);
             var dt = NsDmHelper.AL_Assmbling
                 .selectAll(t => t.AllExt)
-                .where(t => t.ALA_SEQCol == ColID.toConstOpt1())
+                .where(t => t.ALA_SEQCol == colId.toConstReq1())
+                .orderby(t => t.ALA_SEQRow.Asc)
                 .query();
+
+            return dt;
+        }
+
+        /// <summary>
+        /// 取得目前生產線所有線別
+        /// </summary>
+        /// <param name="colId">哪條線(不傳就取全部)</param>
+        /// <returns>線別數量</returns>
+        public AL_AssmblingDataTable AL_Assmbling_getProductLine(int? colId)
+        {
+            AL_AssmblingDataTable dt = NsDmHelper.AL_Assmbling
+                                                    .selectAll(t => t.AllExt)
+                                                    .where(t => t.ALA_SEQCol == colId.toConstOpt1()
+                                                                &t.ALA_SEQRow == FirstLocation)
+                                                    .orderby(t => t.ALA_SEQCol.Asc)
+                                                    .query();
+
+            if (dt == null || dt.Rows.Count == 0)
+                return null;
 
             return dt;
         }

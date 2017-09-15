@@ -16,14 +16,6 @@ namespace ftd.mvc.Controllers
     public class AssmblingController : Controller
     {
         /// <summary>
-        /// 目前所有線別數量
-        /// </summary>
-        private static int AllLineCount = 7;
-        /// <summary>
-        /// 欄位排序
-        /// </summary>
-        private static string SortName = "ALA_SEQRow";
-        /// <summary>
         /// 早上7點
         /// </summary>
         private static int SEVEN = 07;
@@ -135,7 +127,7 @@ namespace ftd.mvc.Controllers
                 return string.Empty;
 
             //取最後一台機台的產品名稱
-            string productName = dt.Rows[(dt.Rows.Count - 1)]["ALAD_ITEM"].ToString().Trim();
+            string productName = dt.Rows[(dt.Rows.Count - 1)]["ALAD_ITEM"].ToString().Replace("\0",string.Empty);
             if (productName != null && !productName.equalIgnoreCase(string.Empty))
                 return productName;
             else
@@ -151,26 +143,22 @@ namespace ftd.mvc.Controllers
         {
             List<MachineClass> machineList = new List<MachineClass>();
             var alservice = AlDataService.Instance;
-            var dtData = alservice.AL_Assmbling_getAllList(ColId.ToString());
+            AL_AssmblingDataTable dtData = alservice.AL_Assmbling_getAllList(ColId);
             if (dtData == null || dtData.Rows.Count == 0)
             {
                 //Error
                 return null;
             }
-
-            //依機台順序排序
-            dtData.DefaultView.Sort = SortName;
-            var dt = dtData.DefaultView.ToTable();
             string ProductName = string.Empty;
-            for (int i = 0; i < dt.Rows.Count; i++)
+            for (int i = 0; i < dtData.Rows.Count; i++)
             {
                 string MachineName = string.Empty;
-                var rowData = dt.Rows[i];
+                AL_AssmblingRow rowData = dtData.Rows[i].cast_as<AL_AssmblingRow>();
                 //取得機台名稱
-                MachineName = rowData["ALA_MCCode"].ToString();
+                MachineName = rowData.ALA_MCName;
                 AlAssmblingDetailQryModel adq = new AlAssmblingDetailQryModel 
                 {
-                    Q_MCID = rowData["ALA_MCID"].ToString(),//用機台ID取得資料
+                    Q_MCID = rowData.ALA_MCID,//用機台ID取得資料
                     Q_Date = "20170224"//目前還沒有實際日期資料
                     //Q_Date = DateTime.Now.ToString("yyyy-MM-dd")
                 };
@@ -202,33 +190,26 @@ namespace ftd.mvc.Controllers
         }
 
         /// <summary>
-        /// 取得目前所有機台資料(目前AllLineCount = 7)
+        /// 取得目前所有機台資料(改為動態取)
         /// </summary>
-        /// <returns>Jsonstring</returns>
+        /// <param name="Id">取某一線別(不傳取全部)</param>
+        /// <returns>線別資料</returns>
         [HttpGet]
-        public string GetAllLineInfo() 
+        public string GetProductLineInfo(string Id)
         {
             List<MachineLineClass> data = new List<MachineLineClass>();
-            for (int j = 0; j < AllLineCount; j++)
+            int? LineID = null;
+            if (Id != null) 
             {
-                data.Add(getMachineListClassData(j));
+                if (!Id.Equals(string.Empty))
+                    LineID = Convert.ToInt32(Id);
             }
-            return JsonConvert.SerializeObject(data);
-        }
-
-        /// <summary>
-        /// 取得某一機台資料
-        /// </summary>
-        /// <param name="Id">線別(0~6)</param>
-        /// <returns>Jsonstring</returns>
-        [HttpGet]
-        public string GetLineInfo(int Id)
-        {
-            if (Id >= AllLineCount)
-                return string.Empty;
-
-            List<MachineLineClass> data = new List<MachineLineClass>();
-            data.Add(getMachineListClassData(Id));
+            AL_AssmblingDataTable dt = AlDataService.Instance.AL_Assmbling_getProductLine(LineID);
+            foreach (AL_AssmblingRow item in dt.Rows) 
+            {
+                int? col = item.ALA_SEQCol;
+                data.Add(getMachineListClassData(col.Value));
+            }
             return JsonConvert.SerializeObject(data);
         }
     }

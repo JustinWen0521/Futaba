@@ -1,1 +1,0 @@
-start/min NKFCP_Agent.exe RPTTASK

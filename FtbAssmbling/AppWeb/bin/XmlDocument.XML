@@ -419,16 +419,6 @@
             AC 市議員備詢管理系統
             </summary>
         </member>
-        <member name="F:ftd.mvc.Controllers.AssmblingController.AllLineCount">
-            <summary>
-            目前所有線別數量
-            </summary>
-        </member>
-        <member name="F:ftd.mvc.Controllers.AssmblingController.SortName">
-            <summary>
-            欄位排序
-            </summary>
-        </member>
         <member name="F:ftd.mvc.Controllers.AssmblingController.SEVEN">
             <summary>
             早上7點
@@ -467,18 +457,12 @@
             <param name="Id">線別ID(0~6)</param>
             <returns>線別機台所有資料</returns>
         </member>
-        <member name="M:ftd.mvc.Controllers.AssmblingController.GetAllLineInfo">
+        <member name="M:ftd.mvc.Controllers.AssmblingController.GetProductLineInfo(System.String)">
             <summary>
-            取得目前所有機台資料(目前AllLineCount = 7)
+            取得目前所有機台資料(改為動態取)
             </summary>
-            <returns>Jsonstring</returns>
-        </member>
-        <member name="M:ftd.mvc.Controllers.AssmblingController.GetLineInfo(System.Int32)">
-            <summary>
-            取得某一機台資料
-            </summary>
-            <param name="Id">線別(0~6)</param>
-            <returns>Jsonstring</returns>
+            <param name="Id">取某一線別(不傳取全部)</param>
+            <returns>線別資料</returns>
         </member>
         <member name="T:ftd.mvc.Controllers.AssmblingController.eDayType">
             <summary>

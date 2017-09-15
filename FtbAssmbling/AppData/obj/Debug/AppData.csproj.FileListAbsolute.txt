@@ -53,3 +53,16 @@ D:\VS_Working\FtbAssmbling\Source\FtbAssmbling\AppData\obj\Debug\RdlCompile.cach
 D:\VS_Working\FtbAssmbling\Source\FtbAssmbling\AppData\obj\Debug\RdlCompile.compiled
 D:\VS_Working\FtbAssmbling\Source\FtbAssmbling\AppData\obj\Debug\AppData.dll
 D:\VS_Working\FtbAssmbling\Source\FtbAssmbling\AppData\obj\Debug\AppData.pdb
+D:\githubproject\FtbAssmbling\AppData\bin\Debug\AppData.xml
+D:\githubproject\FtbAssmbling\AppData\bin\Debug\AppData.dll
+D:\githubproject\FtbAssmbling\AppData\bin\Debug\AppData.pdb
+D:\githubproject\FtbAssmbling\AppData\bin\Debug\ftd.dll
+D:\githubproject\FtbAssmbling\AppData\bin\Debug\Oracle.ManagedDataAccess.dll
+D:\githubproject\FtbAssmbling\AppData\bin\Debug\EPPlus.dll
+D:\githubproject\FtbAssmbling\AppData\bin\Debug\ICSharpCode.SharpZipLib.dll
+D:\githubproject\FtbAssmbling\AppData\bin\Debug\ftd.xml
+D:\githubproject\FtbAssmbling\AppData\bin\Debug\EPPlus.xml
+D:\githubproject\FtbAssmbling\AppData\obj\Debug\RdlCompile.cache
+D:\githubproject\FtbAssmbling\AppData\obj\Debug\RdlCompile.compiled
+D:\githubproject\FtbAssmbling\AppData\obj\Debug\AppData.dll
+D:\githubproject\FtbAssmbling\AppData\obj\Debug\AppData.pdb
