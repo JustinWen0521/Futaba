@@ -11,24 +11,18 @@
                [attr.data-date]="'1979-09-16T05:25:07Z'"
                [attr.data-date-format]="'dd MM yyyy - HH:ii p'"
                [attr.data-link-field]="'dtp_input1'">
-               <input
-                  type="hidden"
-                  name="DOMCode"
-                  [(ngModel)] = "code">
-               <input class="date" type="text"
-                  name="DOMDate"
-                  [(ngModel)] = "date"
-                  >
-               <button type="submit"
-                  style="background-color:aqua"
-                  class="btn btn-default"
-                  (click)="doquery()"
-                >
+               <input  type="date" name="DOMDate" [(ngModel)] = "date">
+               <button type="submit" style="background-color:aqua" class="btn btn-default" (click)="doquery()" >
                 查詢
               </button>
             </div>
           </form>
       </div>
+  </div>
+  <br/>
+  <div style="text-align:center">
+      <input style="border:solid;background-color:blue;font-family: impact;color:lavender;text-align:center;font-size:x-large;"
+      type="text" name="DOMCode" [attr.readonly]="'readonly'" [(ngModel)] = "code">
   </div>
   <br/>
   <!--all line detail start-->
@@ -44,8 +38,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of mch.detail"  >
-              <td>{{item.dateHr}}</td>
+            <tr *ngFor="let item of mch.detail"
+            [ngStyle]="{'background': item.dateHr.match('小')!= null ? 'orange' : item.dateHr.match('合')!= null ? 'cornflowerblue' : ''   }"
+
+             >
+              <td >{{item.dateHr}}</td>
               <td>{{item.item}}</td>
               <td>{{item.qty}}</td>
             </tr>
