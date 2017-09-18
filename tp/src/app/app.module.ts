@@ -4,15 +4,16 @@ import {HttpModule} from '@angular/http';
 import { Routes, RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { DatasService } from './datas.service';
-import { Page1Component } from './page1/page1.component';
+import { HomeComponent } from './home/home.component';
 import { MccodelistComponent } from './mccodelist/mccodelist.component';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
 
+
 @NgModule({
   declarations: [
     AppComponent,
-    Page1Component,
+    HomeComponent,
     MccodelistComponent
   ],
   imports: [
