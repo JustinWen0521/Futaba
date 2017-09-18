@@ -12,14 +12,16 @@ export class MccodelistComponent implements OnInit {
   datas;
   // code: String  = 'FPC';
   code: String ;
-  date: String  = '20170914';
+  date: String  = '20170918';
 
-  constructor(public datasvc: DatasService ) { }
+  constructor(public datasvc: DatasService,private router:Router,private route:ActivatedRoute) { }
 
 
   ngOnInit() {
-     this.doquery();
-
+     this.route.params.subscribe(params=>{
+         this.code=params['code'];
+     });
+     
   }
 
 

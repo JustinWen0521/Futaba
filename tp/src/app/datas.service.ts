@@ -6,8 +6,8 @@ import {Http} from '@angular/http';
 @Injectable()
 export class DatasService {
   // WebAPI的uri
-  private allLineInfoUri= '/Assmbling/GetAllLineInfo';
-  AssmblingDetailUri = 'http://localhost/FtbAssmbling/AssmblingDetail/GetAssemblingDetailByDate';
+  private allLineInfoUri= '/Assmbling/GetProductLineInfo';
+  AssmblingDetailUri = '/AssmblingDetail/GetAssemblingDetailByDate';
   code: String;
   date: String;
 
