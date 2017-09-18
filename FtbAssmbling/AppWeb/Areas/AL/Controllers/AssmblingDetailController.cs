@@ -68,7 +68,7 @@ namespace ftd.mvc.Areas.AL.Controllers
                         if (index >= 0)
                         {
                             itemLine = listLine[index];
-                            itemLine.item = Convert.ToString(row[AppDataName.ALAD_ITEM]);
+                            itemLine.item = Convert.ToString(row[AppDataName.ALAD_ITEM]).Replace("\0", string.Empty);
                             itemLine.qty =  Convert.ToString(row[AppDataName.ALAD_QTY]);
                             listLine[index] = itemLine;
 
@@ -121,7 +121,7 @@ namespace ftd.mvc.Areas.AL.Controllers
                     if (index >= 0)
                     {
                         itemLine = listLine[index];
-                        itemLine.item = Convert.ToString(row[AppDataName.ALAD_ITEM]);
+                        itemLine.item = Convert.ToString(row[AppDataName.ALAD_ITEM]).Replace("\0",string.Empty);
                         itemLine.qty = Convert.ToString(row[AppDataName.ALAD_QTY]);
                         listLine[index] = itemLine;
 
