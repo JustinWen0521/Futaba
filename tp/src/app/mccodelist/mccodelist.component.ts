@@ -21,7 +21,7 @@ export class MccodelistComponent implements OnInit {
      this.route.params.subscribe(params=>{
          this.code=params['code'];
      });
-     
+     this.doquery();
   }
 
 
