@@ -111,3 +111,4 @@ D:\githubproject\FtbAssmbling\AppGenerator\obj\Debug\ftd.Properties.Resources.re
 D:\githubproject\FtbAssmbling\AppGenerator\obj\Debug\AppGenerator.csproj.GenerateResource.Cache
 D:\githubproject\FtbAssmbling\AppGenerator\obj\Debug\AppGenerator.exe
 D:\githubproject\FtbAssmbling\AppGenerator\obj\Debug\AppGenerator.pdb
+D:\githubproject\FtbAssmbling\AppGenerator\obj\Debug\AppGenerator.csprojResolveAssemblyReference.cache

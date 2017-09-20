@@ -28,8 +28,9 @@ namespace ftd.service
         #region [AL_Assmbling]
         public AL_AssmblingDataTable AlAssmbling_getList(AlAssmblingQryModel qm)
         {
+
             var dt = NsDmHelper.AL_Assmbling
-                .selectAll(t => t.AllExt)
+                .selectAll(t => t.AllExt)            
                 .query();
 
             return dt;
@@ -89,7 +90,7 @@ namespace ftd.service
 
             var dt = NsDmHelper.AL_Assmbling
                 .selectAll(t => t.AllExt)
-                .where(t => t.ALA_SEQCol == colId.toConstReq1())
+                .where(t => t.ALA_SEQCol == colId.toConstReq1())                
                 .orderby(t => t.ALA_SEQRow.Asc)
                 .query();
 
@@ -105,8 +106,7 @@ namespace ftd.service
         {
             AL_AssmblingDataTable dt = NsDmHelper.AL_Assmbling
                                                     .selectAll(t => t.AllExt)
-                                                    .where(t => t.ALA_SEQCol == colId.toConstOpt1()
-                                                                &t.ALA_SEQRow == FirstLocation)
+                                                    .where(t => t.ALA_SEQCol == colId.toConstOpt1())
                                                     .orderby(t => t.ALA_SEQCol.Asc)
                                                     .query();
 
@@ -199,16 +199,17 @@ namespace ftd.service
 
         #region [AL_AssmblingDetail_ByMCID]
         /// <summary>
-        /// 用MCID取得該天的生產資料
+        /// 取得日期內的所有機台ID的資料
         /// </summary>
-        /// <param name="qm">包含機台ID和日期</param>
-        /// <returns> DataTable </returns>
-        public DataTable AlAssmblingDetail_getDayTotalByMCID(AlAssmblingDetailQryModel qm)
+        /// <param name="iDate">日期(哪一天)</param>
+        /// <param name="iMCIDList">要查的機台ID</param>
+        /// <returns>機台該日期所有資料</returns>
+        public DataTable AlAssmblingDetail_getDayTotalByMCID(string iDate,List<string> iMCIDList)
         {
             DateTime dteTmp = DateTime.Today;
             DateTime dteDateS = DateTime.MinValue;
             DateTime dteDateE = DateTime.Today;
-            HryDataService.Instance.getOneDayForAssemblingDetail(qm.Q_Date, ref dteDateS, ref dteDateE);
+            HryDataService.Instance.getOneDayForAssemblingDetail(iDate, ref dteDateS, ref dteDateE);
 
             var qry = new NsDbQuery();
             qry.setSelect(s =>
@@ -216,7 +217,7 @@ namespace ftd.service
                 var t1 = s.from<AL_Assmbling>();
                 var t2 = s.leftJoin<AL_AssmblingDetail>().on(t => t.ALAD_MCID == t1.ALA_MCID);
                 s.select(t1.ALA_MCID, t1.ALA_MCCode, t1.ALA_MCName, t2.ALAD_DATE, t2.ALAD_ITEM, t2.ALAD_QTY);
-                s.Where = t1.ALA_MCID == qm.Q_MCID.toConstOpt1()
+                s.Where = t1.ALA_MCID.@in(iMCIDList)
                           & t2.ALAD_DATE >= dteDateS
                           & t2.ALAD_DATE <= dteDateE;
                 s.groupBy(t1.ALA_MCID, t1.ALA_MCCode, t1.ALA_MCName, t2.ALAD_DATE, t2.ALAD_ITEM, t2.ALAD_QTY);
