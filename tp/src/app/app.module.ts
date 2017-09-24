@@ -8,13 +8,15 @@ import { HomeComponent } from './home/home.component';
 import { MccodelistComponent } from './mccodelist/mccodelist.component';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
+import { StrFormatPipe } from './str-format.pipe';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    MccodelistComponent
+    MccodelistComponent,
+    StrFormatPipe
   ],
   imports: [
     BrowserModule,
