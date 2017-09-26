@@ -24,6 +24,12 @@ export class HomeComponent implements OnInit {
 
      private alive: boolean; // used to unsubscribe from the IntervalObservable
 
+     isCollapsed: boolean = true;
+     
+     toggleCollapse(): void {
+       this.isCollapsed = !this.isCollapsed;
+     }
+
   onResize(event) {
       this.testwidth = event.target.innerWidth;
    }

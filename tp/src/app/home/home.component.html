@@ -2,44 +2,23 @@
 <div class="container-fluid" (window:resize)="onResize($event)">
   <div class="row">
     <div class="col-md-12">
-      <h4 class="text-center">
-          TP生產狀況總表
-      </h4>
-
-      <!-- <div class="btn-group">
-        <button class="btn btn-default" type="button">
-          <h4 class="glyphicon glyphicon-align-left"></h4> FPC
-        </button>
-        <button class="btn btn-default" type="button">
-          <h4 class="glyphicon glyphicon-align-center"></h4> TAC
-        </button>
-        <button class="btn btn-default" type="button">
-          <h4 class="glyphicon glyphicon-align-right"></h4> 偏光板
-        </button>
-        <button class="btn btn-default" type="button">
-          <h4 class="glyphicon glyphicon-align-justify"></h4> AG/AFP
-        </button>
-      </div> -->
-
-
       <nav class="nav navbar-default">
           <div class="container-fluid">
               <div class="navbar-header">
-                  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar" [attr.aria-expanded]="!isCollapsed" (click)="toggleCollapse()" [ngClass]="{'collapsed': isCollapsed}">
                       <span class="icon-bar"></span>
                       <span class="icon-bar"></span>
                       <span class="icon-bar"></span>
                   </button>
                   <img [src]="futaba.picture" width="50%"/>
-
               </div>
-              <div class="collapse navbar-collapse" id="myNavbar" [ngClass]="['navbarTitle']">
+              <div class="collapse navbar-collapse" id="myNavbar" [ngClass]="{'in': !isCollapsed}">
                   <ul class="nav navbar-nav">
                     <li><a data-toggle="button" [routerLink]="['/mccodelist/FPC']">FPC</a></li>
                     <li><a data-toggle="button" [routerLink]="['/mccodelist/TAC']">TAC</a></li>
                     <li><a data-toggle="button" [routerLink]="['/mccodelist/POL']">偏光板</a></li>
                     <li><a data-toggle="button" [routerLink]="['/mccodelist/AGAFP']">AG/AFP</a></li>
-                  </ul>
+                  </ul>              
                   <!-- <ul class="nav navbar-nav navbar-right">
                       <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Log in</a></li>
                       <li><a href="#">Log out</a></li>
@@ -49,6 +28,9 @@
           </div>
       </nav>
       <p>
+          <!-- <h4 class="text-center">
+              TP生產狀況總表
+          </h4> -->
       <p>
           <!-- <h4>{{testwidth}}</h4> -->
       <div class="row">
