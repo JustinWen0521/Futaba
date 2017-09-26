@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
      // futaba圖片放置路徑
      futaba = {
       name:  'Futaba',
-      picture: '/assets/icons/futaba.jpg'
+      picture: 'assets/icons/futaba.jpg'
      };
      private display: boolean; // whether to display info in the component
      // use *ngIf="display" in your html to take
@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
      private alive: boolean; // used to unsubscribe from the IntervalObservable
 
      isCollapsed: boolean = true;
-     
+
      toggleCollapse(): void {
        this.isCollapsed = !this.isCollapsed;
      }

@@ -51,7 +51,6 @@ export class MccodelistComponent implements OnInit {
     this.datas = [];
     this.datasvc.getAssmbingDetail( this.code , this.date.replace('-', '').replace('-', ''))
     .subscribe(data => {
-
         this.datas = data;
     });
 
