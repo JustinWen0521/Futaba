@@ -424,38 +424,11 @@
             早上7點
             </summary>
         </member>
-        <member name="F:ftd.mvc.Controllers.AssmblingController.NINETEEN">
-            <summary>
-            晚上7點
-            </summary>
-        </member>
         <member name="M:ftd.mvc.Controllers.AssmblingController.Get">
             <summary>
             預設選取多筆資料
             </summary>
             <returns></returns>
-        </member>
-        <member name="M:ftd.mvc.Controllers.AssmblingController.GetMachineTotalValue(System.Data.DataTable,ftd.mvc.Controllers.AssmblingController.eDayType)">
-            <summary>
-            計算日,夜班總合
-            </summary>
-            <param name="dt">機台當天所有的資料</param>
-            <param name="DayType">取日班 or 夜班</param>
-            <returns>總合</returns>
-        </member>
-        <member name="M:ftd.mvc.Controllers.AssmblingController.GetProductName(System.Data.DataTable)">
-            <summary>
-            取得產品名稱
-            </summary>
-            <param name="dt">生產資料</param>
-            <returns>產品名稱</returns>
-        </member>
-        <member name="M:ftd.mvc.Controllers.AssmblingController.getMachineListClassData(System.Int32)">
-            <summary>
-            取得該線別所有機台資料
-            </summary>
-            <param name="Id">線別ID(0~6)</param>
-            <returns>線別機台所有資料</returns>
         </member>
         <member name="M:ftd.mvc.Controllers.AssmblingController.GetProductLineInfo(System.String)">
             <summary>
@@ -464,9 +437,117 @@
             <param name="Id">取某一線別(不傳取全部)</param>
             <returns>線別資料</returns>
         </member>
-        <member name="T:ftd.mvc.Controllers.AssmblingController.eDayType">
+        <member name="M:ftd.mvc.Controllers.AssmblingController.SelectLines(ftd.data.AL_AssmblingDataTable,System.Collections.Generic.Dictionary{System.String,ftd.mvc.Controllers.SumValueClass})">
             <summary>
-            取得早班小計或晚班小計
+            轉換加總所有機台資訊
+            </summary>
+            <param name="idt">機台主檔</param>
+            <param name="iSumValue">所有機台總合資料</param>
+            <returns>所有機台資料</returns>
+        </member>
+        <member name="M:ftd.mvc.Controllers.AssmblingController.GetProductName(System.Collections.Generic.List{ftd.mvc.Controllers.MachineClass},System.Collections.Generic.Dictionary{System.String,ftd.mvc.Controllers.SumValueClass})">
+            <summary>
+            取得目前在Run的產品名稱
+            </summary>
+            <param name="iItemList">組好的MachineClass</param>
+            <param name="iSumValue">機台的加總數值(含產品名稱)</param>
+            <returns></returns>
+        </member>
+        <member name="M:ftd.mvc.Controllers.AssmblingController.SumTotalValue(System.Data.DataTable)">
+            <summary>
+            加總機台日夜班數量總合
+            </summary>
+            <param name="idt">所有資料</param>
+            <returns>機台日夜班數量總合</returns>
+        </member>
+        <member name="M:ftd.mvc.Controllers.AssmblingController.SumQtyValue(System.Boolean,ftd.mvc.Controllers.SumValueClass,System.Data.DataRow)">
+            <summary>
+            加總日夜班的值
+            </summary>
+            <param name="iType">True : 日班,False:夜班</param>
+            <param name="iSumValue">日夜班的值Class</param>
+            <param name="iDr">該筆資料總合</param>
+        </member>
+        <member name="M:ftd.mvc.Controllers.AssmblingController.ChangeQtyValueType(System.String)">
+            <summary>
+            字串轉換數字
+            </summary>
+            <param name="iQty">機台數量</param>
+            <returns>return int</returns>
+        </member>
+        <member name="T:ftd.mvc.Controllers.SumValueClass">
+            <summary>
+            計算機台數量總合
+            </summary>
+        </member>
+        <member name="F:ftd.mvc.Controllers.SumValueClass.ProductName">
+            <summary>
+            該機台Run的產品名
+            </summary>
+        </member>
+        <member name="F:ftd.mvc.Controllers.SumValueClass.Day_Value">
+            <summary>
+            日夜總合
+            </summary>
+        </member>
+        <member name="F:ftd.mvc.Controllers.SumValueClass.Night_Value">
+            <summary>
+            夜班總合
+            </summary>
+        </member>
+        <member name="T:ftd.mvc.Controllers.MachineLineClass">
+            <summary>
+            該線別所有資料
+            </summary>
+        </member>
+        <member name="F:ftd.mvc.Controllers.MachineLineClass.Line">
+            <summary>
+            哪一條線
+            </summary>
+        </member>
+        <member name="F:ftd.mvc.Controllers.MachineLineClass.Product">
+            <summary>
+            該線別產品名
+            </summary>
+        </member>
+        <member name="F:ftd.mvc.Controllers.MachineLineClass.MachineList">
+            <summary>
+            該線別所有機台資料
+            </summary>
+        </member>
+        <member name="T:ftd.mvc.Controllers.MachineClass">
+            <summary>
+            該線別所有機台資料
+            </summary>
+        </member>
+        <member name="F:ftd.mvc.Controllers.MachineClass.MachineId">
+            <summary>
+            機台MCID
+            </summary>
+        </member>
+        <member name="F:ftd.mvc.Controllers.MachineClass.MachineName">
+            <summary>
+            機台名稱
+            </summary>
+        </member>
+        <member name="F:ftd.mvc.Controllers.MachineClass.MachineCol">
+            <summary>
+            機台位置(列)
+            </summary>
+        </member>
+        <member name="F:ftd.mvc.Controllers.MachineClass.MachineRow">
+            <summary>
+            機台位置(行)
+            </summary>
+        </member>
+        <member name="F:ftd.mvc.Controllers.MachineClass.MachineDay">
+            <summary>
+            機台日班總合
+            </summary>
+        </member>
+        <member name="F:ftd.mvc.Controllers.MachineClass.MachineNight">
+            <summary>
+            機台夜班總合
             </summary>
         </member>
         <member name="M:ftd.mvc.Extensions.Help.Cal2DateDifference_YM(System.DateTime,System.DateTime)">
