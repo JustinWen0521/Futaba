@@ -1,45 +1,46 @@
-.navbarTitle {
-    font-size: 16px;
-    font-weight:bold; 
-  }
-  
-  .navbarTitle1366 {
-    font-size: 16px;
-    font-weight:bold; 
-  }
-  
-  .productTitle1366 {
+/*直接將 media 的條件寫在 CSS 裡，裡面包的是各種 class/ ID 的 css 設定*/
+@media screen and (min-width: 400px) and (max-width: 768px) {
+  .productName {
+    font-size: 20px;
+    font-weight:bold;
     color: black;
-    font-size: 14px;
-    font-weight:bold; 
-  }
-  
-  .productTitle {
+    border:3px green solid;
+    text-align:center;
+    margin:5px;
+    }
+  .a1 {
+    font-size: 15px;
+    font-weight:bold;
+    color: blue;
+    }
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1365px) {
+  .productName {
+    font-size: 2px;
+    font-weight:bold;
     color: black;
-    font-size: 14px;
-    font-weight:bold; 
-  }
-  
-  .productTitle {
+    }
+    .a1 {
+      font-size: 0.5px;
+      font-weight:bold;
+      color: blue;
+      }
+}
+
+@media screen and (min-width: 1366px) {
+  .productName {
+    font-size: 1vh;
+    font-weight:bold;
     color: black;
-    font-size: 6px;
-    font-weight:bold; 
-  }
-  
-  .productTitle1024 {
-    color: red;
-    font-size: 6px;
-    font-weight:bold; 
-  }
-  
-  .productTitle640 {
-    color: black;
-    font-size: 16px;
-    font-weight:bold; 
-  }
-  
-  .machineName {
-    font-size: 13px;
-    font-weight:bold; 
-  }
-  
+    border:3px green solid;
+    text-align:center;
+    margin:5px;
+    }
+    .a1 {
+      font-size: 0.5px;
+      font-weight:bold;
+      color: blue;
+      
+      }
+}
