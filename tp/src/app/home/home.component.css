@@ -17,20 +17,7 @@
 
 @media screen and (min-width: 1024px) and (max-width: 1365px) {
   .productName {
-    font-size: 2px;
-    font-weight:bold;
-    color: black;
-    }
-    .a1 {
-      font-size: 0.5px;
-      font-weight:bold;
-      color: blue;
-      }
-}
-
-@media screen and (min-width: 1366px){
-  .productName {
-    font-size: 2px;
+    font-size: 1px;
     font-weight:bold;
     color: black;
     border:3px green solid;
@@ -38,7 +25,23 @@
     margin:5px;
     }
     .a1 {
-      font-size: 0.5px;
+      font-size: 2px;
+      font-weight:bold;
+      color: blue;
+      }
+}
+
+@media screen and (min-width: 1366px){
+  .productName {
+    font-size: 12px;
+    font-weight:bold;
+    color: black;
+    border:3px green solid;
+    text-align:center;
+    margin:5px;
+    }
+    .a1 {
+      font-size: 15px;
       font-weight:bold;
       color: blue;
       
