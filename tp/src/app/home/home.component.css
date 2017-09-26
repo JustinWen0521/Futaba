@@ -28,9 +28,9 @@
       }
 }
 
-@media screen and (min-width: 1366px) {
+@media screen and (min-width: 1366px){
   .productName {
-    font-size: 1vh;
+    font-size: 2px;
     font-weight:bold;
     color: black;
     border:3px green solid;

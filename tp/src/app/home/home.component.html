@@ -38,9 +38,9 @@
             <div>
                 <div class="col-md-1" *ngFor="let row of datas; let k=index">
                   <div [ngClass]="['productName']">{{row.Product | strFormat}}</div>
-                  <div class="panel panel-info" *ngFor="let machine of row.MachineList">
+                  <div class="panel panel-info" *ngFor="let machine of row.MachineList" >
                         <div class="panel-heading">
-                          <div class="panel-title" [ngClass]="['a1']">
+                          <div class="panel-title">
                              {{machine.MachineName}}
                           </div>
                         </div>
