@@ -66,4 +66,3 @@ D:\githubproject\FtbAssmbling\AppData\obj\Debug\RdlCompile.cache
 D:\githubproject\FtbAssmbling\AppData\obj\Debug\RdlCompile.compiled
 D:\githubproject\FtbAssmbling\AppData\obj\Debug\AppData.dll
 D:\githubproject\FtbAssmbling\AppData\obj\Debug\AppData.pdb
-D:\githubproject\FtbAssmbling\AppData\obj\Debug\AppData.csprojResolveAssemblyReference.cache

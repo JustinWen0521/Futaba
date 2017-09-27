@@ -8,39 +8,58 @@
     text-align:center;
     margin:5px;
     }
-  .a1 {
+  .machineName {
     font-size: 15px;
     font-weight:bold;
     color: blue;
     }
+    .machineDetail {
+      font-size: 15px;
+      font-weight:bold;
+      color: black;
+      }
 }
 
 @media screen and (min-width: 1024px) and (max-width: 1365px) {
   .productName {
-    font-size: 2px;
+    font-size: 1px;
     font-weight:bold;
     color: black;
+    border:1px green solid;
+    text-align:center;
+   
     }
-    .a1 {
-      font-size: 0.5px;
+    .machineName {
+      font-size: 12px;
       font-weight:bold;
       color: blue;
+      text-align:center;
       }
+      .machineDetail {
+        font-size: 10px;
+        font-weight:bold;
+        color: black;
+        }
 }
 
 @media screen and (min-width: 1366px){
   .productName {
-    font-size: 2px;
+    font-size: 12px;
     font-weight:bold;
     color: black;
     border:3px green solid;
     text-align:center;
-    margin:5px;
+    margin:1px;
     }
-    .a1 {
-      font-size: 0.5px;
+    .machineName {
+      font-size: 15px;
       font-weight:bold;
       color: blue;
       
       }
+      .machineDetail {
+        font-size: 13px;
+        font-weight:bold;
+        color: black;
+        }
 }

@@ -40,14 +40,14 @@
                   <div [ngClass]="['productName']">{{row.Product | strFormat}}</div>
                   <div class="panel panel-info" *ngFor="let machine of row.MachineList" >
                         <div class="panel-heading">
-                          <div class="panel-title">
+                          <div class="panel-title" [ngClass]="['machineName']">
                              {{machine.MachineName}}
                           </div>
                         </div>
-                        <div class="panel-body">
+                        <div class="panel-body" [ngClass]="['machineDetail']">
                           夜:{{machine.MachineNight}}
                         </div>
-                        <div class="panel-footer">
+                        <div class="panel-footer" [ngClass]="['machineDetail']">
                           日:{{machine.MachineDay}}
                         </div>
                       </div>
