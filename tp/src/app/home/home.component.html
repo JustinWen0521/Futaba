@@ -14,10 +14,10 @@
                 </div>
                 <div class="collapse navbar-collapse" id="myNavbar" [ngClass]="{'in': !isCollapsed}">
                     <ul class="nav navbar-nav">
-                      <li><a data-toggle="button" [routerLink]="['/mccodelist/FPC']">FPC</a></li>
-                      <li><a data-toggle="button" [routerLink]="['/mccodelist/TAC']">TAC</a></li>
-                      <li><a data-toggle="button" [routerLink]="['/mccodelist/POL']">偏光板</a></li>
-                      <li><a data-toggle="button" [routerLink]="['/mccodelist/AGAFP']">AG/AFP</a></li>
+                      <li><a data-toggle="button" [routerLink]="['/mccodelist/FPC']" [ngClass]="['navbarButton']">FPC</a></li>
+                      <li><a data-toggle="button" [routerLink]="['/mccodelist/TAC']" [ngClass]="['navbarButton']">TAC</a></li>
+                      <li><a data-toggle="button" [routerLink]="['/mccodelist/POL']" [ngClass]="['navbarButton']">偏光板</a></li>
+                      <li><a data-toggle="button" [routerLink]="['/mccodelist/AGAFP']" [ngClass]="['navbarButton']">AG/AFP</a></li>
                     </ul>              
                     <!-- <ul class="nav navbar-nav navbar-right">
                         <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Log in</a></li>

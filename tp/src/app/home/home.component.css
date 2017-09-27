@@ -1,5 +1,6 @@
 /*直接將 media 的條件寫在 CSS 裡，裡面包的是各種 class/ ID 的 css 設定*/
-@media screen and (min-width: 400px) and (max-width: 768px) {
+/*手機縱向設定*/
+@media screen and (orientation: portrait){
   .productName {
     font-size: 20px;
     font-weight:bold;
@@ -13,11 +14,42 @@
     font-weight:bold;
     color: blue;
     }
-    .machineDetail {
-      font-size: 15px;
-      font-weight:bold;
-      color: black;
-      }
+  .machineDetail {
+    font-size: 15px;
+    font-weight:bold;
+    color: black;
+    }
+  .navbarButton {
+    font-size: 15px;
+    font-weight:bold;
+    color: black;
+    }
+}
+/*手機橫向設定*/
+@media screen and (orientation: landscape){
+  .productName {
+    font-size: 20px;
+    font-weight:bold;
+    color: black;
+    border:3px green solid;
+    text-align:center;
+    margin:5px;
+    }
+  .machineName {
+    font-size: 15px;
+    font-weight:bold;
+    color: blue;
+    }
+  .machineDetail {
+    font-size: 15px;
+    font-weight:bold;
+    color: black;
+    }
+  .navbarButton {
+    font-size: 15px;
+    font-weight:bold;
+    color: black;
+    }
 }
 
 @media screen and (min-width: 1024px) and (max-width: 1365px) {
@@ -35,11 +67,16 @@
       color: blue;
       text-align:center;
       }
-      .machineDetail {
-        font-size: 10px;
-        font-weight:bold;
-        color: black;
-        }
+    .machineDetail {
+      font-size: 10px;
+      font-weight:bold;
+      color: black;
+      }
+    .navbarButton {
+       font-size: 15px;
+       font-weight:bold;
+       color: black;
+      }
 }
 
 @media screen and (min-width: 1366px){
@@ -51,15 +88,19 @@
     text-align:center;
     margin:1px;
     }
-    .machineName {
-      font-size: 15px;
-      font-weight:bold;
-      color: blue;
-      
-      }
-      .machineDetail {
-        font-size: 13px;
-        font-weight:bold;
-        color: black;
-        }
+  .machineName {
+    font-size: 15px;
+    font-weight:bold;
+    color: blue; 
+    }
+  .machineDetail {
+    font-size: 13px;
+    font-weight:bold;
+    color: black;
+    }
+  .navbarButton {
+    font-size: 15px;
+    font-weight:bold;
+    color: black;
+    }
 }
