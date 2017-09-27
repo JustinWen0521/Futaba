@@ -60,7 +60,7 @@ export class MccodelistComponent implements OnInit {
         {val: 'POL' , txt: 'POL'},
         {val: 'AGAFP' , txt: 'AGAFP'}
     ];
-    console.log(this.codeSelected);
+    // console.log(this.codeSelected);
 
     this.code = this.codeSelected;
 
@@ -73,6 +73,7 @@ export class MccodelistComponent implements OnInit {
         this.datas = data;
     });
 
+    // console.log( this.strListClass + '2');
   }
 
 

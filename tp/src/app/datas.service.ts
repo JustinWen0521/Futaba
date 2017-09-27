@@ -8,6 +8,7 @@ import {Http} from '@angular/http';
 export class DatasService {
   // WebAPI的uri
   private target = 'http://eip.tw-futaba.com.tw/FtbAssmbling' ;
+  // private target = 'http://localhost/FtbAssmbling' ;
   private allLineInfoUri = '/Assmbling/GetProductLineInfo';
   AssmblingDetailUri = '/AssmblingDetail/GetAssemblingDetailByDate';
   code: String;
