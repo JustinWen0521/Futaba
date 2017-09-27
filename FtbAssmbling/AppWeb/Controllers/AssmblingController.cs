@@ -19,6 +19,10 @@ namespace ftd.mvc.Controllers
         /// 早上7點
         /// </summary>
         private static int SEVEN = 07;
+        /// <summary>
+        /// 晚上7點
+        /// </summary>
+        private static int NINETEEN = 19;
 
         public AssmblingController() 
         {
@@ -140,9 +144,9 @@ namespace ftd.mvc.Controllers
             if (iSumValue == null || iSumValue.Count == 0 || iItemList == null || iItemList.Count == 0)
                 return string.Empty;
 
-            for (int i = iItemList.Count; i > 0; i--) 
+            for (int i = 0; i < iItemList.Count; i++) 
             {
-                string mProduct = iSumValue[iItemList[(i - 1)].MachineId].ProductName.Replace("\0", string.Empty).Trim();
+                string mProduct = iSumValue[iItemList[i].MachineId].ProductName.Replace("\0", string.Empty).Trim();
                 if (mProduct != null && !mProduct.Equals(string.Empty))
                     return mProduct;
             }
@@ -150,18 +154,58 @@ namespace ftd.mvc.Controllers
         }
 
         /// <summary>
-        /// 加總機台日夜班數量總合
+        /// 加總機台日夜班數量總合(20170927 by TP夜班19~23時會自動先+1天,故先配合修改,之後有可能會拿掉 by Justin)
         /// </summary>
         /// <param name="idt">所有資料</param>
         /// <returns>機台日夜班數量總合</returns>
-        private Dictionary<string, SumValueClass> SumTotalValue(DataTable idt) 
+        //private Dictionary<string, SumValueClass> SumTotalValue(DataTable idt)
+        //{
+        //    if (idt == null || idt.Rows.Count == 0)
+        //        return null;
+
+        //    Dictionary<string, SumValueClass> mTotalList = new Dictionary<string, SumValueClass>();
+        //    //夜班開始時間
+        //    DateTime STime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, NINETEEN, 00, 00);//取當天日期的早上19點為開始
+        //    //夜班結束時間
+        //    DateTime ETime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, SEVEN, 00, 00);//取當天日期的晚上7點為結束            
+        //    foreach (DataRow item in idt.Rows)
+        //    {
+        //        string MCID = item[AppDataName.ALA_MCID].ToString();
+        //        DateTime mValueDateTime = Convert.ToDateTime(item[AppDataName.ALAD_DATE]);
+        //        bool IsDay = true;
+        //        if (mValueDateTime != null)
+        //        {
+        //            IsDay = mValueDateTime < STime &&
+        //                    mValueDateTime >= ETime ? true : false;// True:日班 , False:夜班
+        //        }
+
+        //        if (!mTotalList.ContainsKey(MCID))
+        //        {
+        //            SumValueClass mNewSumValue = new SumValueClass
+        //            {
+        //                Day_Value = 0,
+        //                Night_Value = 0
+        //            };
+        //            mTotalList.Add(MCID, mNewSumValue);
+        //        }
+        //        SumQtyValue(IsDay, mTotalList[MCID], item);
+        //    }
+        //    return mTotalList;
+        //}
+
+        /// <summary>
+        /// 加總機台日夜班數量總合(20170927 by TP夜班19~23時會自動先+1天,故此方法先註解,之後可能會改回來,勿刪 by Justin)
+        /// </summary>
+        /// <param name="idt">所有資料</param>
+        /// <returns>機台日夜班數量總合</returns>
+        private Dictionary<string, SumValueClass> SumTotalValue(DataTable idt)
         {
             if (idt == null || idt.Rows.Count == 0)
                 return null;
 
             Dictionary<string, SumValueClass> mTotalList = new Dictionary<string, SumValueClass>();
-            DateTime NTime = new DateTime(DateTime.Now.Year,DateTime.Now.Month,DateTime.Now.Day, SEVEN, 00, 00);//取當天日期的早上7點
-            foreach (DataRow item in idt.Rows) 
+            DateTime NTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, SEVEN, 00, 00);//取當天日期的早上7點
+            foreach (DataRow item in idt.Rows)
             {
                 string MCID = item[AppDataName.ALA_MCID].ToString();
                 bool IsDay = Convert.ToDateTime(item[AppDataName.ALAD_DATE]) < NTime ? false : true;//True : 日班,False:夜班
@@ -171,8 +215,8 @@ namespace ftd.mvc.Controllers
                     {
                         Day_Value = 0,
                         Night_Value = 0
-                    };                    
-                    mTotalList.Add(MCID, mNewSumValue);  
+                    };
+                    mTotalList.Add(MCID, mNewSumValue);
                 }
                 SumQtyValue(IsDay, mTotalList[MCID], item);
             }
@@ -182,7 +226,7 @@ namespace ftd.mvc.Controllers
         /// <summary>
         /// 加總日夜班的值
         /// </summary>
-        /// <param name="iType">True : 日班,False:夜班</param>
+        /// <param name="iType">True:日班 , False:夜班</param>
         /// <param name="iSumValue">日夜班的值Class</param>
         /// <param name="iDr">該筆資料總合</param>
         private void SumQtyValue(bool iType,SumValueClass iSumValue,DataRow iDr)

@@ -424,6 +424,11 @@
             早上7點
             </summary>
         </member>
+        <member name="F:ftd.mvc.Controllers.AssmblingController.NINETEEN">
+            <summary>
+            晚上7點
+            </summary>
+        </member>
         <member name="M:ftd.mvc.Controllers.AssmblingController.Get">
             <summary>
             預設選取多筆資料
@@ -455,7 +460,7 @@
         </member>
         <member name="M:ftd.mvc.Controllers.AssmblingController.SumTotalValue(System.Data.DataTable)">
             <summary>
-            加總機台日夜班數量總合
+            加總機台日夜班數量總合(20170927 by TP夜班19~23時會自動先+1天,故此方法先註解,之後可能會改回來,勿刪 by Justin)
             </summary>
             <param name="idt">所有資料</param>
             <returns>機台日夜班數量總合</returns>
@@ -464,7 +469,7 @@
             <summary>
             加總日夜班的值
             </summary>
-            <param name="iType">True : 日班,False:夜班</param>
+            <param name="iType">True:日班 , False:夜班</param>
             <param name="iSumValue">日夜班的值Class</param>
             <param name="iDr">該筆資料總合</param>
         </member>
