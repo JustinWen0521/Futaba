@@ -14,8 +14,10 @@ export class MccodelistComponent implements OnInit {
   strMonth: string = '';
   strDay: string = '';
   strListClass: string = '';
+  ListCodes: any[] = [];
   datas: any[] = [];
   code: string  ;
+  codeSelected: string  ;
   date: string  ;
 
 
@@ -44,13 +46,24 @@ export class MccodelistComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.code = params['code'];
     });
-  this.doquery();
+    this.codeSelected = this.code;
+    this.doquery();
 
   }
 
 
   doquery() {
     this.datas = [];
+    this.ListCodes = [
+        {val: 'FPC' , txt: 'FPC' },
+        {val: 'TAC' , txt: 'TAC'},
+        {val: 'POL' , txt: 'POL'},
+        {val: 'AGAFP' , txt: 'AGAFP'}
+    ];
+    console.log(this.codeSelected);
+
+    this.code = this.codeSelected;
+
     this.datasvc.getAssmbingDetail( this.code , this.date.replace('-', '').replace('-', ''))
     .subscribe(data => {
       if ( data.length !== 0) {

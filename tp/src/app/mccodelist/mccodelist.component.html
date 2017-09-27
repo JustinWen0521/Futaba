@@ -10,11 +10,9 @@
                [attr.data-link-field]="'dtp_input1'">
                <input  type="date" name="DOMDate" [(ngModel)] = "date">
                 &nbsp;
-               <select name="DOMType" [(ngModel)] = "code" class="LiSelect">
-                  <option value='FPC'>FPC </option>
-                  <option value='TAC'>TAC </option>
-                  <option value='POL'>POL </option>
-                  <option value='AGAFP'>AGAFP</option>
+               <select name="DOMType" class="LiSelect" [(ngModel)]="codeSelected" >
+                  <option *ngFor="let itemCode of ListCodes"
+                    value="{{itemCode.val}}">{{itemCode.txt}} </option>
                </select>
                &nbsp;
                <button type="submit" style="background-color:aqua;" class="btn btn-default" (click)="doquery()" >
@@ -27,7 +25,7 @@
   <br/>
   <div style="text-align:center">
       <input style="border:solid;background-color:blue;font-family: impact;color:lavender;text-align:center;font-size:x-large;"
-      type="text" name="DOMCode" [attr.readonly]="'readonly'" [(ngModel)] = "code">
+      type="text" name="DOMCode" [attr.readonly]="'readonly'" [ngModel] = "code">
   </div>
   <br/>
   <!--all line detail start-->
