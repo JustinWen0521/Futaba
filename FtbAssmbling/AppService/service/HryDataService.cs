@@ -53,11 +53,12 @@ namespace ftd.service
             {
                 getDateFromString(strDate , ref dteTmp);
                 //晚班為頭
+                /*
                 dteDateS = dteTmp.AddDays(-1).AddHours(19);
                 dteDateE = dteTmp.AddHours(18);
-
-                //dteDateS = dteTmp;
-                //dteDateE = dteTmp.AddHours(23).AddMinutes(59).AddSeconds(59);
+                * */
+                dteDateS = dteTmp;
+                dteDateE = dteTmp.AddHours(23).AddMinutes(59).AddSeconds(59);
             }            
         }
 
@@ -65,8 +66,9 @@ namespace ftd.service
         public List<PrdEditDetail> getArrayForAssemblingDetail(ref String[] arrTimeWork)
         {
             arrTimeWork = new String[]{
+                "19","20","21","22","23","00","01","02","03","04","05","06","Night小計" ,
                 "07","08","09","10","11","12","13","14","15","16","17","18","Morning小計",
-                "19","20","21","22","23","00","01","02","03","04","05","06","Night小計" ,"Day合計"};
+                "Day合計"};
 
             //String[,] arrMCCode = new String[27, 4];
             List<PrdEditDetail> listMCCode = new List<PrdEditDetail>();
