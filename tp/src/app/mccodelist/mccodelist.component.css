@@ -2,3 +2,10 @@
 .container>div>div {
 	text-align: center;
 	}
+
+  .LiSelect {width:80px; height:30px; background: url(/images/select.png) no-repeat 65px center #fff;  z-index:10px; cursor:pointer; }
+  .LiSelect:hover ul {display:block;}
+  .LiSelect span {display:block; width:100%; border:1px solid #ccc; text-align:center; line-height:30px; height:30px;}
+  .LiSelect ul{  position:relative; list-style:none; width:80px; max-height:300px; overflow-y:visible; overflow-x:hidden;  padding:0; margin:0;  text-align:center; display:none; border:1px solid #ccc; border-top:0;}
+  .LiSelect ul li{ width:80px;   background:#FFF; line-height:25px;}
+  .LiSelect ul li:hover {background-color:#FE8C80; color:#FFF; }

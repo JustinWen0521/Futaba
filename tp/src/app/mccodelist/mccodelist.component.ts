@@ -13,9 +13,11 @@ export class MccodelistComponent implements OnInit {
   strYear: string = '';
   strMonth: string = '';
   strDay: string = '';
+  strListClass: string = '';
   datas: any[] = [];
-  code: String  ;
-  date: String  ;
+  code: string  ;
+  date: string  ;
+
 
 
   constructor(public datasvc: DatasService, private router: Router, private route: ActivatedRoute ) {
@@ -51,9 +53,12 @@ export class MccodelistComponent implements OnInit {
     this.datas = [];
     this.datasvc.getAssmbingDetail( this.code , this.date.replace('-', '').replace('-', ''))
     .subscribe(data => {
+      if ( data.length !== 0) {
+        this.strListClass = 'col-md-'.concat( Math.ceil(12 / data.length + 1).toString()) ;
+        // console.log( this.strListClass + '1');
+      }
         this.datas = data;
     });
-
 
   }
 
