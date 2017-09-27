@@ -189,7 +189,7 @@ namespace ftd.service
                           & t2.ALAD_DATE >= dteDateS
                           & t2.ALAD_DATE <= dteDateE;
                 s.groupBy(t1.ALA_MCID, t1.ALA_MCCode, t1.ALA_MCName, t2.ALAD_DATE, t2.ALAD_ITEM, t2.ALAD_QTY);
-                s.orderBy(new[] { t1.ALA_MCID.Asc, t2.ALAD_DATE.Asc });
+                s.orderBy(new[] { t1.ALA_MCName.Asc, t2.ALAD_DATE.Asc });
             });
 
             var dt = qry.queryData();
