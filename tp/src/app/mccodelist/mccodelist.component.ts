@@ -27,7 +27,9 @@ export class MccodelistComponent implements OnInit {
     this.strYear = this.today.getFullYear().toString();
 
     this.strMonth = '';
+    this.strDay = '';
     let tmpMonth = this.today.getMonth() + 1 ;
+    let tmpDay = this.today.getDate();
 
     if (tmpMonth.toString().length > 1) {
       this.strMonth = tmpMonth.toString();
@@ -35,9 +37,14 @@ export class MccodelistComponent implements OnInit {
       this.strMonth = '0'.concat(tmpMonth.toString());
     }
 
-    this.strDay = this.today.getDate().toString();
-    this.date =  this.strYear.concat('-', this.strMonth, '-' , this.strDay);
+    if (tmpDay.toString().length > 1) {
+      this.strDay = tmpDay.toString();
+    }else {
+      this.strDay = '0'.concat(tmpDay.toString());
+    }
 
+    this.date =  this.strYear.concat('-', this.strMonth, '-' , this.strDay);
+    // console.log(this.date);
 
   }
 
