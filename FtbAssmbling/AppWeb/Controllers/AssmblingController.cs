@@ -23,6 +23,14 @@ namespace ftd.mvc.Controllers
         /// 晚上7點
         /// </summary>
         private static int NINETEEN = 19;
+        /// <summary>
+        /// 假帳號
+        /// </summary>
+        private string username = "futaba";
+        /// <summary>
+        /// 假密碼
+        /// </summary>
+        private string password = "1234";
 
         public AssmblingController() 
         {
@@ -48,11 +56,18 @@ namespace ftd.mvc.Controllers
         /// <summary>
         /// 取得目前所有機台資料(改為動態取)
         /// </summary>
-        /// <param name="Id">取某一線別(不傳取全部)</param>
-        /// <returns>線別資料</returns>
+        /// <param name="itoken">拿登入後的token來要資料</param>
+        /// <param name="Id">線別(沒填值表示取全部)</param>
+        /// <returns>取得所有機台資料</returns>
         [HttpGet]
-        public string GetProductLineInfo(string Id)                                             
+        public string GetProductLineInfo(string itoken,string Id)                                             
         {
+            if (itoken == null || itoken.equalIgnoreCase(string.Empty))
+                return string.Empty;
+
+            if (!itoken.equalIgnoreCase((username + password)))//token比對失敗,表示帳密輸入錯誤
+                return string.Empty;
+
             List<MachineLineClass> data = new List<MachineLineClass>();
             int? LineID = null;
             if (Id != null) 
@@ -252,6 +267,28 @@ namespace ftd.mvc.Controllers
             else
                 return 0;
         }
+
+        /// <summary>
+        /// Login_登入
+        /// </summary>
+        /// <param name="iUsername">帳號</param>
+        /// <param name="iPassWord">密碼</param>
+        /// <returns>token = 帳號+密碼(ErrorCode : (-1:帳密有空值),(-2:帳密錯誤))</returns>
+        [HttpGet]
+        public string Login(string iUsername,string iPassWord) 
+        {
+            string token = string.Empty;
+            if (iUsername == null || iUsername.equalIgnoreCase(string.Empty) || iPassWord == null || iPassWord.equalIgnoreCase(string.Empty))
+                return "-1";
+
+            if (iUsername.equalIgnoreCase(username) && iPassWord.equalIgnoreCase(password))
+                token = username + password;//token = futaba1234
+            else
+                token = "-2";
+
+            return token;
+        }
+
     }
 
     /// <summary>
