@@ -12,19 +12,47 @@
                     </button>
                     <img [src]="futaba.picture" width="50%"/>
                 </div>
-                <div class="collapse navbar-collapse" id="myNavbar" [ngClass]="{'in': !isCollapsed}">
-                    <ul class="nav navbar-nav">
+                <div class="collapse navbar-collapse" id="myNavbar" [ngClass]="{'in': !isCollapsed}"  >
+                    <ul class="nav navbar-nav" id="btn_link" style="display:none"  >
                       <li><a data-toggle="button" [routerLink]="['/mccodelist/FPC']" [ngClass]="['navbarButton']">FPC</a></li>
                       <li><a data-toggle="button" [routerLink]="['/mccodelist/TAC']" [ngClass]="['navbarButton']">TAC</a></li>
                       <li><a data-toggle="button" [routerLink]="['/mccodelist/POL']" [ngClass]="['navbarButton']">偏光板</a></li>
                       <li><a data-toggle="button" [routerLink]="['/mccodelist/AGAFP']" [ngClass]="['navbarButton']">AG/AFP</a></li>
-                    </ul>              
-                    <!-- <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Log in</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <button id="btn_login" type='button' class="btn btn-success" data-toggle="modal" data-target="#popUpWindow">Log In </button>
+                        <button id="btn_logout" type='button' class="btn btn-success" (click)="logout()" >Log Out </button>
+                        <!-- <li><a href="#"><span class="glyphicon glyphicon-log-in"  data-toggle="modal" data-target="#popUpWindow"></span> Log in</a></li>
                         <li><a href="#">Log out</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Admin</a></li>
-                    </ul> -->
+                        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Admin</a></li> -->
+                    </ul>
                 </div>
+                <div class="modal fade" id="popUpWindow">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <!-- header -->
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h3 class="modal-title">Login Form</h3>
+                    </div>
+                    <!-- body -->
+                    <div class="modal-header">
+                      <form role="form">
+                        <div class="form-group">
+                          <input [(ngModel)] = "user" type="user" class="form-control" placeholder="user" name="iuser"/>
+                          <input [(ngModel)] = "pws" type="password" class="form-control" placeholder="Password" name="ipws" />
+                        </div>
+                      </form>
+                    </div>
+                    <!-- footer -->
+                    <div class="modal-footer">
+                      <button type="submit" data-dismiss="modal" class="btn btn-primary btn-block" (click)="doquery()">Log In</button>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
             </div>
         </nav>
         <p>
@@ -56,4 +84,3 @@
           </div>
         </div>
       </div>
-  
