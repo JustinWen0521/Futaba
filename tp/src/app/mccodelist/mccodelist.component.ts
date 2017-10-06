@@ -23,7 +23,19 @@ export class MccodelistComponent implements OnInit {
 
 
   constructor(public datasvc: DatasService, private router: Router, private route: ActivatedRoute ) {
-    this.today = new Date();
+
+
+   var time = new Date();
+
+    //PM七點 日期加一
+   if( time.getHours() >= 19 )
+   {
+    time.setDate(time.getDate()+1);
+   }
+
+   this.today = time;
+
+
     this.strYear = this.today.getFullYear().toString();
 
     this.strMonth = '';
@@ -43,7 +55,10 @@ export class MccodelistComponent implements OnInit {
       this.strDay = '0'.concat(tmpDay.toString());
     }
 
+
     this.date =  this.strYear.concat('-', this.strMonth, '-' , this.strDay);
+
+
     // console.log(this.date);
 
   }
