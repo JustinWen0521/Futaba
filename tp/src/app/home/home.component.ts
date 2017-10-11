@@ -13,8 +13,6 @@ export class HomeComponent implements OnInit {
 
   user: string;
   pws: string;
-  islogin: boolean = false;
-
   datas: any;
   testwidth: any;
   // futaba圖片放置路徑
@@ -29,6 +27,8 @@ export class HomeComponent implements OnInit {
   private alive: boolean; // used to unsubscribe from the IntervalObservable
 
   isCollapsed: boolean = true;
+
+  token:string = "token";
 
   toggleCollapse(): void {
     this.isCollapsed = !this.isCollapsed;
@@ -60,73 +60,62 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    //////////
-    console.log( "ngOnInit" +  document.cookie);
-    if (document.cookie == "Y") {
-      this.islogin = true;
+    if(this.getIsLogin()){
+      this.SetLoginBtnStatus(false);
       this.showData();
-      //this.doquery();
-      document.getElementById("btn_link").style.display = "block";
-      document.getElementById("btn_login").style.display = "none";
-      document.getElementById("btn_logout").style.display = "block";
+    }else{
+      this.InitView();
+      document.getElementById("btn_login").click();
     }
-    else {
-      //login();
-      console.log('TODO login modal');
-      document.getElementById("btn_login").style.display = "block";
-      document.getElementById("btn_logout").style.display = "none";
-    }
-
   }
+
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnDestroy() {
     this.alive = false; // switches your IntervalObservable off
   }
 
-  doquery() {
-    console.log( "doquery" +  this.islogin);
-    if (this.islogin) {
-      this.logout();
-    }
-    else {
-      this.login();
+  InitView(){
+    this.SetLoginBtnStatus(true);
+    this.datas = null;
+  }
+
+  //iEnable : True = 顯示LoginBtn,隱藏LogOutBtn
+  SetLoginBtnStatus(iEnable:boolean){
+    if(iEnable){
+      document.getElementById("btn_login").style.display = "block";
+      document.getElementById("btn_logout").style.display = "none";
+      document.getElementById("btn_link").style.display = "none";
+    }else{
+      document.getElementById("btn_login").style.display = "none";
+      document.getElementById("btn_logout").style.display = "block";
+      document.getElementById("btn_link").style.display = "block";
     }
   }
 
   logout() {
-    document.cookie = '';
-    this.islogin = false;
-    document.getElementById("btn_link").style.display = "none";
-    this.datas = null;
-
-    document.getElementById("btn_login").style.display = "block";
-    document.getElementById("btn_logout").style.display = "none";
-
+    localStorage.removeItem(this.token);
+    this.InitView();
   }
 
   login() {
-    // if (this.islogin)
-    //   return;
-    console.log(this.pws);
+    this.dataSvc.getLogin(this.user.toLowerCase(),this.pws).subscribe(data => {
+      if(data == "-1" ||data == "-2"){
+        alert("帳戶驗證錯誤，請確認帳號密碼");
+        return;
+      }
+      localStorage.setItem(this.token,data);
+      this.SetLoginBtnStatus(false);
+      this.showData();
+    });
+  }
 
-    if (this.user.toLowerCase() != "tftp")
-    {
-      alert("帳密錯誤");
-      return;
-    }
-    if (this.pws != "76025017") {
-      alert("帳密錯誤");
-      return;
-    }
-    document.cookie = "Y; path=/";
-    //document.getElementById("btn_login").style.display="none";
-    document.getElementById("btn_link").style.display = "block";
-    document.getElementById("btn_login").style.display = "none";
-    document.getElementById("btn_logout").style.display = "block";
-    this.showData();
-
-
-
+  //return True = IsLogin,False = NotLogin
+  getIsLogin(){
+    var mToken = localStorage.getItem("token");
+    if(mToken != '-1' && mToken != '-2' && mToken != null && mToken != undefined)
+      return true;
+    else
+      return false;
   }
 
   showData() {
@@ -139,7 +128,7 @@ export class HomeComponent implements OnInit {
   // get our data every subsequent 60 seconds
   IntervalObservable.create(60000)
     .subscribe(() => {
-      if (this.islogin)
+      if(this.getIsLogin())
       {
         this.dataSvc.getAllDatas()
         .subscribe(data => {
@@ -147,7 +136,5 @@ export class HomeComponent implements OnInit {
         });
       }
     });
-
   }
-
 }

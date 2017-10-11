@@ -11,18 +11,22 @@ export class DatasService {
   // private target = 'http://localhost/FtbAssmbling' ;
   private allLineInfoUri = '/Assmbling/GetProductLineInfo';
   AssmblingDetailUri = '/AssmblingDetail/GetAssemblingDetailByDate';
+  private LoginUri = '/Assmbling/Login';
   code: String;
   date: String;
 
   constructor(private http: Http) { }
 
-   // 抓取產線所有的資料
-  getAllDatas(): Observable<any[]> {
-    return this.http.get(`${this.target}` + `${this.allLineInfoUri}` )
-    .map(res => res.json());
+  getLogin(userName,userPws):Observable<string> {
+    return this.http.get( ( `${this.target}` + `${this.LoginUri }` + '?iUsername=' + `${userName}` +  '&iPassWord=' + `${userPws}` ) )
+    .map(res => res.text());
   }
 
-
+   // 抓取產線所有的資料
+  getAllDatas(): Observable<any[]> {
+    return this.http.get(`${this.target}` + `${this.allLineInfoUri}` + '?itoken=' + localStorage.getItem("token") + '&Id=')
+    .map(res => res.json());
+  }
 
   getAssmbingDetail(strCode , strDate): Observable<any[]> {
   //  return this.http.get('api/prd.json')
@@ -30,7 +34,5 @@ export class DatasService {
       return this.http.get( ( `${this.target}` + `${this.AssmblingDetailUri }` + '?code=' + `${strCode}` +  '&date=' + `${strDate}` ) )
         .map(res => res.json());
   }
-
-
 }
 

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DatasService } from '../datas.service';
 
 import {Router, ActivatedRoute} from '@angular/router';
+import { IntervalObservable } from 'rxjs/Observable/IntervalObservable';
 @Component({
   selector: 'app-mccodelist',
   templateUrl: './mccodelist.component.html',
@@ -70,6 +71,21 @@ export class MccodelistComponent implements OnInit {
     });
     this.codeSelected = this.code;
     this.doquery();
+
+    IntervalObservable.create(60000)
+    .subscribe(() => {
+      //if (localStorage.getItem(this.token) == "Y")
+      //{
+        this.datasvc.getAssmbingDetail( this.code , this.date.replace('-', '').replace('-', ''))
+        .subscribe(data => {
+          if ( data.length !== 0) {
+            this.strListClass = 'col-md-'.concat( Math.ceil(12 / data.length + 1).toString()) ;
+            // console.log( this.strListClass + '1');
+          }
+            this.datas = data;
+        });
+      //}
+    });
 
   }
 

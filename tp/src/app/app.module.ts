@@ -9,6 +9,7 @@ import { MccodelistComponent } from './mccodelist/mccodelist.component';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { StrFormatPipe } from './str-format.pipe';
+import { LoginGuard } from './login.guard';
 
 
 @NgModule({
@@ -24,7 +25,7 @@ import { StrFormatPipe } from './str-format.pipe';
     AppRoutingModule,
     FormsModule
   ],
-  providers: [DatasService],
+  providers: [DatasService, LoginGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
