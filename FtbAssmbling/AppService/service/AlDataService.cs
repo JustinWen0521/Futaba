@@ -19,7 +19,22 @@ namespace ftd.service
         /// 每條線別第一台機器位置
         /// </summary>
         private static int FirstLocation = 0;
-
+        /// <summary>
+        /// 假帳號
+        /// </summary>
+        private string username = "tftp";
+        public string UserName 
+        {
+            get { return username; }
+        }
+        /// <summary>
+        /// 假密碼
+        /// </summary>
+        private string password = "76025017";
+        public string PassWord 
+        {
+            get { return password; }
+        }
         static AlDataService()
         {            
             FtdCreatorService.Instance.createObject<AlDataService>(ref Instance);
@@ -227,5 +242,19 @@ namespace ftd.service
             return dt;
         }
         #endregion
+
+        /// <summary>
+        /// 比對Token是否正確
+        /// </summary>
+        /// <param name="iToken">前端傳過來的token資料</param>
+        /// <returns>True = 正確,False = 錯誤</returns>
+        public bool ClickTokenStatus(string iToken) 
+        {
+            bool mTokenIsOK = true;
+            if (!iToken.equalIgnoreCase(username + password))
+                mTokenIsOK = false;
+
+            return mTokenIsOK;
+        }
     }
 }

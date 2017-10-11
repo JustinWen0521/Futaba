@@ -66,7 +66,6 @@ D:\githubproject\FtbAssmbling\AppData\obj\Debug\RdlCompile.cache
 D:\githubproject\FtbAssmbling\AppData\obj\Debug\RdlCompile.compiled
 D:\githubproject\FtbAssmbling\AppData\obj\Debug\AppData.dll
 D:\githubproject\FtbAssmbling\AppData\obj\Debug\AppData.pdb
-D:\githubproject\FtbAssmbling\AppData\obj\Debug\AppData.csprojResolveAssemblyReference.cache
 D:\VS_Working\FtbAssmbling\FtbAssmbling\AppData\bin\Debug\AppData.xml
 D:\VS_Working\FtbAssmbling\FtbAssmbling\AppData\bin\Debug\AppData.dll
 D:\VS_Working\FtbAssmbling\FtbAssmbling\AppData\bin\Debug\AppData.pdb
@@ -80,3 +79,4 @@ D:\VS_Working\FtbAssmbling\FtbAssmbling\AppData\obj\Debug\RdlCompile.cache
 D:\VS_Working\FtbAssmbling\FtbAssmbling\AppData\obj\Debug\RdlCompile.compiled
 D:\VS_Working\FtbAssmbling\FtbAssmbling\AppData\obj\Debug\AppData.dll
 D:\VS_Working\FtbAssmbling\FtbAssmbling\AppData\obj\Debug\AppData.pdb
+D:\githubproject\FtbAssmbling\AppData\obj\Debug\AppData.csprojResolveAssemblyReference.cache

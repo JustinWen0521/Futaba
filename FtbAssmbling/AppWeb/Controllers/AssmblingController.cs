@@ -24,13 +24,24 @@ namespace ftd.mvc.Controllers
         /// </summary>
         private static int NINETEEN = 19;
         /// <summary>
-        /// 假帳號
+        /// 取得目前要取資料的時間
         /// </summary>
-        private string username = "futaba";
+        private DateTime _nowTime = DateTime.Now;
         /// <summary>
-        /// 假密碼
+        /// 取得目前要取資料的時間
         /// </summary>
-        private string password = "1234";
+        public DateTime NowTime
+        {
+            get 
+            {
+                if (DateTime.Now.Hour >= NINETEEN)
+                    _nowTime = DateTime.Now.AddDays(1);
+                else
+                    _nowTime = DateTime.Now;
+
+                return _nowTime;
+            }
+        }
 
         public AssmblingController() 
         {
@@ -60,13 +71,13 @@ namespace ftd.mvc.Controllers
         /// <param name="Id">線別(沒填值表示取全部)</param>
         /// <returns>取得所有機台資料</returns>
         [HttpGet]
-        public string GetProductLineInfo(string Id)                                             
+        public string GetProductLineInfo(string itoken,string Id)                                             
         {
-            //if (itoken == null || itoken.equalIgnoreCase(string.Empty))
-            //    return string.Empty;
+            if (itoken == null || itoken.equalIgnoreCase(string.Empty))
+                return string.Empty;
 
-            //if (!itoken.equalIgnoreCase((username + password)))//token比對失敗,表示帳密輸入錯誤
-            //    return string.Empty;
+            if (!AlDataService.Instance.ClickTokenStatus(itoken))//token比對失敗,表示帳密輸入錯誤
+                return string.Empty;
 
             List<MachineLineClass> data = new List<MachineLineClass>();
             int? LineID = null;
@@ -82,12 +93,7 @@ namespace ftd.mvc.Controllers
                 MCIDList.Add(item.ALA_MCID);//取得所有機台的MCID
             }
 
-            string today = string.Empty;
-            if (DateTime.Now.Hour >= NINETEEN)
-                today = DateTime.Now.AddDays(1).ToString("yyyyMMdd");
-            else
-                today = DateTime.Now.ToString("yyyyMMdd");
-
+            string today = NowTime.ToString("yyyyMMdd");            
             var Detail_dt = AlDataService.Instance.AlAssmblingDetail_getDayTotalByMCID(today, MCIDList);
             Dictionary<string, SumValueClass> mQtyTotalList = SumTotalValue(Detail_dt);
             data = SelectLines(dt, mQtyTotalList);
@@ -175,47 +181,7 @@ namespace ftd.mvc.Controllers
         }
 
         /// <summary>
-        /// 加總機台日夜班數量總合(20170927 by TP夜班19~23時會自動先+1天,故先配合修改,之後有可能會拿掉 by Justin)
-        /// </summary>
-        /// <param name="idt">所有資料</param>
-        /// <returns>機台日夜班數量總合</returns>
-        //private Dictionary<string, SumValueClass> SumTotalValue(DataTable idt)
-        //{
-        //    if (idt == null || idt.Rows.Count == 0)
-        //        return null;
-
-        //    Dictionary<string, SumValueClass> mTotalList = new Dictionary<string, SumValueClass>();
-        //    //夜班開始時間
-        //    DateTime STime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, NINETEEN, 00, 00);//取當天日期的早上19點為開始
-        //    //夜班結束時間
-        //    DateTime ETime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, SEVEN, 00, 00);//取當天日期的晚上7點為結束            
-        //    foreach (DataRow item in idt.Rows)
-        //    {
-        //        string MCID = item[AppDataName.ALA_MCID].ToString();
-        //        DateTime mValueDateTime = Convert.ToDateTime(item[AppDataName.ALAD_DATE]);
-        //        bool IsDay = true;
-        //        if (mValueDateTime != null)
-        //        {
-        //            IsDay = mValueDateTime < STime &&
-        //                    mValueDateTime >= ETime ? true : false;// True:日班 , False:夜班
-        //        }
-
-        //        if (!mTotalList.ContainsKey(MCID))
-        //        {
-        //            SumValueClass mNewSumValue = new SumValueClass
-        //            {
-        //                Day_Value = 0,
-        //                Night_Value = 0
-        //            };
-        //            mTotalList.Add(MCID, mNewSumValue);
-        //        }
-        //        SumQtyValue(IsDay, mTotalList[MCID], item);
-        //    }
-        //    return mTotalList;
-        //}
-
-        /// <summary>
-        /// 加總機台日夜班數量總合(20170927 by TP夜班19~23時會自動先+1天,故此方法先註解,之後可能會改回來,勿刪 by Justin)
+        /// 加總機台日夜班數量總合
         /// </summary>
         /// <param name="idt">所有資料</param>
         /// <returns>機台日夜班數量總合</returns>
@@ -225,7 +191,8 @@ namespace ftd.mvc.Controllers
                 return null;
 
             Dictionary<string, SumValueClass> mTotalList = new Dictionary<string, SumValueClass>();
-            DateTime NTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, SEVEN, 00, 00);//取當天日期的早上7點
+            //DateTime NTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, SEVEN, 00, 00);//取當天日期的早上7點
+            DateTime NTime = new DateTime(NowTime.Year, NowTime.Month, NowTime.Day, SEVEN, 00, 00);//取資料日期的早上7點
             foreach (DataRow item in idt.Rows)
             {
                 string MCID = item[AppDataName.ALA_MCID].ToString();
@@ -287,8 +254,8 @@ namespace ftd.mvc.Controllers
             if (iUsername == null || iUsername.equalIgnoreCase(string.Empty) || iPassWord == null || iPassWord.equalIgnoreCase(string.Empty))
                 return "-1";
 
-            if (iUsername.equalIgnoreCase(username) && iPassWord.equalIgnoreCase(password))
-                token = username + password;//token = futaba1234
+            if (AlDataService.Instance.UserName.equalIgnoreCase(iUsername) && AlDataService.Instance.PassWord.equalIgnoreCase(iPassWord))
+                token = iUsername + iPassWord;//token = tftp76025017
             else
                 token = "-2";
 

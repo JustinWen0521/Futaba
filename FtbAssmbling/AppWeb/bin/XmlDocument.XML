@@ -429,6 +429,21 @@
             晚上7點
             </summary>
         </member>
+        <member name="F:ftd.mvc.Controllers.AssmblingController.username">
+            <summary>
+            假帳號
+            </summary>
+        </member>
+        <member name="F:ftd.mvc.Controllers.AssmblingController.password">
+            <summary>
+            假密碼
+            </summary>
+        </member>
+        <member name="F:ftd.mvc.Controllers.AssmblingController._nowTime">
+            <summary>
+            取得目前要取資料的時間
+            </summary>
+        </member>
         <member name="M:ftd.mvc.Controllers.AssmblingController.Get">
             <summary>
             預設選取多筆資料
@@ -439,8 +454,9 @@
             <summary>
             取得目前所有機台資料(改為動態取)
             </summary>
-            <param name="Id">取某一線別(不傳取全部)</param>
-            <returns>線別資料</returns>
+            <param name="itoken">拿登入後的token來要資料</param>
+            <param name="Id">線別(沒填值表示取全部)</param>
+            <returns>取得所有機台資料</returns>
         </member>
         <member name="M:ftd.mvc.Controllers.AssmblingController.SelectLines(ftd.data.AL_AssmblingDataTable,System.Collections.Generic.Dictionary{System.String,ftd.mvc.Controllers.SumValueClass})">
             <summary>
@@ -479,6 +495,19 @@
             </summary>
             <param name="iQty">機台數量</param>
             <returns>return int</returns>
+        </member>
+        <member name="M:ftd.mvc.Controllers.AssmblingController.Login(System.String,System.String)">
+            <summary>
+            Login_登入
+            </summary>
+            <param name="iUsername">帳號</param>
+            <param name="iPassWord">密碼</param>
+            <returns>token = 帳號+密碼(ErrorCode : (-1:帳密有空值),(-2:帳密錯誤))</returns>
+        </member>
+        <member name="P:ftd.mvc.Controllers.AssmblingController.NowTime">
+            <summary>
+            取得目前要取資料的時間
+            </summary>
         </member>
         <member name="T:ftd.mvc.Controllers.SumValueClass">
             <summary>
