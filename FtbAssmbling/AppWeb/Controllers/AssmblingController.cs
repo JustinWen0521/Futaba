@@ -60,13 +60,13 @@ namespace ftd.mvc.Controllers
         /// <param name="Id">線別(沒填值表示取全部)</param>
         /// <returns>取得所有機台資料</returns>
         [HttpGet]
-        public string GetProductLineInfo(string itoken,string Id)                                             
+        public string GetProductLineInfo(string Id)                                             
         {
-            if (itoken == null || itoken.equalIgnoreCase(string.Empty))
-                return string.Empty;
+            //if (itoken == null || itoken.equalIgnoreCase(string.Empty))
+            //    return string.Empty;
 
-            if (!itoken.equalIgnoreCase((username + password)))//token比對失敗,表示帳密輸入錯誤
-                return string.Empty;
+            //if (!itoken.equalIgnoreCase((username + password)))//token比對失敗,表示帳密輸入錯誤
+            //    return string.Empty;
 
             List<MachineLineClass> data = new List<MachineLineClass>();
             int? LineID = null;
@@ -81,7 +81,13 @@ namespace ftd.mvc.Controllers
             {
                 MCIDList.Add(item.ALA_MCID);//取得所有機台的MCID
             }
-            string today = DateTime.Now.ToString("yyyyMMdd");
+
+            string today = string.Empty;
+            if (DateTime.Now.Hour >= NINETEEN)
+                today = DateTime.Now.AddDays(1).ToString("yyyyMMdd");
+            else
+                today = DateTime.Now.ToString("yyyyMMdd");
+
             var Detail_dt = AlDataService.Instance.AlAssmblingDetail_getDayTotalByMCID(today, MCIDList);
             Dictionary<string, SumValueClass> mQtyTotalList = SumTotalValue(Detail_dt);
             data = SelectLines(dt, mQtyTotalList);
