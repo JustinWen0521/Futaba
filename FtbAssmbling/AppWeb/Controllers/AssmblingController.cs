@@ -34,7 +34,7 @@ namespace ftd.mvc.Controllers
         {
             get 
             {
-                if (DateTime.Now.Hour >= NINETEEN)
+                if (DateTime.Now.Hour > NINETEEN)
                     _nowTime = DateTime.Now.AddDays(1);
                 else
                     _nowTime = DateTime.Now;
@@ -69,15 +69,20 @@ namespace ftd.mvc.Controllers
         /// </summary>
         /// <param name="itoken">拿登入後的token來要資料</param>
         /// <param name="Id">線別(沒填值表示取全部)</param>
+        /// <param name="iselectDate">日期</param>
         /// <returns>取得所有機台資料</returns>
         [HttpGet]
-        public string GetProductLineInfo(string itoken,string Id)                                             
+        public string GetProductLineInfo(string itoken,string Id,string iselectDate)                                             
         {
             if (itoken == null || itoken.equalIgnoreCase(string.Empty))
                 return string.Empty;
 
             if (!AlDataService.Instance.ClickTokenStatus(itoken))//token比對失敗,表示帳密輸入錯誤
                 return string.Empty;
+
+            //日期格式要有8位元ex:20171231
+            if (iselectDate == null || iselectDate.Length < 8)
+                iselectDate = NowTime.ToString("yyyyMMdd");
 
             List<MachineLineClass> data = new List<MachineLineClass>();
             int? LineID = null;
@@ -92,11 +97,14 @@ namespace ftd.mvc.Controllers
             {
                 MCIDList.Add(item.ALA_MCID);//取得所有機台的MCID
             }
+       
+            var Detail_dt = AlDataService.Instance.AlAssmblingDetail_getDayTotalByMCID(iselectDate, MCIDList);
+            Dictionary<string, SumValueClass> mQtyTotalList = SumTotalValue(Detail_dt, iselectDate);
+            if (mQtyTotalList != null && mQtyTotalList.Values != null && mQtyTotalList.Values.Count > 0)
+                data = SelectLines(dt, mQtyTotalList);
+            else
+                return string.Empty;
 
-            string today = NowTime.ToString("yyyyMMdd");            
-            var Detail_dt = AlDataService.Instance.AlAssmblingDetail_getDayTotalByMCID(today, MCIDList);
-            Dictionary<string, SumValueClass> mQtyTotalList = SumTotalValue(Detail_dt);
-            data = SelectLines(dt, mQtyTotalList);
             return JsonConvert.SerializeObject(data);
         }
 
@@ -184,15 +192,18 @@ namespace ftd.mvc.Controllers
         /// 加總機台日夜班數量總合
         /// </summary>
         /// <param name="idt">所有資料</param>
+        /// <param name="iselectDate">日期</param>
         /// <returns>機台日夜班數量總合</returns>
-        private Dictionary<string, SumValueClass> SumTotalValue(DataTable idt)
+        private Dictionary<string, SumValueClass> SumTotalValue(DataTable idt,string iselectDate)
         {
             if (idt == null || idt.Rows.Count == 0)
                 return null;
 
             Dictionary<string, SumValueClass> mTotalList = new Dictionary<string, SumValueClass>();
-            //DateTime NTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, SEVEN, 00, 00);//取當天日期的早上7點
-            DateTime NTime = new DateTime(NowTime.Year, NowTime.Month, NowTime.Day, SEVEN, 00, 00);//取資料日期的早上7點
+            int mYear = Convert.ToInt32(iselectDate.Substring(0, 4));
+            int mMonth = Convert.ToInt32(iselectDate.Substring(4, 2));
+            int mDay = Convert.ToInt32(iselectDate.Substring(6, 2));
+            DateTime NTime = new DateTime(mYear, mMonth, mDay, SEVEN, 00, 00);//取資料日期的早上7點
             foreach (DataRow item in idt.Rows)
             {
                 string MCID = item[AppDataName.ALA_MCID].ToString();

@@ -47,9 +47,10 @@ namespace FtdDemo
             #endregion
 
             Program pgm = new Program();
-            pgm.GetAssemblingDetailByDate("FPC", "20170201");
+            //pgm.GetAssemblingDetailByDate("FPC", "20170201");
 
-
+            //var dt = NsDmHelper.AL_AssmblingDetail.selectAll(t => t.AllPhysical).orderby(t => t.ALAD_DATE.Desc).query();
+            //return;
         }
 
         public String GetAssemblingDetailByDate(string code, string date)

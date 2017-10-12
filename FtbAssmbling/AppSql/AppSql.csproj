@@ -165,10 +165,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Ftd04\ftd.as400\ftd.as400.csproj">
-      <Project>{5d803b33-5532-45c5-82e2-4d54147905a4}</Project>
-      <Name>ftd.as400</Name>
-    </ProjectReference>
     <ProjectReference Include="..\AppData\AppData.csproj">
       <Project>{A4ADA937-2FEB-4BB5-B0A6-E4D9D5E1A321}</Project>
       <Name>AppData</Name>

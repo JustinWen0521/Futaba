@@ -429,16 +429,6 @@
             晚上7點
             </summary>
         </member>
-        <member name="F:ftd.mvc.Controllers.AssmblingController.username">
-            <summary>
-            假帳號
-            </summary>
-        </member>
-        <member name="F:ftd.mvc.Controllers.AssmblingController.password">
-            <summary>
-            假密碼
-            </summary>
-        </member>
         <member name="F:ftd.mvc.Controllers.AssmblingController._nowTime">
             <summary>
             取得目前要取資料的時間
@@ -450,12 +440,13 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ftd.mvc.Controllers.AssmblingController.GetProductLineInfo(System.String)">
+        <member name="M:ftd.mvc.Controllers.AssmblingController.GetProductLineInfo(System.String,System.String,System.String)">
             <summary>
             取得目前所有機台資料(改為動態取)
             </summary>
             <param name="itoken">拿登入後的token來要資料</param>
             <param name="Id">線別(沒填值表示取全部)</param>
+            <param name="iselectDate">日期</param>
             <returns>取得所有機台資料</returns>
         </member>
         <member name="M:ftd.mvc.Controllers.AssmblingController.SelectLines(ftd.data.AL_AssmblingDataTable,System.Collections.Generic.Dictionary{System.String,ftd.mvc.Controllers.SumValueClass})">
@@ -474,9 +465,9 @@
             <param name="iSumValue">機台的加總數值(含產品名稱)</param>
             <returns></returns>
         </member>
-        <member name="M:ftd.mvc.Controllers.AssmblingController.SumTotalValue(System.Data.DataTable)">
+        <member name="M:ftd.mvc.Controllers.AssmblingController.SumTotalValue(System.Data.DataTable,System.String)">
             <summary>
-            加總機台日夜班數量總合(20170927 by TP夜班19~23時會自動先+1天,故此方法先註解,之後可能會改回來,勿刪 by Justin)
+            加總機台日夜班數量總合
             </summary>
             <param name="idt">所有資料</param>
             <returns>機台日夜班數量總合</returns>

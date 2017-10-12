@@ -2043,10 +2043,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Ftd04\ftd.as400\ftd.as400.csproj">
-      <Project>{5d803b33-5532-45c5-82e2-4d54147905a4}</Project>
-      <Name>ftd.as400</Name>
-    </ProjectReference>
     <ProjectReference Include="..\AppData\AppData.csproj">
       <Project>{fe68b879-efee-41ae-9822-d53d868d84ed}</Project>
       <Name>AppData</Name>

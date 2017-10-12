@@ -111,7 +111,6 @@ D:\githubproject\FtbAssmbling\AppGenerator\obj\Debug\ftd.Properties.Resources.re
 D:\githubproject\FtbAssmbling\AppGenerator\obj\Debug\AppGenerator.csproj.GenerateResource.Cache
 D:\githubproject\FtbAssmbling\AppGenerator\obj\Debug\AppGenerator.exe
 D:\githubproject\FtbAssmbling\AppGenerator\obj\Debug\AppGenerator.pdb
-D:\githubproject\FtbAssmbling\AppGenerator\obj\Debug\AppGenerator.csprojResolveAssemblyReference.cache
 D:\VS_Working\FtbAssmbling\FtbAssmbling\AppGenerator\bin\Debug\AppGenerator.exe.config
 D:\VS_Working\FtbAssmbling\FtbAssmbling\AppGenerator\bin\Debug\AppGenerator.exe
 D:\VS_Working\FtbAssmbling\FtbAssmbling\AppGenerator\bin\Debug\AppGenerator.pdb
@@ -135,3 +134,4 @@ D:\VS_Working\FtbAssmbling\FtbAssmbling\AppGenerator\obj\Debug\ftd.Properties.Re
 D:\VS_Working\FtbAssmbling\FtbAssmbling\AppGenerator\obj\Debug\AppGenerator.csproj.GenerateResource.Cache
 D:\VS_Working\FtbAssmbling\FtbAssmbling\AppGenerator\obj\Debug\AppGenerator.exe
 D:\VS_Working\FtbAssmbling\FtbAssmbling\AppGenerator\obj\Debug\AppGenerator.pdb
+D:\githubproject\FtbAssmbling\AppGenerator\obj\Debug\AppGenerator.csprojResolveAssemblyReference.cache
