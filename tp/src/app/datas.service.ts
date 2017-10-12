@@ -23,9 +23,12 @@ export class DatasService {
   }
 
    // 抓取產線所有的資料
-  getAllDatas(): Observable<any[]> {
-    return this.http.get(`${this.target}` + `${this.allLineInfoUri}` + '?itoken=' + localStorage.getItem("token") + '&Id=')
-    .map(res => res.json());
+  getAllDatas(selectDate): Observable<any[]> {
+    return this.http.get(`${this.target}` + `${this.allLineInfoUri}`
+                        + '?itoken=' + localStorage.getItem("token")
+                        + '&Id=' + ''
+                        + '&iselectDate=' + `${selectDate}`)
+                        .map(res => res.json());
   }
 
   getAssmbingDetail(strCode , strDate): Observable<any[]> {

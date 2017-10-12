@@ -12,6 +12,18 @@
                     </button>
                     <img [src]="futaba.picture" width="50%"/>
                 </div>
+
+                <div class="input-group date form_datetime col-md-5"
+                [attr.data-date]="'1979-09-16T05:25:07Z'"
+                [attr.data-date-format]="'dd MM yyyy - HH:ii p'"
+                [attr.data-link-field]="'dtp_input1'">
+              <input type="date" name="DOMDate" [(ngModel)] = "date">
+                &nbsp;
+                <button type="submit" style="background-color:aqua;" class="btn btn-default" (click)="doquery()" >
+                  查詢
+                </button>
+              </div>
+
                 <div class="collapse navbar-collapse" id="myNavbar" [ngClass]="{'in': !isCollapsed}" >
                     <ul class="nav navbar-nav" id="btn_link" style="display:none"  ng-model = "testShow">
                       <li><a data-toggle="button" [routerLink]="['/mccodelist/FPC']" [ngClass]="['navbarButton']" ng-show="testShow">FPC</a></li>
