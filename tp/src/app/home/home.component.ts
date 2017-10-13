@@ -176,10 +176,13 @@ export class HomeComponent implements OnInit {
       document.getElementById("btn_login").style.display = "block";
       document.getElementById("btn_logout").style.display = "none";
       document.getElementById("btn_link").style.display = "none";
+      document.getElementById("searchbar").style.display = "none";
+      
     }else{
       document.getElementById("btn_login").style.display = "none";
       document.getElementById("btn_logout").style.display = "block";
       document.getElementById("btn_link").style.display = "block";
+      document.getElementById("searchbar").style.display = "block";
     }
   }
 
