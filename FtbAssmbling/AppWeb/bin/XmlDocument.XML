@@ -470,6 +470,7 @@
             加總機台日夜班數量總合
             </summary>
             <param name="idt">所有資料</param>
+            <param name="iselectDate">日期</param>
             <returns>機台日夜班數量總合</returns>
         </member>
         <member name="M:ftd.mvc.Controllers.AssmblingController.SumQtyValue(System.Boolean,ftd.mvc.Controllers.SumValueClass,System.Data.DataRow)">
@@ -573,6 +574,11 @@
         <member name="F:ftd.mvc.Controllers.MachineClass.MachineNight">
             <summary>
             機台夜班總合
+            </summary>
+        </member>
+        <member name="F:ftd.mvc.Controllers.MachineClass.MachineProduct">
+            <summary>
+            每台機器在Run的產品名稱
             </summary>
         </member>
         <member name="M:ftd.mvc.Extensions.Help.Cal2DateDifference_YM(System.DateTime,System.DateTime)">

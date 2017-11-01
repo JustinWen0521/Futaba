@@ -131,7 +131,8 @@ namespace ftd.mvc.Controllers
                             MachineCol = (idr.ALA_SEQCol.Value + 1).ToString(),//UI顯示從1開始
                             MachineRow = (idr.ALA_SEQRow.Value + 1).ToString(),//UI顯示從1開始
                             MachineDay = item.Value.Day_Value.ToString(),
-                            MachineNight = item.Value.Night_Value.ToString()
+                            MachineNight = item.Value.Night_Value.ToString(),
+                            MachineProduct = item.Value.ProductName.Replace("\0", string.Empty).Trim()
                         };
                         if (lineList.ContainsKey(idr.ALA_SEQCol.Value))//已建立該線別
                             lineList[idr.ALA_SEQCol.Value].Add(MachineData);
@@ -340,6 +341,10 @@ namespace ftd.mvc.Controllers
         /// 機台夜班總合
         /// </summary>
         public string MachineNight;
+        /// <summary>
+        /// 每台機器在Run的產品名稱
+        /// </summary>
+        public string MachineProduct;
     }
 
 }
