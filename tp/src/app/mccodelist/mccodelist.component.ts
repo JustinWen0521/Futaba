@@ -23,22 +23,15 @@ export class MccodelistComponent implements OnInit {
 
 
 
+
   constructor(public datasvc: DatasService, private router: Router, private route: ActivatedRoute ) {
-
-
-   var time = new Date();
-
-    //PM七點 日期加一
-   if( time.getHours() >= 19 )
-   {
-    time.setDate(time.getDate()+1);
-   }
-
-   this.today = time;
-
-
+    let time: Date = new Date();
+    // PM七點 日期加一
+    if ( time.getHours() >= 19 ) {
+        time.setDate( time.getDate() + 1);
+    }
+    this.today = time;
     this.strYear = this.today.getFullYear().toString();
-
     this.strMonth = '';
     this.strDay = '';
     let tmpMonth = this.today.getMonth() + 1 ;
@@ -55,11 +48,7 @@ export class MccodelistComponent implements OnInit {
     }else {
       this.strDay = '0'.concat(tmpDay.toString());
     }
-
-
     this.date =  this.strYear.concat('-', this.strMonth, '-' , this.strDay);
-
-
     // console.log(this.date);
 
   }
@@ -74,8 +63,8 @@ export class MccodelistComponent implements OnInit {
 
     IntervalObservable.create(60000)
     .subscribe(() => {
-      //if (localStorage.getItem(this.token) == "Y")
-      //{
+      // if (localStorage.getItem(this.token) == "Y")
+      // {
         this.datasvc.getAssmbingDetail( this.code , this.date.replace('-', '').replace('-', ''))
         .subscribe(data => {
           if ( data.length !== 0) {
@@ -84,10 +73,11 @@ export class MccodelistComponent implements OnInit {
           }
             this.datas = data;
         });
-      //}
+      // }
     });
 
   }
+
 
 
   doquery() {
@@ -114,6 +104,9 @@ export class MccodelistComponent implements OnInit {
     // console.log( this.strListClass + '2');
   }
 
+  rebackView() {
+    this.router.navigate(['/home']);
+  }
 
 
 

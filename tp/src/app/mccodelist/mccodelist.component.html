@@ -8,15 +8,17 @@
                [attr.data-date]="'1979-09-16T05:25:07Z'"
                [attr.data-date-format]="'dd MM yyyy - HH:ii p'"
                [attr.data-link-field]="'dtp_input1'">
-               <input  type="date" name="DOMDate" [(ngModel)] = "date">
+               <input  type="date" name="DOMDate" [(ngModel)] = "date" (change)="doquery()">
                 &nbsp;
-               <select name="DOMType" class="LiSelect" [(ngModel)]="codeSelected" >
+               <select name="DOMType" class="LiSelect" [(ngModel)]="codeSelected" (change)="doquery()" >
                   <option *ngFor="let itemCode of ListCodes"
-                    value="{{itemCode.val}}">{{itemCode.txt}} </option>
+                    value="{{itemCode.val}}" >{{itemCode.txt}} </option>
                </select>
+
                &nbsp;
-               <button type="submit" style="background-color:aqua;" class="btn btn-default" (click)="doquery()" >
-                查詢
+               <!--<button type="submit" style="background-color:aqua;" class="btn btn-default" (click)="doquery()" >查詢</button>-->
+               <button type="submit" class="btn btn-primary" (click)="rebackView()">
+                回首頁
               </button>
             </div>
           </form>
