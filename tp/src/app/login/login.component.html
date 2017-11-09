@@ -1,0 +1,17 @@
+<div class="login">
+  <div class="login-header">
+    <h1>Login</h1>
+  </div>
+  <div class="login-form">
+    <h3>帳號:</h3>
+    <input [(ngModel)]="Account" type="text" placeholder="Account" name="iAccount" /><br>
+    <h3>密碼:</h3>
+    <input [(ngModel)]="password" type="password" placeholder="Password" name="ipassword" />
+    <br>
+    <input id="btn_login" type="button" value="Login" class="login-button" (click)="doLogin()"/>
+    <!--<br>
+    <a class="sign-up">Sign Up!</a>
+    <br>
+    <h6 class="no-access">Can't access your account?</h6>-->
+  </div>
+</div>

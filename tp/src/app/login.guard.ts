@@ -7,9 +7,9 @@ export class LoginGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-      if(localStorage.getItem("token") == "-1" || localStorage.getItem("token") == "-2"
-      || localStorage.getItem("token") == null || localStorage.getItem("token") == undefined){
-        this.router.navigateByUrl('/home');
+      var mToken = localStorage.getItem("token");
+      if(mToken == "-1" || mToken == "-2" || mToken == null || mToken == undefined){
+        this.router.navigateByUrl('/Login');
         return false;
       }else{
         return true;

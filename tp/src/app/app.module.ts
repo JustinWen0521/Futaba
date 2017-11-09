@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { StrFormatPipe } from './str-format.pipe';
 import { LoginGuard } from './login.guard';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { LoginGuard } from './login.guard';
     AppComponent,
     HomeComponent,
     MccodelistComponent,
-    StrFormatPipe
+    StrFormatPipe,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DatasService } from '../datas.service';
 import { Observable } from 'rxjs/Observable';
 import { IntervalObservable } from 'rxjs/Observable/IntervalObservable';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -37,6 +38,8 @@ export class HomeComponent implements OnInit {
   NowDay:Date;
   //訂閱自動更新
   service:any;
+  //目前是全部展開或收折，預設全部展開(True)
+  toggleStatus:boolean = true;
 
   toggleCollapse(): void {
     this.isCollapsed = !this.isCollapsed;
@@ -62,7 +65,7 @@ export class HomeComponent implements OnInit {
   }
 
   // tslint:disable-next-line:one-line
-  constructor(private dataSvc: DatasService) {
+  constructor(private dataSvc: DatasService,private router: Router) {
     this.display = false;
     this.alive = true;
   }
@@ -73,9 +76,10 @@ export class HomeComponent implements OnInit {
       this.SetLoginBtnStatus(false);
       this.showData();
     }else{
-      this.InitView();
+      //this.InitView();
       //模擬User Click事件
-      document.getElementById("btn_login").click();
+      //document.getElementById("btn_login").click();
+      this.router.navigateByUrl('/Login');
     }
   }
 
@@ -174,16 +178,42 @@ export class HomeComponent implements OnInit {
   SetLoginBtnStatus(iEnable:boolean){
     if(iEnable){
       document.getElementById("btn_login").style.display = "block";
-      document.getElementById("btn_logout").style.display = "none";
+      //document.getElementById("btn_logout").style.display = "none";
       document.getElementById("btn_link").style.display = "none";
       document.getElementById("searchbar").style.display = "none";
-      
+
     }else{
       document.getElementById("btn_login").style.display = "none";
-      document.getElementById("btn_logout").style.display = "block";
+      //document.getElementById("btn_logout").style.display = "block";
       document.getElementById("btn_link").style.display = "block";
       document.getElementById("searchbar").style.display = "block";
     }
+  }
+
+  //點擊展開收折鈕
+  OnButtonClick(index:any) {
+    $('#' + index).toggle('slow');
+  }
+
+  //點擊全展開或收折
+  AllLineChangeToggle() {
+    let mLineNumber = this.datas.length;
+    for(var i = 0;i <= mLineNumber;i++) {
+      if(this.toggleStatus) {//true:表示目前線別是展開的，接下來要進行收折動作
+        if($('#' + i).is(':visible')) {//判斷各線目前是否是展開的，是展開的才進行收折
+          $('#' + i).toggle('slow');
+        }
+      }else {//true:表示目前線別是收折的，接下來要進行展開動作
+        if(!$('#' + i).is(':visible')) {//判斷各線目前是否是收折的，是收折的才進行展開
+          $('#' + i).toggle('slow');
+        }
+      }
+    }
+    this.toggleStatus = this.toggleStatus == true ? false : true;//展闕收折完後變更狀態
+    if(this.toggleStatus)//目前狀態是展開，下一個動作要準備進行收折
+      $('#ToggleBtn').html("全部收折");
+    else
+      $('#ToggleBtn').html("全部展開");
   }
 
   logout() {

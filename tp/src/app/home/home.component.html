@@ -35,7 +35,7 @@
               </ul>
               <ul class="nav navbar-nav navbar-right" style="padding-left:25rem">
                 <button id="btn_login" type='button' class="btn btn-success" data-toggle="modal" data-target="#popUpWindow">Log In </button>
-                <button id="btn_logout" type='button' class="btn btn-success" (click)="logout()">Log Out </button>
+                <!--<button id="btn_logout" type='button' class="btn btn-success" (click)="logout()">Log Out </button>-->
               </ul>
             </div>
           </div>
@@ -70,29 +70,33 @@
           <div class="col-md-1"></div>
           <div class="col-md-6" id="searchbar" style="padding-top:0.5rem">
             <div class="input-group date form_datetime" [attr.data-date]="'1979-09-16T05:25:07Z'" [attr.data-date-format]="'dd MM yyyy - HH:ii p'"
-              [attr.data-link-field]="'dtp_input1'" style="padding-left:1.5rem">
-              <input type="date" name="DOMDate" [(ngModel)]="date"> &nbsp;
-              <button type="submit" class="btn btn-primary" (click)="doquery()">
+              [attr.data-link-field]="'dtp_input1'" style="padding-left:1.5rem">查詢
+              <input type="date" name="DOMDate" [(ngModel)]="date" (change)="doquery()"> &nbsp;
+              <!--<button type="submit" class="btn btn-primary" (click)="doquery()">
                 查詢
-              </button>
+              </button>-->
             </div>
           </div>
         </div>
+        <button id="ToggleBtn" type="button" type="submit" class="btn btn-primary" (click)="AllLineChangeToggle()" >全部收折</button>
         <div class="col-md-1"></div>
         <div>
           <div class="col-md-1" *ngFor="let row of datas; let k=index" style="padding-top:1rem">
-            <div [ngClass]="['productName']">{{row.Product | strFormat}}</div>
-            <div class="panel panel-info" *ngFor="let machine of row.MachineList">
-              <div class="panel-heading">
-                <div class="panel-title" [ngClass]="['machineName']">
-                  {{machine.MachineName}}
+            <button type="button" type="submit" class="btn btn-primary" (click)="OnButtonClick(k)" >第{{row.Line}}條線</button>
+            <div [id]="k">
+              <div [ngClass]="['productName']">{{row.Product | strFormat}}</div>
+              <div class="panel panel-info" *ngFor="let machine of row.MachineList">
+                <div class="panel-heading">
+                  <div class="panel-title" [ngClass]="['machineName']">
+                    {{machine.MachineName}}
+                  </div>
                 </div>
-              </div>
-              <div class="panel-body" [ngClass]="['machineDetail']">
-                夜:{{machine.MachineNight}}
-              </div>
-              <div class="panel-footer" [ngClass]="['machineDetail']">
-                日:{{machine.MachineDay}}
+                <div class="panel-body" [ngClass]="['machineDetail']">
+                  夜:{{machine.MachineNight}}
+                </div>
+                <div class="panel-footer" [ngClass]="['machineDetail']">
+                  日:{{machine.MachineDay}}
+                </div>
               </div>
             </div>
           </div>
