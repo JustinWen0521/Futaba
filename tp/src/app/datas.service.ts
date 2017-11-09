@@ -37,5 +37,60 @@ export class DatasService {
       return this.http.get( ( `${this.target}` + `${this.AssmblingDetailUri }` + '?code=' + `${strCode}` +  '&date=' + `${strDate}` ) )
         .map(res => res.json());
   }
+
+// 轉換日期的格式
+getDateFormat(dte: Date , type: string): any {
+  let result: any;
+  let strYear = dte.getFullYear().toString();
+  let strMonth = this.getFullZero( dte.getMonth() + 1 );
+  let strDay = this.getFullZero( dte.getDate() );
+  let strHour = this.getFullZero( dte.getHours());
+  let strMinute = this.getFullZero( dte.getMinutes() );
+  let strSecond = this.getFullZero( dte.getSeconds() );
+
+  switch (type) {
+    case 'yyyy-MM-dd':
+    result = strYear.concat('-', strMonth, '-' , strDay);
+    break;
+    case 'yyyy-MM-dd HH:mm:ss':
+    result = strYear.concat('-', strMonth, '-' , strDay) + ' ' + strHour.concat(':', strMinute, ':', strSecond);
+    break;
+    default:
+    result = '';
+  }
+
+  return result;
+
+}
+
+// 日期補0
+getFullZero(data: number): string {
+  if (data.toString().length > 1) {
+    return data.toString();
+  }else {
+    return '0'.concat(data.toString());
+  }
+}
+
+// 下拉式選單
+getSelectOptions() {
+  let selectGroups = [];
+  let options = [
+    {val: 'FPC' , txt: 'FPC'  },
+    {val: 'TAC' , txt: 'TAC' },
+    {val: 'POL' , txt: "偏光板"  },
+    {val: 'AGAFP' , txt: 'AGAFP' }
+  ];
+  selectGroups['MCCodeOptions'] = options;
+
+  options = [
+    {val: 'work' , txt: '自動更新' },
+    {val: 'stop' , txt: '停用' }
+  ];
+  selectGroups['AutoOptions'] = options;
+  return selectGroups;
+}
+
+
 }
 
