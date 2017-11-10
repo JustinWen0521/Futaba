@@ -67,7 +67,7 @@ export class MccodelistComponent implements OnInit, AfterViewInit {
 
 
   doquery() {
-    this.datas = [];
+    // this.datas = [];
     this.code = this.ListCodes.filter(item => item.val === this.codeSelected)[0].txt;
     this.datasvc.getAssmbingDetail( this.codeSelected , this.date.replace('-', '').replace('-', ''))
     .subscribe(data => {

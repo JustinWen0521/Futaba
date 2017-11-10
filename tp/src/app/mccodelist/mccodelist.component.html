@@ -13,7 +13,7 @@
                 回首頁
                </button>
                &nbsp;
-               <input type="date"  name="DOMDate" [(ngModel)] = "date" (change)="doquery()">
+               <input type="date"  name="DOMDate" [(ngModel)] = "date" placeholder="2014-09-18" (change)="doquery()">
                &nbsp;
                <select name="DOMType" class="LiSelect" [(ngModel)]="codeSelected" (change)="doquery()" >
                   <option *ngFor="let itemCode of ListCodes" value="{{itemCode.val}}" >{{itemCode.txt}} </option>
