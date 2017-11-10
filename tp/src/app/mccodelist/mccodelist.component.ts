@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit,  AfterViewInit } from '@angular/core';
 import { DatasService } from '../datas.service';
 
 import {Router, ActivatedRoute} from '@angular/router';
@@ -9,7 +9,7 @@ import { IntervalObservable } from 'rxjs/Observable/IntervalObservable';
   templateUrl: './mccodelist.component.html',
   styleUrls: ['./mccodelist.component.css']
 })
-export class MccodelistComponent implements OnInit {
+export class MccodelistComponent implements OnInit, AfterViewInit {
 
   today: Date ;
   nowDate: Date;
@@ -23,8 +23,12 @@ export class MccodelistComponent implements OnInit {
   autoSelected: string; //  是否要更新
   date: string; // 日期
   service: any; // 自動更新
+  service1: any; // 自動更新(for toggle)
   id1: string ; // 開合(table)
   id2: string ; // 開合(button)
+  id2All: string;
+  timer: number; // 計數器
+
 
   constructor(public datasvc: DatasService, private router: Router, private route: ActivatedRoute ) {
     this.initSelectedDate();
@@ -34,7 +38,7 @@ export class MccodelistComponent implements OnInit {
     this.autoSelected = 'work';
     this.id1 = 'table_mccode_'; // 開合
     this.id2 = 'button_mccode_'; // 開合
-
+    this.id2All = 'button_mccode_all'; // 開合
   }
 
   ngOnInit() {
@@ -44,6 +48,13 @@ export class MccodelistComponent implements OnInit {
     this.isCloseAuto();
     this.doquery();
   }
+
+  // Template完成後執行
+  ngAfterViewInit() {
+    // $('#' + this.id2 + 'all' ).trigger('click');
+  }
+
+
   // 取即時日期
   initSelectedDate() {
     this.today = new Date();
@@ -65,7 +76,11 @@ export class MccodelistComponent implements OnInit {
       }
         this.datas = data;
         this.nowDate = this.datasvc.getDateFormat(new Date() , 'yyyy-MM-dd HH:mm:ss');
+        this.timer = 0;
+        this.setTimerForToggleAll();
+
     });
+
   }
 
   // 專門給 ngFor 用的陣列屬性
@@ -103,32 +118,60 @@ export class MccodelistComponent implements OnInit {
     }
   }
 
+  // 預設把選取的資料先關閉不顯示
+  setTimerForToggleAll() {
+    this.service1 = IntervalObservable.create(10).subscribe(() => {
+      let DOMTable = $('#' + this.id1 + 0 );
+      if (DOMTable) {
+
+        $('#' + this.id2 + 'all' ).html("全部收折");
+        $('#' + this.id2 + 'all' ).trigger('click');
+        if (this.service1) {
+          this.service1.unsubscribe();
+        }
+
+        this.timer ++;
+      }
+      if ( this.timer > 600000) {
+        if (this.service1) {
+          this.service1.unsubscribe();
+        }
+      }
+    });
+
+
+  }
+
+
   jqueryToggle(id_1 , id_2) {
+    /*
       let btnVal = $('#' + id_2).html();
-      if ( btnVal.match("展開")) {
+      if ( btnVal.match("開啟")) {
         $( '#' + id_1 ).show();
-        $( '#' + id_2 ).html("關閉");
+         $( '#' + id_2 ).html("關閉");
       }else {
         $( '#' + id_1 ).hide();
-        $( '#' + id_2 ).html("展開");
+         $( '#' + id_2 ).html("開啟");
       }
+      */
+      $( '#' + id_1 ).toggle();
   }
 
   // 全部關閉or開啟
   jqueryToggleAll(id_1 , id_2) {
-    let btnVal = $('#' + id_2 + 'all').html();
-    if (btnVal.match("展開") ) {
-        this.datas.forEach(function(val, index , ar) {
+    let btnVal = $('#' + this.id2All).html();
+    if (btnVal.match("開啟") ) {
+      this.datas.forEach(function(val, index , ar) {
             $('#' + id_1 + index).show();
-            $('#' + id_2 + index ).html("關閉");
+            // $('#' + id_2 + index ).html("關閉");
         });
-        $('#' + id_2 + 'all' ).html("全部關閉");
+        $('#' + this.id2All ).html("全部收折");
     }else {
-        this.datas.forEach(function(val, index , ar) {
+      this.datas.forEach(function(val, index , ar) {
           $('#' + id_1 + index).hide();
-          $('#' + id_2 + index ).html("展開");
+          // $('#' + id_2 + index ).html("開啟");
         });
-        $('#' + id_2 + 'all' ).html("全部展開");
+        $('#' + this.id2All ).html("全部開啟");
     }
   }
 

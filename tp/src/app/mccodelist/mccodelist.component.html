@@ -22,9 +22,11 @@
                <select name="DOMType1" class="LiSelect" [(ngModel)]="autoSelected" (change)="isCloseAuto()" style="width:auto" >
                   <option *ngFor="let itemCode of ListAutos" value="{{itemCode.val}}"  >{{itemCode.txt}} </option>
                </select>
+               &nbsp;
                <!--<button type="submit" style="background-color:aqua;" class="btn btn-default" (click)="doquery()" >查詢</button>-->
+               <input type="text" readonly="readonly"
+                style="padding:2px;border:solid;color:darkgreen;font-size:x-small;" size=30 value="最後更新時間：{{nowDate}}"/>
             </div>
-            <div  style="text-align:left;margin-Top:10px;" ><span style="padding:2px;border:solid;color:darkgreen;font-size:x-small;">最後更新時間：{{nowDate}}</span></div>
           </form>
       </div>
   </div>
@@ -32,15 +34,19 @@
   <div style="text-align:center">
       <input style="width:100%;border:solid;background-color:blue;font-family: impact;color:lavender;text-align:center;font-size:x-large;"
       type="text" name="DOMCode" [attr.readonly]="'readonly'" [ngModel] = "code">
-      <button class="w3-button w3-block w3-teal" (click) = "jqueryToggleAll(id1,id2)"  [id]="id2 + 'all'">全部展開</button>
+      <button class="w3-button w3-block w3-teal" (click) = "jqueryToggleAll(id1,id2)"  [id]="id2All">全部收折</button>
   </div>
   <br/>
   <!--all line detail start-->
   <div  class="row">
     <div  *ngFor="let mch of this.data_mccode_len; let i=index"  [ngClass]="strListClass">
-      <h3 style="border:solid;background-color:lightgreen;font-family: impact;color:brown">{{ datas[i].name }}</h3>
-        <button class="w3-button w3-block w3-teal" [id]="id2 + i" (click) = "jqueryToggle(id1 + i , id2 +i)">展開</button>
-        <table class="table table-bordered'" style="border:ridge" [id]="id1 + i" [ngStyle]="{display:'none'}" >
+      <!--<h3 style="border:solid;background-color:lightgreen;font-family: impact;color:brown">{{ datas[i].name }}</h3>-->
+        <button
+          class="w3-button w3-block w3-teal"
+          style="margin:3px;background-color:lightgreen;font-family: impact;color:brown"
+          [id]="id2 + i"
+          (click) = "jqueryToggle(id1 + i , id2 +i)">{{ datas[i].name }}</button>
+        <table class="table table-bordered'" style="border:ridge" [id]="id1 + i"  >
           <thead>
             <tr>
               <th style='text-align:center;'>時間</th>
