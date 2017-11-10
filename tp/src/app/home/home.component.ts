@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
     name: 'Futaba',
     picture: 'assets/icons/futaba.jpg'
   };
-  private display: boolean; // whether to display info in the component
+  //private display: boolean; // whether to display info in the component
   // use *ngIf="display" in your html to take
   // advantage of this
 
@@ -40,6 +40,10 @@ export class HomeComponent implements OnInit {
   service:any;
   //目前是全部展開或收折，預設全部展開(True)
   toggleStatus:boolean = true;
+  //最後更新時間
+  lastUpdateTime:Date;
+  //收折按鈕名稱
+  btnName:string="toggleBtn";
 
   toggleCollapse(): void {
     this.isCollapsed = !this.isCollapsed;
@@ -66,7 +70,7 @@ export class HomeComponent implements OnInit {
 
   // tslint:disable-next-line:one-line
   constructor(private dataSvc: DatasService,private router: Router) {
-    this.display = false;
+    //this.display = false;
     this.alive = true;
   }
 
@@ -127,15 +131,38 @@ export class HomeComponent implements OnInit {
 
   //組合日期格式(去掉符號)
   GetDateTxt(){
-    console.log("date:" + this.date);
+    //console.log("date:" + this.date);
     var datetxt = this.date.split("-");
-    console.log("datetxt:" + datetxt);
     var mDate = "";
     for(var i = 0; i < datetxt.length;i++)
       mDate += datetxt[i];
 
-    console.log("mDate:" + mDate);
+    //console.log("mDate:" + mDate);
     return mDate;
+  }
+
+  //檢查日期是否符合區間
+  CheckDateFormat() {
+    let iDate = this.date.split("-");
+    if(iDate.length != 3)
+      return false;
+
+    let mYear = parseInt(iDate[0]);
+    let mMonth = parseInt(iDate[1]);
+    let mDay = parseInt(iDate[2]);
+
+    if(mYear < 2010) {
+      return false;
+    }
+
+    if(mMonth < 1 || mMonth > 12) {
+      return false;
+    }
+
+    if(mDay < 1 || mDay > 31) {
+      return false;
+    }
+    return true;
   }
 
   //判斷是不是查詢今天日期，不是就要取消訂閱更新資料
@@ -151,20 +178,19 @@ export class HomeComponent implements OnInit {
 
   //查詢資料
   doquery(){
+    if(!this.CheckDateFormat())
+      return;
+
     if(!this.checkDateFormat())
     {
-      alert("日期格式錯誤");
+      //alert("日期格式錯誤");
       return;
     }
     else
     {
       this.SetTimerForSubscribe();
       var mDate = this.GetDateTxt();
-      this.dataSvc.getAllDatas(mDate)
-      .subscribe(data => {
-        this.datas = data;
-        this.display = true;
-      });
+      this.GetAllDatas();
     }
   };
 
@@ -192,6 +218,11 @@ export class HomeComponent implements OnInit {
 
   //點擊展開收折鈕
   OnButtonClick(index:any) {
+    if($('#' + index).is(':visible')) {
+      $('#' + this.btnName + index).html("展開");
+    }else {
+      $('#' + this.btnName + index).html("收折");
+    }
     $('#' + index).toggle('slow');
   }
 
@@ -252,10 +283,7 @@ export class HomeComponent implements OnInit {
       this.service = IntervalObservable.create(60000).subscribe(() => {
         if(this.checkDateFormat)
         {
-          this.dataSvc.getAllDatas(this.GetDateTxt())
-          .subscribe(data => {
-            this.datas = data;
-          });
+          this.GetAllDatas();
         }
       });
     }else{
@@ -267,12 +295,21 @@ export class HomeComponent implements OnInit {
   showData() {
     if(this.checkDateFormat())
     {
-      this.dataSvc.getAllDatas(this.GetDateTxt())
-      .subscribe(data => {
-        this.datas = data;
-        this.display = true;
-      });
+      this.GetAllDatas();
       this.SetTimerForSubscribe();
     }
+  }
+
+  GetAllDatas() {
+    this.dataSvc.getAllDatas(this.GetDateTxt())
+    .subscribe(data => {
+      if(data == null || data == undefined || data.length < 1)
+        this.datas = [];
+      else {
+        this.datas = data;
+      }
+      this.lastUpdateTime=this.dataSvc.getDateFormat(new Date() , 'yyyy-MM-dd HH:mm:ss');
+      //this.display = true;
+    });
   }
 }
