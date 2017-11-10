@@ -241,10 +241,18 @@ export class HomeComponent implements OnInit {
       }
     }
     this.toggleStatus = this.toggleStatus == true ? false : true;//展闕收折完後變更狀態
-    if(this.toggleStatus)//目前狀態是展開，下一個動作要準備進行收折
+    if(this.toggleStatus) {//目前狀態是展開，下一個動作要準備進行收折
       $('#ToggleBtn').html("全部收折");
-    else
+      for(var i = 0;i <= mLineNumber;i++) {
+        $('#' + this.btnName + i).html("收折");
+      }
+    }
+    else {
       $('#ToggleBtn').html("全部展開");
+      for(var i = 0;i <= mLineNumber;i++) {
+        $('#' + this.btnName + i).html("展開");
+      }
+     }
   }
 
   logout() {
