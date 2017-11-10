@@ -11,16 +11,14 @@ import { IntervalObservable } from 'rxjs/Observable/IntervalObservable';
 })
 export class MccodelistComponent implements OnInit, AfterViewInit {
 
-  today: Date ;
+  today: string ;
   nowDate: Date;
   strListClass: string = '';
   ListCodes: any[] = [];
-  ListAutos: any[] = [];
   code: string;
   OptionsPool: any[];
   datas: any[] = []; // 篩選的資料
   codeSelected: string; // 品種
-  autoSelected: string; //  是否要更新
   date: string; // 日期
   service: any; // 自動更新
   service1: any; // 自動更新(for toggle)
@@ -32,10 +30,9 @@ export class MccodelistComponent implements OnInit, AfterViewInit {
 
   constructor(public datasvc: DatasService, private router: Router, private route: ActivatedRoute ) {
     this.initSelectedDate();
+    this.date = this.today;
     this.OptionsPool = this.datasvc.getSelectOptions();
     this.ListCodes = this.OptionsPool['MCCodeOptions'];
-    this.ListAutos = this.OptionsPool['AutoOptions'];
-    this.autoSelected = 'work';
     this.id1 = 'table_mccode_'; // 開合
     this.id2 = 'button_mccode_'; // 開合
     this.id2All = 'button_mccode_all'; // 開合
@@ -45,44 +42,68 @@ export class MccodelistComponent implements OnInit, AfterViewInit {
     this.route.params.subscribe(params => {
       this.codeSelected = params['code'];
     });
-    this.isCloseAuto();
+    this.isCloseAuto(true);
     this.doquery();
   }
 
   // Template完成後執行
   ngAfterViewInit() {
-    // $('#' + this.id2 + 'all' ).trigger('click');
+
+  }
+  // 離開頁面取消訂閱事件
+  ngOnDestory() {
+    if (this.service) {
+        this.service.unsubscribe();
+    }
+
+    if (this.service1) {
+      this.service1.unsubscribe();
+    }
   }
 
-
+  //  =====================================================================================================================
   // 取即時日期
   initSelectedDate() {
-    this.today = new Date();
+    let todayDate = new Date();
     // PM七點 日期加一
-    if ( this.today.getHours() >= 19 ) {
-      this.today.setDate(this.today.getDate() + 1);
+    if ( todayDate.getHours() >= 19 ) {
+      todayDate.setDate(todayDate.getDate() + 1);
     }
-    this.date = this.datasvc.getDateFormat(this.today , 'yyyy-MM-dd');
+    this.today = this.datasvc.getDateFormat(todayDate, 'yyyy-MM-dd');
   }
 
 
   doquery() {
     // this.datas = [];
+    this.setCheckBoxForAutos();
+    let dateTmp: string;
     this.code = this.ListCodes.filter(item => item.val === this.codeSelected)[0].txt;
-    this.datasvc.getAssmbingDetail( this.codeSelected , this.date.replace('-', '').replace('-', ''))
+    dateTmp = this.date.replace('-', '').replace('-', '');
+    this.datas = [];
+    this.datasvc.getAssmbingDetail( this.codeSelected , dateTmp)
     .subscribe(data => {
-      if ( data.length !== 0) {
+       if ( data.length) {
         this.strListClass = 'col-md-'.concat( Math.ceil(12 / data.length + 1).toString()) ;
-      }
         this.datas = data;
-        this.nowDate = this.datasvc.getDateFormat(new Date() , 'yyyy-MM-dd HH:mm:ss');
+      }
+      // else {
+      //   this.datas = [];
+      // }
+        this.nowDate = this.datasvc.getDateFormat(new Date() , 'MM/dd HH:mm:ss');
         this.timer = 0;
         this.setTimerForToggleAll();
-
     });
-
   }
 
+  // 檢查是否查詢歷史記錄，須將自動更新關閉!!
+  setCheckBoxForAutos() {
+    let p_chkAuto = $('#chkAuto').prop('checked');
+    this.initSelectedDate();
+    if (this.today !== this.date &&  p_chkAuto !== false ) {
+      $('#chkAuto').prop('checked' , false);
+      this.isCloseAuto(false);
+    }
+  }
   // 專門給 ngFor 用的陣列屬性
  get data_mccode_len() {
       return new Array(this.datas.length);
@@ -94,9 +115,8 @@ export class MccodelistComponent implements OnInit, AfterViewInit {
   }
 
   // 是否要取消自動更新
-  isCloseAuto() {
-    console.log(this.autoSelected);
-    if (this.autoSelected === 'work') {
+  isCloseAuto(p_IsAuto: boolean) {
+    if (p_IsAuto) {
       this.SetTimerForSubscribe(true);
     } else {
       this.SetTimerForSubscribe(false);
@@ -107,8 +127,9 @@ export class MccodelistComponent implements OnInit, AfterViewInit {
   SetTimerForSubscribe(isWork: boolean) {
     if (isWork) {
       // get our data every subsequent 60 seconds 60000
-      this.service = IntervalObservable.create(60000).subscribe(() => {
+      this.service = IntervalObservable.create(10000).subscribe(() => {
           this.initSelectedDate();
+          this.date = this.today;
           this.doquery();
         });
     }else {
@@ -129,7 +150,6 @@ export class MccodelistComponent implements OnInit, AfterViewInit {
         if (this.service1) {
           this.service1.unsubscribe();
         }
-
         this.timer ++;
       }
       if ( this.timer > 600000) {
@@ -142,7 +162,7 @@ export class MccodelistComponent implements OnInit, AfterViewInit {
 
   }
 
-
+  // 各項折合
   jqueryToggle(id_1 , id_2) {
     /*
       let btnVal = $('#' + id_2).html();

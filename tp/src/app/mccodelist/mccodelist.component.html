@@ -1,32 +1,29 @@
-
-
 <div class="container">
   <div class="row" >
-
       <div class="col-md" style="text-align:left">
           <form role="form">
           <div class="input-group date form_datetime col-md-5"
                [attr.data-date]="'1979-09-16T05:25:07Z'"
                [attr.data-date-format]="'dd MM yyyy - HH:ii p'"
-               [attr.data-link-field]="'dtp_input1'">
-               <button type="submit" class="btn btn-primary" (click)="rebackView()">
-                回首頁
-               </button>
+               [attr.data-link-field]="'dtp_input1'"
+               style="width:100%"
+               >
+               <button type="submit" class="btn btn-primary" (click)="rebackView()">回首頁</button>
                &nbsp;
-               <input type="date"  name="DOMDate" [(ngModel)] = "date" placeholder="2014-09-18" (change)="doquery()">
+               <input type="date" name="DOMDate" [(ngModel)] = "date" placeholder="2014-09-18"(change)="doquery()">
                &nbsp;
-               <select name="DOMType" class="LiSelect" [(ngModel)]="codeSelected" (change)="doquery()" >
+               <select name="DOMType"  class="LiSelect" [(ngModel)] ="codeSelected" (change)="doquery()" >
                   <option *ngFor="let itemCode of ListCodes" value="{{itemCode.val}}" >{{itemCode.txt}} </option>
                </select>
                &nbsp;
-               <select name="DOMType1" class="LiSelect" [(ngModel)]="autoSelected" (change)="isCloseAuto()" style="width:auto" >
-                  <option *ngFor="let itemCode of ListAutos" value="{{itemCode.val}}"  >{{itemCode.txt}} </option>
-               </select>
+              <label style="font-size:x-large;" >
+              <input type="checkbox" (change)="isCloseAuto($event.target.checked)" checked="checked" id="chkAuto" />
+              自動更新</label>
                &nbsp;
                <!--<button type="submit" style="background-color:aqua;" class="btn btn-default" (click)="doquery()" >查詢</button>-->
                <input type="text" readonly="readonly"
-                style="padding:2px;border:solid;color:darkgreen;font-size:x-small;" size=30 value="最後更新時間：{{nowDate}}"/>
-            </div>
+                style="padding:2px;border:solid;color:darkgreen;font-size:x-small;" size=20 value="更新：{{nowDate}}"/>
+          </div>
           </form>
       </div>
   </div>

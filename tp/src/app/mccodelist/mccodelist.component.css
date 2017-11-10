@@ -10,7 +10,12 @@
   .LiSelect ul li{ width:80px;   background:#FFF; line-height:25px;}
   .LiSelect ul li:hover {background-color:#FE8C80; color:#FFF; }
 
-
+  input[type=checkbox] {
+    -ms-transform: scale(2); /* IE */
+    -moz-transform: scale(2); /* FireFox */
+    -webkit-transform: scale(2); /* Safari and Chrome */
+    -o-transform: scale(2); /* Opera */
+  }
 
 
   /* W3.CSS 4.05 October 2017 by Jan Egil and Borge Refsnes */

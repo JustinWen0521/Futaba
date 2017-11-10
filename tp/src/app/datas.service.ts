@@ -55,6 +55,9 @@ getDateFormat(dte: Date , type: string): any {
     case 'yyyy-MM-dd HH:mm:ss':
     result = strYear.concat('-', strMonth, '-' , strDay) + ' ' + strHour.concat(':', strMinute, ':', strSecond);
     break;
+    case 'MM/dd HH:mm:ss':
+    result = strMonth.concat('/',  strDay) + ' ' + strHour.concat(':', strMinute, ':', strSecond);
+    break;
     default:
     result = '';
   }
@@ -83,11 +86,7 @@ getSelectOptions() {
   ];
   selectGroups['MCCodeOptions'] = options;
 
-  options = [
-    {val: 'work' , txt: '自動更新' },
-    {val: 'stop' , txt: '停用' }
-  ];
-  selectGroups['AutoOptions'] = options;
+
   return selectGroups;
 }
 
