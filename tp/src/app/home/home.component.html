@@ -75,16 +75,17 @@
               <!--<button type="submit" class="btn btn-primary" (click)="doquery()">
                 查詢
               </button>-->
+              <button id="ToggleBtn" type="button" type="submit" class="btn btn-primary" (click)="AllLineChangeToggle()" >全部收折</button>
             </div>
           </div>
         </div>
-        <button id="ToggleBtn" type="button" type="submit" class="btn btn-primary" (click)="AllLineChangeToggle()" >全部收折</button>
+       
         <div class="col-md-1"></div>
         <div>
           <div class="col-md-1" *ngFor="let row of datas; let k=index" style="padding-top:1rem">
             <button type="button" type="submit" class="btn btn-primary" (click)="OnButtonClick(k)" >第{{row.Line}}條線</button>
             <div [id]="k">
-              <div [ngClass]="['productName']">{{row.Product | strFormat}}</div>
+              <!-- <div [ngClass]="['productName']">{{row.Product | strFormat}}</div> -->
               <div class="panel panel-info" *ngFor="let machine of row.MachineList">
                 <div class="panel-heading">
                   <div class="panel-title" [ngClass]="['machineName']">
@@ -92,9 +93,10 @@
                   </div>
                 </div>
                 <div class="panel-body" [ngClass]="['machineDetail']">
-                  夜:{{machine.MachineNight}}
+                  {{machine.MachineProduct}}
                 </div>
                 <div class="panel-footer" [ngClass]="['machineDetail']">
+                  夜:{{machine.MachineNight}}<br/>
                   日:{{machine.MachineDay}}
                 </div>
               </div>
