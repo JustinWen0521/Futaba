@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { DatasService } from '../datas.service';
 import { Observable } from 'rxjs/Observable';
 import { IntervalObservable } from 'rxjs/Observable/IntervalObservable';
@@ -38,12 +38,18 @@ export class HomeComponent implements OnInit {
   NowDay:Date;
   //訂閱自動更新
   service:any;
+  //自動更新日期服務
+  updateService:any;
   //目前是全部展開或收折，預設全部展開(True)
   toggleStatus:boolean = true;
   //最後更新時間
   lastUpdateTime:Date;
   //收折按鈕名稱
   btnName:string="toggleBtn";
+  //是否自動更新(checkBox),預設開啟
+  IsAuto:boolean=true;
+  //自動更新時間
+  UpdateTime:number=60000;
 
   toggleCollapse(): void {
     this.isCollapsed = !this.isCollapsed;
@@ -76,6 +82,9 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.SetQueryDay();
+    if(this.IsAuto)
+      this.SubscribeUpdateEverySingleDay();
+
     if(this.getIsLogin()){
       this.SetLoginBtnStatus(false);
       this.showData();
@@ -92,6 +101,9 @@ export class HomeComponent implements OnInit {
     this.alive = false; // switches your IntervalObservable off
     if(this.service != null && this.service != undefined)
       this.service.unsubscribe();//取消訂閱
+
+    if(this.updateService != null && this.updateService != undefined)
+      this.updateService.unsubscribe();//取消檢查更新
   }
 
   //設定查詢日期
@@ -188,8 +200,11 @@ export class HomeComponent implements OnInit {
     }
     else
     {
-      this.SetTimerForSubscribe();
-      var mDate = this.GetDateTxt();
+      if(this.IsAuto) {
+        this.IsAuto = false;
+        this.SelectAutoStatus();
+      }
+      //var mDate = this.GetDateTxt();
       this.GetAllDatas();
     }
   };
@@ -285,16 +300,15 @@ export class HomeComponent implements OnInit {
   }
 
   //設定是否訂閱更新資料，有登入拿到token & 是今天才訂閱更新，否則取消訂閱
-  SetTimerForSubscribe(){
-    if(this.getIsLogin() && this.GetIsToday()){
-      // get our data every subsequent 60 seconds 60000
-      this.service = IntervalObservable.create(60000).subscribe(() => {
+  SetTimerForSubscribe(iAuto:boolean){
+    if(iAuto) {
+      this.service = IntervalObservable.create(this.UpdateTime).subscribe(() => {
         if(this.checkDateFormat)
         {
           this.GetAllDatas();
         }
       });
-    }else{
+    }else {
       if(this.service != null && this.service != undefined)
         this.service.unsubscribe();
     }
@@ -304,7 +318,7 @@ export class HomeComponent implements OnInit {
     if(this.checkDateFormat())
     {
       this.GetAllDatas();
-      this.SetTimerForSubscribe();
+      this.SetTimerForSubscribe(this.IsAuto);
     }
   }
 
@@ -319,5 +333,32 @@ export class HomeComponent implements OnInit {
       this.lastUpdateTime=this.dataSvc.getDateFormat(new Date() , 'yyyy-MM-dd HH:mm:ss');
       //this.display = true;
     });
+  }
+
+  SelectAutoStatus() {
+    //console.log("IsAuto:" + this.IsAuto);
+    this.SubscribeUpdateEverySingleDay();
+    if(this.IsAuto)
+    {
+      this.SetQueryDay();
+      this.showData();
+    }else {
+      this.SetTimerForSubscribe(this.IsAuto);
+    }
+  }
+
+  SubscribeUpdateEverySingleDay() {
+    if(this.IsAuto) {
+      this.updateService = IntervalObservable.create(1000).subscribe(() => {
+        let mNowDay = new Date();
+        let mNowDayTxt = mNowDay.getFullYear().toString() + (mNowDay.getMonth() + 1).toString() + mNowDay.getDate().toString();
+        let InputBoxDay = this.GetDateTxt();
+        if(parseInt(InputBoxDay) < parseInt(mNowDayTxt))
+          this.SetQueryDay();
+      });
+    }else {
+      if(this.updateService != null && this.updateService != undefined)
+        this.updateService.unsubscribe();//取消檢查更新
+    }
   }
 }

@@ -70,21 +70,26 @@
           <div class="col-md-1"></div>
           <div class="col-md-6" id="searchbar" style="padding-top:0.5rem">
             <div class="input-group date form_datetime" [attr.data-date]="'1979-09-16T05:25:07Z'" [attr.data-date-format]="'dd MM yyyy - HH:ii p'"
-              [attr.data-link-field]="'dtp_input1'" style="padding-left:1.5rem">查詢
+              [attr.data-link-field]="'dtp_input1'" style="padding-left:1.5rem">
               <input type="date" name="DOMDate" [(ngModel)]="date" (change)="doquery()"> &nbsp;
               <!--<button type="submit" class="btn btn-primary" (click)="doquery()">
                 查詢
               </button>-->
+              &nbsp;
+              <label style="font-size:x-large;width:auto" >
+                <input type="checkbox" (change)="SelectAutoStatus()" checked="IsAuto" [(ngModel)]="IsAuto" />
+                自動更新
+              </label>
               <!--<div style="text-align:left;margin-Top:10px;" ><span style="padding:2px;border:solid;color:darkgreen;font-size:x-small;">最後更新時間：{{lastUpdateTime}}</span></div>-->
               <button id="ToggleBtn" type="button" type="submit" class="btn btn-primary" (click)="AllLineChangeToggle()" >全部收折</button>
             </div>
           </div>
         </div>
-<!-- 
+<!--
         <div class="col-md-1"></div> -->
         <div>
           <div class="col-md-1" *ngFor="let row of datas; let k=index" style="padding-top:1rem">
-            <button [id]="btnName + k" type="button" type="submit" class="btn btn-primary" (click)="OnButtonClick(k)" style="width:100%"  >收折</button>
+            <button [id]="btnName + k" type="button" type="submit" class="btn btn-primary" (click)="OnButtonClick(k)" style="width:100%"  >{{row.LineBtnName}}</button>
             <div [id]="k">
               <!-- <div [ngClass]="['productName']">{{row.Product | strFormat}}</div> -->
               <div class="panel panel-info" *ngFor="let machine of row.MachineList">
