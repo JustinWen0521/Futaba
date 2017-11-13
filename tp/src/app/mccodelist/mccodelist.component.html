@@ -11,18 +11,22 @@
                <button type="submit" class="btn btn-primary" (click)="rebackView()">回首頁</button>
                &nbsp;
                <input type="date" name="DOMDate" [(ngModel)] = "date" placeholder="2014-09-18"(change)="doquery()">
+               <!--<input class="date" type="text" name="DOMDate1" (change)="doquery()">-->
                &nbsp;
                <select name="DOMType"  class="LiSelect" [(ngModel)] ="codeSelected" (change)="doquery()" >
                   <option *ngFor="let itemCode of ListCodes" value="{{itemCode.val}}" >{{itemCode.txt}} </option>
                </select>
                &nbsp;
-              <label style="font-size:x-large;" >
+              <label style="font-size:x-large;width:auto" >
               <input type="checkbox" (change)="isCloseAuto($event.target.checked)" checked="checked" id="chkAuto" />
-              自動更新</label>
+              自動更新
+              <font style="color:crimson;font-size:x-small;">{{nowDate}}</font>
+
+
+              </label>
                &nbsp;
                <!--<button type="submit" style="background-color:aqua;" class="btn btn-default" (click)="doquery()" >查詢</button>-->
-               <input type="text" readonly="readonly"
-                style="padding:2px;border:solid;color:darkgreen;font-size:x-small;" size=20 value="更新：{{nowDate}}"/>
+               <!--<input type="text" readonly="readonly" style="padding:2px;border:solid;color:darkgreen;font-size:x-small;" size=20 value="更新："/>-->
           </div>
           </form>
       </div>
@@ -31,7 +35,7 @@
   <div style="text-align:center">
       <input style="width:100%;border:solid;background-color:blue;font-family: impact;color:lavender;text-align:center;font-size:x-large;"
       type="text" name="DOMCode" [attr.readonly]="'readonly'" [ngModel] = "code">
-      <button class="w3-button w3-block w3-teal" (click) = "jqueryToggleAll(id1,id2)"  [id]="id2All">全部收折</button>
+      <button class="w3-button w3-block w3-teal" (click) = "jqueryToggleAll(id1,id2)"  [id]="id2All">{{id2name}}</button>
   </div>
   <br/>
   <!--all line detail start-->
