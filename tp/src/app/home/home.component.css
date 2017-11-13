@@ -57,13 +57,24 @@
 }
 
 @media screen and (min-width: 1024px) and (max-width: 1365px) {
+
+  .row {
+    margin-left:1px;
+    padding-left: 1px;
+  }
+  .col-md-1 {
+    margin-left:1px;
+    padding-left: 1px;
+    width: 120px;
+  }
+
   .productName {
     font-size: 1px;
     font-weight:bold;
     color: black;
     border:1px green solid;
     text-align:center;
-    min-height: 20px;
+    min-height: 40px;
    
     }
     .machineName {
@@ -71,12 +82,14 @@
       font-weight:bold;
       color: blue;
       text-align:center;
-      min-height: 40px;
+      min-height: 20px;
+      white-space:nowrap;
       }
     .machineDetail {
       font-size: 10px;
       font-weight:bold;
       color: black;
+      white-space:nowrap;
       }
     .navbarButton {
        font-size: 15px;
@@ -86,25 +99,38 @@
 }
 
 @media screen and (min-width: 1366px){
+
+  .row {
+    margin-left:1px;
+    padding-left: 1px;
+  }
+  .col-md-1 {
+    margin-left:1px;
+    padding-left: 1px;
+    width: 125px;
+  }
   .productName {
-    font-size: 12px;
+    font-size: 13px;
     font-weight:bold;
     color: black;
     border:3px green solid;
     text-align:center;
     margin:1px;
     min-height: 20px;
+    white-space:nowrap;
     }
   .machineName {
-    font-size: 15px;
+    font-size: 12px;
     font-weight:bold;
     color: blue; 
-    min-height: 40px;
+    min-height: 20px;
     }
   .machineDetail {
-    font-size: 13px;
+    font-size: 12px;
     font-weight:bold;
     color: black;
+    text-align:left;
+    white-space:nowrap;
     }
   .navbarButton {
     font-size: 15px;

@@ -76,15 +76,15 @@
                 查詢
               </button>-->
               <!--<div style="text-align:left;margin-Top:10px;" ><span style="padding:2px;border:solid;color:darkgreen;font-size:x-small;">最後更新時間：{{lastUpdateTime}}</span></div>-->
-              <br><button id="ToggleBtn" type="button" type="submit" class="btn btn-primary" (click)="AllLineChangeToggle()" >全部收折</button>
+              <button id="ToggleBtn" type="button" type="submit" class="btn btn-primary" (click)="AllLineChangeToggle()" >全部收折</button>
             </div>
           </div>
         </div>
-
-        <div class="col-md-1"></div>
+<!-- 
+        <div class="col-md-1"></div> -->
         <div>
           <div class="col-md-1" *ngFor="let row of datas; let k=index" style="padding-top:1rem">
-            <button [id]="btnName + k" type="button" type="submit" class="btn btn-primary" (click)="OnButtonClick(k)" >收折</button>
+            <button [id]="btnName + k" type="button" type="submit" class="btn btn-primary" (click)="OnButtonClick(k)" style="width:100%"  >收折</button>
             <div [id]="k">
               <!-- <div [ngClass]="['productName']">{{row.Product | strFormat}}</div> -->
               <div class="panel panel-info" *ngFor="let machine of row.MachineList">
