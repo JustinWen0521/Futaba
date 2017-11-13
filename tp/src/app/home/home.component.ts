@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit {
   //是否自動更新(checkBox),預設開啟
   IsAuto:boolean=true;
   //自動更新時間
-  UpdateTime:number=60000;
+  UpdateTime:number=10000;
 
   toggleCollapse(): void {
     this.isCollapsed = !this.isCollapsed;
@@ -233,11 +233,11 @@ export class HomeComponent implements OnInit {
 
   //點擊展開收折鈕
   OnButtonClick(index:any) {
-    if($('#' + index).is(':visible')) {
-      $('#' + this.btnName + index).html("展開");
-    }else {
-      $('#' + this.btnName + index).html("收折");
-    }
+    // if($('#' + index).is(':visible')) {
+    //   $('#' + this.btnName + index).html("展開");
+    // }else {
+    //   $('#' + this.btnName + index).html("收折");
+    // }
     $('#' + index).toggle('slow');
   }
 
@@ -258,15 +258,15 @@ export class HomeComponent implements OnInit {
     this.toggleStatus = this.toggleStatus == true ? false : true;//展闕收折完後變更狀態
     if(this.toggleStatus) {//目前狀態是展開，下一個動作要準備進行收折
       $('#ToggleBtn').html("全部收折");
-      for(var i = 0;i <= mLineNumber;i++) {
-        $('#' + this.btnName + i).html("收折");
-      }
+      // for(var i = 0;i <= mLineNumber;i++) {
+      //   $('#' + this.btnName + i).html("收折");
+      // }
     }
     else {
       $('#ToggleBtn').html("全部展開");
-      for(var i = 0;i <= mLineNumber;i++) {
-        $('#' + this.btnName + i).html("展開");
-      }
+      // for(var i = 0;i <= mLineNumber;i++) {
+      //   $('#' + this.btnName + i).html("展開");
+      // }
      }
   }
 
