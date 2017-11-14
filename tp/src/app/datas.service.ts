@@ -85,9 +85,32 @@ getSelectOptions() {
     {val: 'AGAFP' , txt: 'AGAFP' }
   ];
   selectGroups['MCCodeOptions'] = options;
-
-
   return selectGroups;
+}
+
+
+//檢查日期是否符合區間(HTML5的date屬性，先暫定這樣處理)
+CheckDateFormat(date:string):boolean {
+  let iDate = date.split("-");
+  if(iDate.length != 3)
+    return false;
+
+  let mYear = parseInt(iDate[0]);
+  let mMonth = parseInt(iDate[1]);
+  let mDay = parseInt(iDate[2]);
+
+  if(mYear < 2010) {
+    return false;
+  }
+
+  if(mMonth < 1 || mMonth > 12) {
+    return false;
+  }
+
+  if(mDay < 1 || mDay > 31) {
+    return false;
+  }
+  return true;
 }
 
 

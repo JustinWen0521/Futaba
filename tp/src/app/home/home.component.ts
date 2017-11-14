@@ -153,29 +153,6 @@ export class HomeComponent implements OnInit {
     return mDate;
   }
 
-  //檢查日期是否符合區間
-  CheckDateFormat() {
-    let iDate = this.date.split("-");
-    if(iDate.length != 3)
-      return false;
-
-    let mYear = parseInt(iDate[0]);
-    let mMonth = parseInt(iDate[1]);
-    let mDay = parseInt(iDate[2]);
-
-    if(mYear < 2010) {
-      return false;
-    }
-
-    if(mMonth < 1 || mMonth > 12) {
-      return false;
-    }
-
-    if(mDay < 1 || mDay > 31) {
-      return false;
-    }
-    return true;
-  }
 
   //判斷是不是查詢今天日期，不是就要取消訂閱更新資料
   GetIsToday(){
@@ -190,7 +167,7 @@ export class HomeComponent implements OnInit {
 
   //查詢資料
   doquery(){
-    if(!this.CheckDateFormat())
+    if(!this.dataSvc.CheckDateFormat(this.date))
       return;
 
     if(!this.checkDateFormat())

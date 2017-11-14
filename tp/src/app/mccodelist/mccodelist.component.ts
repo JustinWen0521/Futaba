@@ -25,8 +25,8 @@ export class MccodelistComponent implements OnInit, AfterViewInit {
   id1: string ; // 開合(table)
   id2: string ; // 開合(button)
   id2All: string;
-  id2name: string;
   timer: number; // 計數器
+  IsAuto:boolean;
 
 
   constructor(public datasvc: DatasService, private router: Router, private route: ActivatedRoute ) {
@@ -37,6 +37,7 @@ export class MccodelistComponent implements OnInit, AfterViewInit {
     this.id1 = 'table_mccode_'; // 開合
     this.id2 = 'button_mccode_'; // 開合
     this.id2All = 'button_mccode_all'; // 開合
+    this.IsAuto = true;
 
   }
 
@@ -44,7 +45,7 @@ export class MccodelistComponent implements OnInit, AfterViewInit {
     this.route.params.subscribe(params => {
       this.codeSelected = params['code'];
     });
-    this.isCloseAuto(true);
+    this.isCloseAuto();
 
   }
 
@@ -74,45 +75,9 @@ export class MccodelistComponent implements OnInit, AfterViewInit {
     this.today = this.datasvc.getDateFormat(todayDate, 'yyyy-MM-dd');
   }
 
-
-  doquery() {
-    // this.datas = [];
-    this.setCheckBoxForAutos();
-    this.id2name = "全部收折" ;
-    let dateTmp: string;
-    this.code = this.ListCodes.filter(item => item.val === this.codeSelected)[0].txt;
-    dateTmp = this.date.replace('-', '').replace('-', '');
-    this.datas = [];
-    this.datasvc.getAssmbingDetail( this.codeSelected , dateTmp)
-    .subscribe(data => {
-        if ( data.length) {
-          this.strListClass = 'col-md-'.concat( Math.ceil(12 / data.length + 1).toString()) ;
-          this.datas = data;
-        if (this.today === this.date) {
-          this.nowDate = this.datasvc.getDateFormat(new Date() , 'MM/dd HH:mm:ss');
-        }
-      }
-      // else {
-      //   this.datas = [];
-      // }
-
-        this.timer = 0;
-        this.setTimerForToggleAll();
-    });
-  }
-
-  // 檢查是否查詢歷史記錄，須將自動更新關閉!!
-  setCheckBoxForAutos() {
-    let p_chkAuto = $('#chkAuto').prop('checked');
-    this.initSelectedDate();
-    if (this.today !== this.date &&  p_chkAuto !== false ) {
-      $('#chkAuto').prop('checked' , false);
-      this.isCloseAuto(false);
-    }
-  }
   // 專門給 ngFor 用的陣列屬性
  get data_mccode_len() {
-      return new Array(this.datas.length);
+    return new Array(this.datas.length);
   }
 
   // 回首頁
@@ -120,14 +85,41 @@ export class MccodelistComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/home']);
   }
 
+  doquery() {
+    if(!this.datasvc.CheckDateFormat(this.date))
+      return;
+
+    let dateTmp: string;
+    this.code = this.ListCodes.filter(item => item.val === this.codeSelected)[0].txt;
+    dateTmp = this.date.replace('-', '').replace('-', '');
+    this.datasvc.getAssmbingDetail( this.codeSelected , dateTmp)
+    .subscribe(data => {
+        if ( data.length) {
+          this.strListClass = 'col-md-'.concat( Math.ceil(12 / data.length + 1).toString()) ;
+          this.datas = data;
+        //if (this.today === this.date) {
+          this.nowDate = this.datasvc.getDateFormat(new Date() , 'MM/dd HH:mm:ss');
+        //}
+        this.timer = 0;
+        this.setTimerForToggleAll();
+      }
+      else {
+        this.datas = [];
+      }
+
+    });
+  }
+
+
   // 是否要取消自動更新
-  isCloseAuto(p_IsAuto: boolean) {
-    if (p_IsAuto) {
+  isCloseAuto() {
+    if (this.IsAuto) {
       this.SetTimerForSubscribe(true);
     } else {
       this.SetTimerForSubscribe(false);
     }
   }
+
 
   // 設定是否訂閱更新資料
   SetTimerForSubscribe(isWork: boolean) {
@@ -142,7 +134,8 @@ export class MccodelistComponent implements OnInit, AfterViewInit {
           this.date = this.today;
           this.doquery();
         });
-    }else {
+    }
+    else {
         if (this.service) {
           this.service.unsubscribe();
         }
@@ -151,35 +144,24 @@ export class MccodelistComponent implements OnInit, AfterViewInit {
 
   // 預設把選取的資料先關閉不顯示
   setTimerForToggleAll() {
-    this.service1 = IntervalObservable.create(1).subscribe(() => {
+    let ToggleInterval = setInterval(()=>{
       let DOMTable = $('#' + this.id1 + 0 );
-      if (DOMTable) {
-        $('#' + this.id2All ).trigger('click');
-        this.timer ++;
+      this.timer++;
+      if(DOMTable) {
+        $('#' + this.id2All).html("全部收折");
+        clearInterval(ToggleInterval);
+        this.jqueryToggleAll(this.id1 , this.id2);
+        // $('#' + this.id2All ).trigger('click');
       }
-
-      if (DOMTable) {
-        if (this.service1) {
-          this.service1.unsubscribe();
-        }
+      //太久就關閉吧
+      if(this.timer > 1000 && ToggleInterval) {
+        clearInterval(ToggleInterval);
       }
-
-    });
-
+   },100);
   }
 
   // 各項折合
   jqueryToggle(id_1 , id_2) {
-    /*
-      let btnVal = $('#' + id_2).html();
-      if ( btnVal.match("開啟")) {
-        $( '#' + id_1 ).show();
-         $( '#' + id_2 ).html("關閉");
-      }else {
-        $( '#' + id_1 ).hide();
-         $( '#' + id_2 ).html("開啟");
-      }
-      */
       $( '#' + id_1 ).toggle(500);
   }
 
@@ -190,12 +172,13 @@ export class MccodelistComponent implements OnInit, AfterViewInit {
       this.datas.forEach(function(val, index , ar) {
             $('#' + id_1 + index).show();
         });
-        this.id2name = "全部收折";
-    }else {
+        $('#' + this.id2All).html("全部收折");
+    }
+    if (btnVal.match("收折") ){
       this.datas.forEach(function(val, index , ar) {
           $('#' + id_1 + index).hide();
         });
-        this.id2name = "全部展開";
+        $('#' + this.id2All).html("全部展開");
     }
   }
 

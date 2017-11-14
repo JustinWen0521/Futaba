@@ -18,11 +18,10 @@
                </select>
                &nbsp;
               <label style="font-size:x-large;width:auto" >
-              <input type="checkbox" (change)="isCloseAuto($event.target.checked)" checked="checked" id="chkAuto" />
+              <!--<input type="checkbox" (change)="isCloseAuto($event.target.checked)" checked="checked" id="chkAuto" />-->
+              <input type="checkbox" (change)="isCloseAuto()" checked="IsAuto"  [(ngModel)]="IsAuto" name="chkAuto" />
               自動更新
               <font style="color:crimson;font-size:x-small;">{{nowDate}}</font>
-
-
               </label>
                &nbsp;
                <!--<button type="submit" style="background-color:aqua;" class="btn btn-default" (click)="doquery()" >查詢</button>-->
@@ -35,7 +34,7 @@
   <div style="text-align:center">
       <input style="width:100%;border:solid;background-color:blue;font-family: impact;color:lavender;text-align:center;font-size:x-large;"
       type="text" name="DOMCode" [attr.readonly]="'readonly'" [ngModel] = "code">
-      <button class="w3-button w3-block w3-teal" (click) = "jqueryToggleAll(id1,id2)"  [id]="id2All">{{id2name}}</button>
+      <button class="w3-button w3-block w3-teal" (click) = "jqueryToggleAll(id1,id2)"  [id]="id2All"></button>
   </div>
   <br/>
   <!--all line detail start-->
