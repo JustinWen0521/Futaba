@@ -10,7 +10,7 @@
         查詢
       </button>-->
       &nbsp;
-      <label style="font-size:20px;width:auto;padding-left:1.5rem;float:left" >
+      <label style="font-size:20px;width:auto;padding-left:0.5rem;float:left" >
         <input type="checkbox" (change)="SelectAutoStatus()" checked="IsAuto" [(ngModel)]="IsAuto" />
         自動更新
       </label>
@@ -18,7 +18,7 @@
       <div style="text-align:left;padding-left:1.5rem;float:left" ><span style="padding:2px;border:solid;color:darkgreen;font-size:x-small;float:left">最後更新時間：{{lastUpdateTime}}</span></div>
       <button id="ToggleBtn" type="button" type="submit" class="btn btn-primary" (click)="AllLineChangeToggle()" style="text-align:left;margin-left:1rem;margin-top:0.5rem;padding-left:1.5rem;float:left" >全部收折</button>
       </div>
-      <div class="navbar-header col-xs-2">
+      <div class="navbar-header col-xs-2" style="float:right">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar" [attr.aria-expanded]="!isCollapsed"
           (click)="toggleCollapse()" [ngClass]="{'collapsed': isCollapsed}">
           <span class="icon-bar"></span>
