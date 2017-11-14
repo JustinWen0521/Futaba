@@ -46,10 +46,16 @@ export class HomeComponent implements OnInit {
   lastUpdateTime:Date;
   //收折按鈕名稱
   btnName:string="toggleBtn";
+  //每條線上一層DIV名稱
+  divName:string="oneDiv";
   //是否自動更新(checkBox),預設開啟
   IsAuto:boolean=true;
   //自動更新時間
-  UpdateTime:number=10000;
+  UpdateTime:number=60000;
+  //每條線別狀態(開啟或收折)
+  toggleList:boolean[];
+  //建立線別上層
+  lineNumber:number[];
 
   toggleCollapse(): void {
     this.isCollapsed = !this.isCollapsed;
@@ -210,12 +216,13 @@ export class HomeComponent implements OnInit {
 
   //點擊展開收折鈕
   OnButtonClick(index:any) {
-    // if($('#' + index).is(':visible')) {
-    //   $('#' + this.btnName + index).html("展開");
-    // }else {
-    //   $('#' + this.btnName + index).html("收折");
-    // }
+    if(this.toggleList[index])
+      this.toggleList[index] = false;
+    else
+      this.toggleList[index] = true;
+
     $('#' + index).toggle('slow');
+    this.OnCheckLineStatus();
   }
 
   //點擊全展開或收折
@@ -233,17 +240,13 @@ export class HomeComponent implements OnInit {
       }
     }
     this.toggleStatus = this.toggleStatus == true ? false : true;//展闕收折完後變更狀態
+    this.InitToggleStatus(this.toggleStatus);
+    console.log(this.toggleList);
     if(this.toggleStatus) {//目前狀態是展開，下一個動作要準備進行收折
       $('#ToggleBtn').html("全部收折");
-      // for(var i = 0;i <= mLineNumber;i++) {
-      //   $('#' + this.btnName + i).html("收折");
-      // }
     }
     else {
       $('#ToggleBtn').html("全部展開");
-      // for(var i = 0;i <= mLineNumber;i++) {
-      //   $('#' + this.btnName + i).html("展開");
-      // }
      }
   }
 
@@ -290,7 +293,7 @@ export class HomeComponent implements OnInit {
         this.service.unsubscribe();
     }
   }
-
+  //取資料
   showData() {
     if(this.checkDateFormat())
     {
@@ -298,20 +301,33 @@ export class HomeComponent implements OnInit {
       this.SetTimerForSubscribe(this.IsAuto);
     }
   }
-
+  //呼叫API取資料
   GetAllDatas() {
     this.dataSvc.getAllDatas(this.GetDateTxt())
     .subscribe(data => {
       if(data == null || data == undefined || data.length < 1)
-        this.datas = [];
+        this.datas = [];//無資料，變空白
       else {
         this.datas = data;
+        if(this.lineNumber == null || this.lineNumber == undefined)//只有第一次會進來，建立上層DIV
+        {
+          this.lineNumber = [];
+          for(var i =0;i < data.length;i++)
+            this.lineNumber.push(i);
+        }
+        if(this.toggleList == null || this.toggleList == undefined) {//只有第一次會進來，建立收折開關狀態
+          this.toggleList = [];
+          for(var i = 0; i < this.datas.length; i++) {
+            this.toggleList.push(true);
+          }
+        }
       }
       this.lastUpdateTime=this.dataSvc.getDateFormat(new Date() , 'yyyy-MM-dd HH:mm:ss');
       //this.display = true;
     });
   }
 
+  //設定是否啟用自動更新
   SelectAutoStatus() {
     //console.log("IsAuto:" + this.IsAuto);
     this.SubscribeUpdateEverySingleDay();
@@ -324,6 +340,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  //檢查日期，處理誇日問題日期要自動加一天
   SubscribeUpdateEverySingleDay() {
     if(this.IsAuto) {
       this.updateService = IntervalObservable.create(1000).subscribe(() => {
@@ -336,6 +353,36 @@ export class HomeComponent implements OnInit {
     }else {
       if(this.updateService != null && this.updateService != undefined)
         this.updateService.unsubscribe();//取消檢查更新
+    }
+  }
+
+  //檢查是否全部收折或展開，更改文字按鈕
+  OnCheckLineStatus() {
+    let mOpen = 0;
+    let mClose = 0;
+    for(var i =0;i < this.toggleList.length;i++) {
+      if(this.toggleList[i])
+        mOpen++;
+      else
+        mClose++;
+    }
+
+    if(mOpen == this.datas.length) {
+      $('#ToggleBtn').html("全部收折");
+      this.toggleStatus = true;
+    }
+
+    if(mClose == this.datas.length) {
+      $('#ToggleBtn').html("全部展開");
+      this.toggleStatus = false;
+    }
+  }
+
+  //初始化收折按鈕狀態，全開或全關使用
+  InitToggleStatus(iStatus:boolean) {
+    if(this.toggleList != null && this.toggleList != undefined) {
+      for(var i = 0; i < this.toggleList.length;i ++)
+        this.toggleList[i] = iStatus;
     }
   }
 }
