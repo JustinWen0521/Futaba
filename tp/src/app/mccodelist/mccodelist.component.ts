@@ -37,7 +37,7 @@ export class MccodelistComponent implements OnInit, AfterViewInit {
     this.id1 = 'table_mccode_'; // 開合
     this.id2 = 'button_mccode_'; // 開合
     this.id2All = 'button_mccode_all'; // 開合
-    this.id2name = "全部收折" ;
+
   }
 
   ngOnInit() {
@@ -45,7 +45,7 @@ export class MccodelistComponent implements OnInit, AfterViewInit {
       this.codeSelected = params['code'];
     });
     this.isCloseAuto(true);
-    this.doquery();
+
   }
 
   // Template完成後執行
@@ -77,8 +77,8 @@ export class MccodelistComponent implements OnInit, AfterViewInit {
 
   doquery() {
     // this.datas = [];
-    let p_chkAuto = $('#chkAuto').prop('checked');
     this.setCheckBoxForAutos();
+    this.id2name = "全部收折" ;
     let dateTmp: string;
     this.code = this.ListCodes.filter(item => item.val === this.codeSelected)[0].txt;
     dateTmp = this.date.replace('-', '').replace('-', '');
@@ -132,6 +132,10 @@ export class MccodelistComponent implements OnInit, AfterViewInit {
   // 設定是否訂閱更新資料
   SetTimerForSubscribe(isWork: boolean) {
     if (isWork) {
+      this.initSelectedDate();
+      this.date = this.today;
+      this.doquery();
+
       // get our data every subsequent 60 seconds 60000
       this.service = IntervalObservable.create(60000).subscribe(() => {
           this.initSelectedDate();
