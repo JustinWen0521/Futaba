@@ -2,23 +2,21 @@
 <nav class="nav navbar-default">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-xs-2" style="padding-top:0.5rem">
-        <img [src]="futaba.picture" width="100%" />
-      </div>
+      <img [src]="futaba.picture" width="150px" style="padding-top:2.0rem;float:left;" />
       <div class="input-group date form_datetime" [attr.data-date]="'1979-09-16T05:25:07Z'" [attr.data-date-format]="'dd MM yyyy - HH:ii p'"
-      [attr.data-link-field]="'dtp_input1'" style="padding-left:1.5rem">
-      <input type="date" name="DOMDate" [(ngModel)]="date" (change)="doquery()"> &nbsp;
+      [attr.data-link-field]="'dtp_input1'" style="padding-left:0.5rem;padding-top:2.0rem">
+      <input type="date" name="DOMDate" [(ngModel)]="date" (change)="doquery()" style="float:left"> &nbsp;
       <!--<button type="submit" class="btn btn-primary" (click)="doquery()">
         查詢
       </button>-->
       &nbsp;
-      <label style="font-size:x-large;width:auto;padding-top:0.5rem" >
+      <label style="font-size:20px;width:auto;padding-left:1.5rem;float:left" >
         <input type="checkbox" (change)="SelectAutoStatus()" checked="IsAuto" [(ngModel)]="IsAuto" />
         自動更新
       </label>
       &nbsp;
-      <!--<div style="text-align:left;margin-Top:10px;" ><span style="padding:2px;border:solid;color:darkgreen;font-size:x-small;">最後更新時間：{{lastUpdateTime}}</span></div>-->
-      <button id="ToggleBtn" type="button" type="submit" class="btn btn-primary" (click)="AllLineChangeToggle()" >全部收折</button>
+      <div style="text-align:left;padding-left:1.5rem;float:left" ><span style="padding:2px;border:solid;color:darkgreen;font-size:x-small;float:left">最後更新時間：{{lastUpdateTime}}</span></div>
+      <button id="ToggleBtn" type="button" type="submit" class="btn btn-primary" (click)="AllLineChangeToggle()" style="text-align:left;margin-left:1rem;margin-top:0.5rem;padding-left:1.5rem;float:left" >全部收折</button>
       </div>
       <div class="navbar-header col-xs-2">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar" [attr.aria-expanded]="!isCollapsed"
