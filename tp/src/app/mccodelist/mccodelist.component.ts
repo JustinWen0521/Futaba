@@ -29,6 +29,7 @@ export class MccodelistComponent implements OnInit, AfterViewInit {
   IsAuto:boolean;
 
 
+
   constructor(public datasvc: DatasService, private router: Router, private route: ActivatedRoute ) {
     this.initSelectedDate();
     this.date = this.today;
@@ -106,7 +107,6 @@ export class MccodelistComponent implements OnInit, AfterViewInit {
       else {
         this.datas = [];
       }
-
     });
   }
 
@@ -161,8 +161,29 @@ export class MccodelistComponent implements OnInit, AfterViewInit {
   }
 
   // 各項折合
-  jqueryToggle(id_1 , id_2) {
-      $( '#' + id_1 ).toggle(500);
+  jqueryToggle(id_1 , id_2 ) {
+    let id1Name = this.id1;
+    let id1total:number = 0;
+    let id1target =  $('#' + id_1);
+    id1target.toggle(500);
+
+    this.datas.forEach(function(val, index , ar){
+      let id1display =  $('#' + id1Name + index).css('display');
+      if(id1display != "none" ){
+        id1total++;
+      }
+      // Template 尚未更新，會保留原先的部分!!
+      if(id1target.css('display') == "none" ){
+        id1total++;
+      }
+    });
+    if(id1total == this.data_mccode_len.length){
+        $('#' + this.id2All).html("全部收折");
+    }
+    if(id1total == 1) {
+      $('#' + this.id2All).html("全部展開");
+    }
+
   }
 
   // 全部關閉or開啟
