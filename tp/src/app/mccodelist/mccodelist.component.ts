@@ -11,22 +11,21 @@ import { IntervalObservable } from 'rxjs/Observable/IntervalObservable';
 })
 export class MccodelistComponent implements OnInit, AfterViewInit {
 
-  today: string ;
-  nowDate: Date;
+  today: string;
+  nowDate: Date;// 顯示的更新時間
   strListClass: string = '';
-  ListCodes: any[] = [];
-  code: string;
-  OptionsPool: any[];
+  ListCodes: any[] = [];//品種選單
+  code: string;//Title
+  OptionsPool: any[];// 下拉式選單
   datas: any[] = []; // 篩選的資料
   codeSelected: string; // 品種
   date: string; // 日期
-  service: any; // 自動更新
-  service1: any; // 自動更新(for toggle)
+  service: any; // 訂閱自動更新
   id1: string ; // 開合(table)
   id2: string ; // 開合(button)
   id2All: string;
   timer: number; // 計數器
-  IsAuto:boolean;
+  IsAuto:boolean;//是否自動更新
 
 
 
@@ -55,14 +54,12 @@ export class MccodelistComponent implements OnInit, AfterViewInit {
     // PrepareUI();
   }
   // 離開頁面取消訂閱事件
-  ngOnDestory() {
+  ngOnDestroy() {
     if (this.service) {
         this.service.unsubscribe();
     }
 
-    if (this.service1) {
-      this.service1.unsubscribe();
-    }
+
   }
 
   //  =====================================================================================================================
@@ -129,7 +126,7 @@ export class MccodelistComponent implements OnInit, AfterViewInit {
       this.doquery();
 
       // get our data every subsequent 60 seconds 60000
-      this.service = IntervalObservable.create(60000).subscribe(() => {
+      this.service = IntervalObservable.create(10000).subscribe(() => {
           this.initSelectedDate();
           this.date = this.today;
           this.doquery();
