@@ -92,12 +92,8 @@ export class HomeComponent implements OnInit {
       this.SubscribeUpdateEverySingleDay();
 
     if(this.getIsLogin()){
-      this.SetLoginBtnStatus(false);
       this.showData();
     }else{
-      //this.InitView();
-      //模擬User Click事件
-      //document.getElementById("btn_login").click();
       this.router.navigateByUrl('/Login');
     }
   }
@@ -135,7 +131,6 @@ export class HomeComponent implements OnInit {
       mDay = '0'.concat(mDay.toString());
     }
     this.date = mYear + "-" + mMonth + "-" + mDay;
-    //console.log("date:" + this.date);
   }
 
   //檢查日期格式
@@ -149,26 +144,12 @@ export class HomeComponent implements OnInit {
 
   //組合日期格式(去掉符號)
   GetDateTxt(){
-    //console.log("date:" + this.date);
     var datetxt = this.date.split("-");
     var mDate = "";
     for(var i = 0; i < datetxt.length;i++)
       mDate += datetxt[i];
 
-    //console.log("mDate:" + mDate);
     return mDate;
-  }
-
-
-  //判斷是不是查詢今天日期，不是就要取消訂閱更新資料
-  GetIsToday(){
-    var mNowDay = new Date(this.date);
-    if(this.NowDay.getFullYear() == mNowDay.getFullYear()
-        && this.NowDay.getMonth() == mNowDay.getMonth()
-        && this.NowDay.getDate() == mNowDay.getDate())
-      return true;
-    else
-      return false;
   }
 
   //查詢資料
@@ -187,32 +168,9 @@ export class HomeComponent implements OnInit {
         this.IsAuto = false;
         this.SelectAutoStatus();
       }
-      //var mDate = this.GetDateTxt();
       this.GetAllDatas();
     }
   };
-
-  //將畫面調整成未登入時的狀態
-  InitView(){
-    this.SetLoginBtnStatus(true);
-    this.datas = null;
-  }
-
-  //iEnable : True = 顯示LoginBtn,隱藏LogOutBtn
-  SetLoginBtnStatus(iEnable:boolean){
-    if(iEnable){
-      document.getElementById("btn_login").style.display = "block";
-      //document.getElementById("btn_logout").style.display = "none";
-      document.getElementById("btn_link").style.display = "none";
-      document.getElementById("searchbar").style.display = "none";
-
-    }else{
-      document.getElementById("btn_login").style.display = "none";
-      //document.getElementById("btn_logout").style.display = "block";
-      document.getElementById("btn_link").style.display = "block";
-      document.getElementById("searchbar").style.display = "block";
-    }
-  }
 
   //點擊展開收折鈕
   OnButtonClick(index:any) {
@@ -241,33 +199,12 @@ export class HomeComponent implements OnInit {
     }
     this.toggleStatus = this.toggleStatus == true ? false : true;//展闕收折完後變更狀態
     this.InitToggleStatus(this.toggleStatus);
-    console.log(this.toggleList);
     if(this.toggleStatus) {//目前狀態是展開，下一個動作要準備進行收折
       $('#ToggleBtn').html("全部收折");
     }
     else {
       $('#ToggleBtn').html("全部展開");
      }
-  }
-
-  logout() {
-    if(this.service != null && this.service != undefined)
-      this.service.unsubscribe();//取消訂閱
-
-    localStorage.removeItem(this.token);
-    this.InitView();
-  }
-
-  login() {
-    this.dataSvc.getLogin(this.user.toLowerCase(),this.pws).subscribe(data => {
-      if(data == "-1" ||data == "-2"){
-        alert("帳戶驗證錯誤，請確認帳號密碼");
-        return;
-      }
-      localStorage.setItem(this.token,data);
-      this.SetLoginBtnStatus(false);
-      this.showData();
-    });
   }
 
   //return True = IsLogin,False = NotLogin
@@ -283,7 +220,7 @@ export class HomeComponent implements OnInit {
   SetTimerForSubscribe(iAuto:boolean){
     if(iAuto) {
       this.service = IntervalObservable.create(this.UpdateTime).subscribe(() => {
-        if(this.checkDateFormat)
+        if(this.checkDateFormat())
         {
           this.GetAllDatas();
         }
@@ -293,6 +230,7 @@ export class HomeComponent implements OnInit {
         this.service.unsubscribe();
     }
   }
+
   //取資料
   showData() {
     if(this.checkDateFormat())
@@ -301,35 +239,38 @@ export class HomeComponent implements OnInit {
       this.SetTimerForSubscribe(this.IsAuto);
     }
   }
+
   //呼叫API取資料
   GetAllDatas() {
     this.dataSvc.getAllDatas(this.GetDateTxt())
     .subscribe(data => {
-      if(data == null || data == undefined || data.length < 1)
+      if(data == null || data == undefined || data.length < 1) {
         this.datas = [];//無資料，變空白
+        this.lineNumber = null;
+        this.toggleList = null;
+      }
       else {
         this.datas = data;
-        if(this.lineNumber == null || this.lineNumber == undefined)//只有第一次會進來，建立上層DIV
+        if(this.lineNumber == null || this.lineNumber == undefined || this.lineNumber != this.datas.length)//只有第一次會進來or線別總數不同時，建立上層DIV
         {
           this.lineNumber = [];
           for(var i =0;i < data.length;i++)
             this.lineNumber.push(i);
         }
-        if(this.toggleList == null || this.toggleList == undefined) {//只有第一次會進來，建立收折開關狀態
+
+        if(this.toggleList == null || this.toggleList == undefined || this.toggleList != this.datas.length) {//只有第一次會進來or線別總數不同時，建立收折開關狀態
           this.toggleList = [];
           for(var i = 0; i < this.datas.length; i++) {
             this.toggleList.push(true);
           }
         }
       }
-      this.lastUpdateTime=this.dataSvc.getDateFormat(new Date() , 'yyyy-MM-dd HH:mm:ss');
-      //this.display = true;
+      this.lastUpdateTime=this.dataSvc.getDateFormat(new Date() , 'MM/dd HH:mm:ss');
     });
   }
 
   //設定是否啟用自動更新
   SelectAutoStatus() {
-    //console.log("IsAuto:" + this.IsAuto);
     this.SubscribeUpdateEverySingleDay();
     if(this.IsAuto)
     {
@@ -360,7 +301,7 @@ export class HomeComponent implements OnInit {
   OnCheckLineStatus() {
     let mOpen = 0;
     let mClose = 0;
-    for(var i =0;i < this.toggleList.length;i++) {
+    for(var i = 0;i < this.toggleList.length;i++) {
       if(this.toggleList[i])
         mOpen++;
       else
