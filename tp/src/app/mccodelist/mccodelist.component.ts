@@ -98,6 +98,13 @@ export class MccodelistComponent implements OnInit, AfterViewInit {
         //if (this.today === this.date) {
           this.nowDate = this.datasvc.getDateFormat(new Date() , 'MM/dd HH:mm:ss');
         //}
+        // 非當日要取消自動更新
+        if (this.today !== this.date) {
+          this.IsAuto =false;
+          this.isCloseAuto();
+        }
+
+
         this.timer = 0;
         this.setTimerForToggleAll();
       }
@@ -126,7 +133,7 @@ export class MccodelistComponent implements OnInit, AfterViewInit {
       this.doquery();
 
       // get our data every subsequent 60 seconds 60000
-      this.service = IntervalObservable.create(10000).subscribe(() => {
+      this.service = IntervalObservable.create(60000).subscribe(() => {
           this.initSelectedDate();
           this.date = this.today;
           this.doquery();
