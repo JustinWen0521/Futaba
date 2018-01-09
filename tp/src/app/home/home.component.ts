@@ -12,9 +12,9 @@ import { Router } from '@angular/router';
 
 export class HomeComponent implements OnInit {
 
-  //User Key In 帳號
+  // User Key In 帳號
   user: string;
-  //User Key In 密碼
+  // User Key In 密碼
   pws: string;
   datas: any;
   testwidth: any;
@@ -23,32 +23,32 @@ export class HomeComponent implements OnInit {
     name: 'Futaba',
     picture: 'assets/icons/futaba.jpg'
   };
-  //private display: boolean; // whether to display info in the component
+  // private display: boolean; // whether to display info in the component
   // use *ngIf="display" in your html to take
   // advantage of this
 
   private alive: boolean; // used to unsubscribe from the IntervalObservable
 
-  isCollapsed: boolean = true;
-  //用來存API回傳的token key,存放在localStorage
-  token:string = "token";
-  //User Select Date,預設今天日期(晚上8點後會自動加一天)
-  date:string;
-  //目前今天日期(過晚上8點會加一天)
-  NowDay:Date;
-  //訂閱自動更新
+  isCollapsed: boolean= true;
+  // 用來存API回傳的token key,存放在localStorage
+  token: string = "token";
+  // User Select Date,預設今天日期(晚上8點後會自動加一天)
+  date: string;
+  // 目前今天日期(過晚上8點會加一天)
+  NowDay: Date;
+  // 訂閱自動更新
   service:any;
-  //自動更新日期服務
-  updateService:any;
-  //目前是全部展開或收折，預設全部展開(True)
-  toggleStatus:boolean = true;
-  //最後更新時間
-  lastUpdateTime:Date;
-  //收折按鈕名稱
-  btnName:string="toggleBtn";
-  //每條線上一層DIV名稱
+  // 自動更新日期服務
+  updateService: any;
+  // 目前是全部展開或收折，預設全部展開(True)
+  toggleStatus: boolean = true;
+  // 最後更新時間
+  lastUpdateTime: Date;
+  // 收折按鈕名稱
+  btnName: string= "toggleBtn";
+  // 每條線上一層DIV名稱
   divName:string="oneDiv";
-  //是否自動更新(checkBox),預設開啟
+  // 是否自動更新(checkBox),預設開啟
   IsAuto:boolean=true;
   //自動更新時間
   UpdateTime:number=60000;
@@ -197,7 +197,7 @@ export class HomeComponent implements OnInit {
         }
       }
     }
-    this.toggleStatus = this.toggleStatus == true ? false : true;//展闕收折完後變更狀態
+    this.toggleStatus = this.toggleStatus === true ? false : true; // 展闕收折完後變更狀態
     this.InitToggleStatus(this.toggleStatus);
     if(this.toggleStatus) {//目前狀態是展開，下一個動作要準備進行收折
       $('#ToggleBtn').html("全部收折");
@@ -207,8 +207,8 @@ export class HomeComponent implements OnInit {
      }
   }
 
-  //return True = IsLogin,False = NotLogin
-  getIsLogin(){
+  // return True = IsLogin,False = NotLogin
+  getIsLogin() {
     var mToken = localStorage.getItem("token");
     if(mToken != '-1' && mToken != '-2' && mToken != null && mToken != undefined)
       return true;
@@ -216,9 +216,9 @@ export class HomeComponent implements OnInit {
       return false;
   }
 
-  //設定是否訂閱更新資料，有登入拿到token & 是今天才訂閱更新，否則取消訂閱
+  // 設定是否訂閱更新資料，有登入拿到token & 是今天才訂閱更新，否則取消訂閱
   SetTimerForSubscribe(iAuto:boolean){
-    if(iAuto) {
+    if (iAuto) {
       this.service = IntervalObservable.create(this.UpdateTime).subscribe(() => {
         if(this.checkDateFormat())
         {
@@ -226,7 +226,7 @@ export class HomeComponent implements OnInit {
         }
       });
     }else {
-      if(this.service != null && this.service != undefined)
+      if (this.service != null && this.service != undefined)
         this.service.unsubscribe();
     }
   }
@@ -269,7 +269,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  //設定是否啟用自動更新
+  // 設定是否啟用自動更新
   SelectAutoStatus() {
     this.SubscribeUpdateEverySingleDay();
     if(this.IsAuto)
@@ -281,15 +281,28 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  //檢查日期，處理誇日問題日期要自動加一天
+  // 檢查日期，處理誇日問題日期要自動加一天
   SubscribeUpdateEverySingleDay() {
     if(this.IsAuto) {
       this.updateService = IntervalObservable.create(1000).subscribe(() => {
         let mNowDay = new Date();
-        let mNowDayTxt = mNowDay.getFullYear().toString() + (mNowDay.getMonth() + 1).toString() + mNowDay.getDate().toString();
+        let mNowYear = mNowDay.getFullYear().toString();
+        var mNowMonth = (mNowDay.getMonth() + 1).toString();
+        var mNowDate = mNowDay.getDate().toString();
+
+        if(mNowMonth.length == 1)
+          mNowMonth = "0" + mNowMonth;
+
+        if(mNowDate.length == 1)
+          mNowDate = "0" + mNowDate;
+
+        let mNowDayTxt = mNowYear + mNowMonth + mNowDate;
         let InputBoxDay = this.GetDateTxt();
+
         if(parseInt(InputBoxDay) < parseInt(mNowDayTxt))
+        {
           this.SetQueryDay();
+        }
       });
     }else {
       if(this.updateService != null && this.updateService != undefined)
@@ -297,12 +310,12 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  //檢查是否全部收折或展開，更改文字按鈕
+  // 檢查是否全部收折或展開，更改文字按鈕
   OnCheckLineStatus() {
     let mOpen = 0;
     let mClose = 0;
-    for(var i = 0;i < this.toggleList.length;i++) {
-      if(this.toggleList[i])
+    for (var i = 0; i < this.toggleList.length; i++) {
+      if (this.toggleList[i])
         mOpen++;
       else
         mClose++;
